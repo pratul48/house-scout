@@ -15,7 +15,7 @@
   const NOMINATIM = 'https://nominatim.openstreetmap.org';
   const OSRM = 'https://router.project-osrm.org';
 
-  const state = { place: null, facing: null, estimate: null, nearby: {}, map: null, layers: {}, runId: 0 };
+  const state = { place: null, facing: null, estimate: null, nearby: {}, custom: {}, map: null, layers: {}, runId: 0 };
 
   // ---------- storage ----------
   const store = {
@@ -33,14 +33,34 @@
     } finally { clearTimeout(t); }
   }
 
-  async function overpass(query) {
-    let lastErr;
-    for (const url of OVERPASS) {
-      try {
-        return await fetchJSON(url, { method: 'POST', body: 'data=' + enc(query), headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }, 40000);
-      } catch (e) { lastErr = e; }
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+  // The free Overpass servers reject (429/504) when one phone sends many queries at once,
+  // so queries go through a queue (max 2 at a time) and each one retries across mirrors.
+  const ovq = { active: 0, waiting: [] };
+  function overpass(query) {
+    return new Promise((resolve, reject) => { ovq.waiting.push({ query, resolve, reject }); pumpOverpass(); });
+  }
+  function pumpOverpass() {
+    while (ovq.active < 2 && ovq.waiting.length) {
+      const job = ovq.waiting.shift(); ovq.active++;
+      overpassRun(job.query).then(job.resolve, job.reject).finally(() => { ovq.active--; pumpOverpass(); });
     }
-    throw lastErr;
+  }
+  async function overpassRun(query) {
+    let lastErr;
+    for (let attempt = 0; attempt < 3; attempt++) {
+      for (const url of OVERPASS) {
+        try {
+          const data = await fetchJSON(url, { method: 'POST', body: 'data=' + enc(query), headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }, 45000);
+          if (data.remark && /error|timed out|out of memory/i.test(data.remark)) throw new Error('server timeout');
+          return data;
+        } catch (e) { lastErr = e; }
+      }
+      await sleep(2500 * (attempt + 1));
+    }
+    const m = lastErr && lastErr.name === 'AbortError' ? 'timed out' : (lastErr ? lastErr.message : 'unknown error');
+    throw new Error(`map data servers are busy: ${m}`);
   }
 
   const geocode = q => fetchJSON(`${NOMINATIM}/search?format=jsonv2&addressdetails=1&limit=5&q=${enc(q)}`);
@@ -52,7 +72,7 @@
     const line1 = [a.house_number, street].filter(Boolean).join(' ');
     const city = a.city || a.town || a.village || a.hamlet || a.suburb || '';
     const label = [line1, city, a.state, a.postcode].filter(Boolean).join(', ') || r.display_name;
-    return { lat: +r.lat, lon: +r.lon, label, street, city, county: a.county || '', st: a.state || '', zip: a.postcode || '', country: a.country_code || '', display: r.display_name };
+    return { lat: +r.lat, lon: +r.lon, label, street, num: a.house_number || '', city, county: a.county || '', st: a.state || '', zip: a.postcode || '', country: a.country_code || '', display: r.display_name };
   }
 
   // ---------- UI helpers ----------
@@ -98,16 +118,18 @@
     $('#addr-title').textContent = place.label;
     $('#verdict').innerHTML = '<div class="loading">Working out which way the house faces…</div>';
     $('#facing-info').innerHTML = ''; renderDial(null);
-    ['#nearby', '#nuisances', '#property'].forEach(s => $(s).innerHTML = '<div class="loading">Loading…</div>');
+    ['#nearby', '#nuisances', '#property', '#roof'].forEach(s => $(s).innerHTML = '<div class="loading">Loading…</div>');
     fillNotes(saved || findSaved(place) || {});
     renderLinks(place);
     initMap(place);
     setTimeout(() => $('#card-header').scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
 
-    // facing direction first (most important), then everything else in parallel
+    // facing direction first (most important). Map-data queries are queued in this order.
     const facingP = runFacing(place, run);
+    loadNuisances(place, run);
     loadNearby(place, run);
     loadProperty(place, run);
+    loadRoof(place, run);
     await facingP;
     if (saved && saved.facingSource && saved.facingSource !== 'map' && run === state.runId) setFacing(saved.bearing, saved.facingSource);
   }
@@ -137,15 +159,17 @@
     const conf = source === 'map' && est ? est.confidence : null;
     const backDir = Geo.classify(bearing + 180);
 
-    $('#verdict').innerHTML = c.avoid
-      ? `<div class="badge bad">✖ Faces ${c.name} – avoid</div>`
-      : `<div class="badge good">✔ Faces ${c.name} – OK</div>`;
+    $('#verdict').innerHTML = (c.avoid
+      ? `<div class="badge bad">✖ ${c.name} facing – avoid</div>`
+      : `<div class="badge good">✔ ${c.name} facing – OK</div>`) +
+      `<p class="exit-line">🚪 Walking out the front door, you face <b>${c.name}</b>.</p>`;
     if (c.nearBoundary) $('#verdict').innerHTML += `<p class="warn small">⚠️ This is within ${Math.round(c.edgeDist)}° of the ${c.avoid ? 'OK' : 'avoid'} zone. Double-check with the compass at the front door.</p>`;
     if (conf && conf !== 'high') $('#verdict').innerHTML += `<p class="warn small">⚠️ Map confidence is ${conf}. Confirm with the compass or Street View.</p>`;
 
-    let html = `<div class="big-dir">${c.dir} <span>${Math.round(c.bearing)}°</span></div>
+    let html = `<div class="small muted">Direction you face stepping out the front door</div>
+      <div class="big-dir">${c.dir} <span>${Math.round(c.bearing)}°</span></div>
       <div class="small">${srcText}${conf ? ` · confidence: <b>${conf}</b>` : ''}</div>
-      <div class="small">Backyard faces <b>${backDir.name}</b></div>`;
+      <div class="small">Stepping out the back door you face <b>${backDir.name}</b></div>`;
     if (source === 'map' && est && est.ok) {
       html += `<div class="small muted">Front street: ${esc(est.street)} (${Math.round(est.streetDist * 3.28)} ft from house center)</div>`;
       html += est.notes.map(n => `<p class="small warn">${esc(n)}</p>`).join('');
@@ -216,7 +240,7 @@
     const color = state.facing.avoid ? '#ef4444' : '#22c55e';
     state.layers.arrow = L.layerGroup([
       L.polyline([[o.lat, o.lon], end], { color, weight: 6 }),
-      L.circleMarker(end, { radius: 7, color, fillColor: color, fillOpacity: 1 }).bindTooltip('Front', { permanent: true, direction: 'top' })
+      L.circleMarker(end, { radius: 7, color, fillColor: color, fillOpacity: 1 }).bindTooltip(`Out the front door: ${state.facing.dir}`, { permanent: true, direction: 'top' })
     ]).addTo(state.map);
   }
 
@@ -261,10 +285,10 @@
   const CATS = [
     { key: 'costco', label: 'Costco', icon: '🛒', r: 60000, q: ['nwr["brand:wikidata"="Q715583"]', 'nwr["name"~"^Costco",i]["shop"]'],
       test: t => (t['brand:wikidata'] === 'Q715583' || /^costco/i.test(t.name || '')) && !t.amenity && !/gas|fuel|tire|pharmacy|optical/i.test(t.name || '') },
-    { key: 'indian', label: 'Indian grocery', icon: '🍛', r: 40000, q: [`nwr["shop"]["name"~"${INDIAN_NAME}",i]`, 'nwr["shop"]["cuisine"~"indian",i]', 'nwr["shop"]["origin"~"india",i]'],
+    { key: 'indian', label: 'Indian grocery', icon: '🍛', r: 40000, group: 'indian', q: [`nwr["shop"~"^(supermarket|convenience|grocery|greengrocer|deli|food|spices|general)$"]["name"~"${INDIAN_NAME}",i]`, 'nwr["shop"]["cuisine"~"indian",i]', 'nwr["shop"]["origin"~"india",i]'],
       test: t => !!t.shop && /^(supermarket|convenience|grocery|greengrocer|deli|food|spices|general|variety_store)$/.test(t.shop) && (new RegExp(INDIAN_NAME, 'i').test(t.name || '') || /indian/i.test(t.cuisine || '') || /india/i.test(t.origin || '')) },
     { key: 'temple', label: 'Hindu temple', icon: '🛕', r: 50000, q: ['nwr["amenity"="place_of_worship"]["religion"="hindu"]'], test: t => t.religion === 'hindu' },
-    { key: 'indianfood', label: 'Indian restaurant', icon: '🥘', r: 25000, q: ['nwr["amenity"~"^(restaurant|fast_food)$"]["cuisine"~"indian",i]'], test: t => /^(restaurant|fast_food)$/.test(t.amenity || '') && /indian/i.test(t.cuisine || '') },
+    { key: 'indianfood', label: 'Indian restaurant', icon: '🥘', r: 25000, group: 'indian', q: ['nwr["amenity"~"^(restaurant|fast_food)$"]["cuisine"~"indian",i]'], test: t => /^(restaurant|fast_food)$/.test(t.amenity || '') && /indian/i.test(t.cuisine || '') },
     { key: 'grocery', label: 'Supermarket', icon: '🥦', r: 10000, q: ['nwr["shop"="supermarket"]'], test: t => t.shop === 'supermarket', show: 2 },
     { key: 'hospital', label: 'Hospital (ER)', icon: '🏥', r: 40000, q: ['nwr["amenity"="hospital"]'], test: t => t.amenity === 'hospital' },
     { key: 'urgent', label: 'Urgent care / clinic', icon: '🩺', r: 15000, q: ['nwr["healthcare"="urgent_care"]', 'nwr["amenity"="clinic"]'], test: t => t.healthcare === 'urgent_care' || t.amenity === 'clinic' },
@@ -285,9 +309,59 @@
     return `[out:json][timeout:60];(${parts.join('')});out tags center;`;
   }
 
+  // ---------- custom "also look for" searches ----------
+  // Uses Nominatim, which understands both names ("Patel Brothers") and kinds of place ("mosque").
+  // Nominatim allows ~1 request per second, so these run one after another.
+  const customTerms = () => store.get('custom', []);
+  let nomChain = Promise.resolve();
+  function nominatimQueued(url) {
+    const job = nomChain.then(() => fetchJSON(url, {}, 20000));
+    nomChain = job.catch(() => {}).then(() => sleep(1100));
+    return job;
+  }
+  async function searchCustom(term, p) {
+    const d = 0.45; // ~30 mile box around the house
+    const vb = [p.lon - d / Math.cos(p.lat * Math.PI / 180), p.lat + d, p.lon + d / Math.cos(p.lat * Math.PI / 180), p.lat - d].map(v => v.toFixed(5)).join(',');
+    const r = await nominatimQueued(`${NOMINATIM}/search?format=jsonv2&limit=20&bounded=1&viewbox=${vb}&q=${enc(term)}`);
+    const seen = [];
+    return r.map(x => ({ name: x.name || x.display_name.split(',')[0], addr: x.display_name.split(',').slice(1, 3).join(',').trim(), lat: +x.lat, lon: +x.lon, dist: Geo.haversine(p, { lat: +x.lat, lon: +x.lon }) }))
+      .sort((a, b) => a.dist - b.dist)
+      .filter(x => { if (seen.some(s => Geo.haversine(s, x) < 150)) return false; seen.push(x); return true; });
+  }
+  async function loadCustom(p, run, terms) {
+    await Promise.all(terms.map(t => searchCustom(t, p)
+      .then(list => { if (run === state.runId) state.custom[t] = { list }; })
+      .catch(e => { if (run === state.runId) state.custom[t] = { list: [], error: e.message }; })));
+  }
+
+  function renderCustomChips() {
+    const terms = customTerms();
+    $('#custom-count').textContent = terms.length ? `(${terms.length})` : '';
+    $('#custom-chips').innerHTML = terms.map((t, i) => `<button type="button" class="chip" data-i="${i}">${esc(t)} ✕</button>`).join('');
+    $('#custom-chips').querySelectorAll('button').forEach(b => b.onclick = () => {
+      const list = customTerms(); const [gone] = list.splice(+b.dataset.i, 1); store.set('custom', list);
+      delete state.custom[gone]; renderCustomChips(); if (state.place && state.nearbyDone) renderNearby(state.place);
+    });
+  }
+  async function addCustomTerm() {
+    const t = $('#custom-term').value.trim(); if (!t) return;
+    const list = customTerms();
+    if (list.some(x => x.toLowerCase() === t.toLowerCase())) return toast('Already in your list');
+    list.push(t); store.set('custom', list); $('#custom-term').value = ''; renderCustomChips(); toast(`Will look for “${t}” near every house`);
+    if (state.place) {
+      const p = state.place, run = state.runId;
+      state.custom[t] = { loading: true };
+      if (state.nearbyDone) renderNearby(p);
+      await loadCustom(p, run, [t]);
+      if (run !== state.runId || !state.nearbyDone) return; // a running nearby search will render it
+      renderNearby(p); addDriveTimes(p, run);
+    }
+  }
+
   async function loadNearby(p, run) {
-    const far = CATS.filter(c => c.r > 20000), near = CATS.filter(c => c.r <= 20000);
+    const groups = [CATS.filter(c => c.group === 'indian'), CATS.filter(c => !c.group && c.r > 20000), CATS.filter(c => !c.group && c.r <= 20000)];
     const results = {};
+    state.custom = {}; state.nearbyDone = false;
     const collect = (data, cats) => {
       for (const el of data.elements) {
         const t = el.tags || {}; const lat = el.lat ?? el.center?.lat, lon = el.lon ?? el.center?.lon;
@@ -296,79 +370,111 @@
         for (const c of cats) if (d <= c.r && c.test(t)) (results[c.key] ||= []).push({ name: t.name || t.brand || c.label, tags: t, lat, lon, dist: d });
       }
     };
-    const errors = [];
-    await Promise.all([
-      overpass(catQuery(far, p)).then(d => collect(d, far)).catch(e => errors.push(e)),
-      overpass(catQuery(near, p)).then(d => collect(d, near)).catch(e => errors.push(e))
-    ]);
+    const failed = [];
+    const customP = loadCustom(p, run, customTerms());
+    await Promise.all(groups.map(g => overpass(catQuery(g, p)).then(d => collect(d, g)).catch(() => failed.push(...g.map(c => c.key)))));
+    await customP;
     if (run !== state.runId) return;
     for (const k in results) {
       // de-dup (same place mapped as node + building)
       const seen = []; results[k] = results[k].sort((a, b) => a.dist - b.dist).filter(x => { if (seen.some(s => s.name === x.name && Geo.haversine(s, x) < 300)) return false; seen.push(x); return true; });
     }
-    state.nearby = results;
-    renderNearby(p, errors.length === 2);
+    state.nearby = results; state.nearbyFailed = new Set(failed); state.nearbyDone = true;
+    state.myPlaces = store.get('places', []).filter(x => x.lat).map(x => ({ ...x }));
+    renderNearby(p);
     await addDriveTimes(p, run);
   }
 
   async function addDriveTimes(p, run) {
     const targets = [];
     for (const c of CATS) (state.nearby[c.key] || []).slice(0, c.show || 1).forEach(x => targets.push(x));
-    const myPlaces = store.get('places', []).filter(x => x.lat);
-    myPlaces.forEach(x => targets.push(x));
-    if (!targets.length) return;
+    for (const t in state.custom) (state.custom[t].list || []).slice(0, 2).forEach(x => targets.push(x));
+    (state.myPlaces || []).forEach(x => targets.push(x));
+    const todo = targets.filter(x => !x.drive);
+    if (!todo.length) return;
     try {
-      const coords = [p, ...targets].map(x => `${x.lon.toFixed(6)},${x.lat.toFixed(6)}`).join(';');
+      const coords = [p, ...todo].map(x => `${x.lon.toFixed(6)},${x.lat.toFixed(6)}`).join(';');
       const r = await fetchJSON(`${OSRM}/table/v1/driving/${coords}?sources=0&annotations=duration,distance`, {}, 20000);
       if (run !== state.runId || r.code !== 'Ok') return;
-      targets.forEach((t, i) => { t.drive = { s: r.durations[0][i + 1], m: r.distances[0][i + 1] }; });
-      renderNearby(p, false, myPlaces);
+      todo.forEach((t, i) => { t.drive = { s: r.durations[0][i + 1], m: r.distances[0][i + 1] }; });
+      renderNearby(p);
     } catch { /* straight-line distances already shown */ }
   }
 
-  function renderNearby(p, failed, myPlaces) {
+  function renderNearby(p) {
+    const failedKeys = state.nearbyFailed || new Set();
+    const myPlaces = state.myPlaces;
     const gmaps = (q) => `https://www.google.com/maps/search/${enc(q)}/@${p.lat},${p.lon},12z`;
     const dirLink = x => `https://www.google.com/maps/dir/?api=1&origin=${p.lat},${p.lon}&destination=${x.lat},${x.lon}`;
     const line = x => `<div class="place"><a href="${dirLink(x)}" target="_blank" rel="noopener">${esc(x.name)}</a>
         <span class="dist">${x.drive && x.drive.s != null ? `🚗 ${fmtMi(x.drive.m)} · ${fmtMin(x.drive.s)}` : `${fmtMi(x.dist)} straight-line`}</span></div>`;
-    let html = failed ? '<p class="warn">Nearby search failed (map data server busy). Re-open the house in a minute to retry.</p>' : '';
+    let html = failedKeys.size ? `<p class="warn">Some categories couldn't load because the free map servers are busy. <button type="button" class="btn tiny" id="retry-nearby">Retry</button></p>` : '';
+    for (const t of customTerms()) {
+      const r = state.custom[t];
+      html += `<div class="cat"><div class="cat-h">🔎 ${esc(t)}</div>`;
+      if (!r || r.loading) html += '<div class="loading">Searching…</div>';
+      else if (r.error) html += `<div class="warn small">Search failed (${esc(r.error)}).</div>`;
+      else html += r.list.length ? r.list.slice(0, 2).map(x => line({ ...x, name: x.name + (x.addr ? ` (${x.addr})` : '') })).join('') : '<div class="muted small">Nothing found within ~30 mi on OpenStreetMap.</div>';
+      html += `<div class="small"><a href="${gmaps(t)}" target="_blank" rel="noopener">Search “${esc(t)}” on Google Maps →</a></div></div>`;
+    }
     if (myPlaces && myPlaces.length) {
       html += `<div class="cat"><div class="cat-h">⭐ My places</div>${myPlaces.map(x => line({ ...x, name: x.label + ' – ' + x.address })).join('')}</div>`;
     }
     for (const c of CATS) {
       const list = state.nearby[c.key] || [];
       html += `<div class="cat"><div class="cat-h">${c.icon} ${c.label}</div>`;
-      html += list.length ? list.slice(0, c.show || 1).map(line).join('') : `<div class="muted small">None found within ${Math.round(miles(c.r))} mi on OpenStreetMap.</div>`;
+      html += list.length ? list.slice(0, c.show || 1).map(line).join('')
+        : failedKeys.has(c.key) ? '<div class="warn small">Couldn’t load (server busy).</div>'
+        : `<div class="muted small">None found within ${Math.round(miles(c.r))} mi on OpenStreetMap.</div>`;
       if (c.key === 'indian') html += `<div class="small">OpenStreetMap misses many Indian stores. <a href="${gmaps('indian grocery store')}" target="_blank" rel="noopener">Search Google Maps →</a></div>`;
       if (c.key === 'temple') html += `<div class="small"><a href="${gmaps('hindu temple')}" target="_blank" rel="noopener">Search Google Maps →</a></div>`;
       if (c.key === 'costco' && !list.length) html += `<div class="small"><a href="https://www.costco.com/warehouse-locations" target="_blank" rel="noopener">Costco warehouse locator →</a></div>`;
       html += '</div>';
     }
     $('#nearby').innerHTML = html;
+    const rb = $('#retry-nearby');
+    if (rb) rb.onclick = () => { $('#nearby').innerHTML = '<div class="loading">Retrying…</div>'; loadNearby(p, state.runId); };
   }
 
   // ---------- nuisances ----------
   async function loadNuisances(p, run) {
-    const q = `[out:json][timeout:40];(
-      way["highway"~"^(motorway|trunk)$"](around:1000,${p.lat},${p.lon});
-      way["railway"="rail"](around:1000,${p.lat},${p.lon});
-      way["power"="line"](around:400,${p.lat},${p.lon});
-      way["landuse"="industrial"](around:600,${p.lat},${p.lon});
-      way["landuse"="landfill"](around:3000,${p.lat},${p.lon});
-      nwr["landuse"="cemetery"](around:1000,${p.lat},${p.lon});
-      nwr["amenity"="grave_yard"](around:1000,${p.lat},${p.lon});
-      nwr["aeroway"="aerodrome"](around:8000,${p.lat},${p.lon});
-      way["highway"~"^(primary|secondary)$"](around:120,${p.lat},${p.lon});
-    );out tags geom;`;
+    const a = `${p.lat},${p.lon}`;
+    // Lines near the house: geometry clipped to a ~1.2 km box keeps the response small.
+    const dLat = 0.011, dLon = 0.011 / Math.cos(p.lat * Math.PI / 180);
+    const clip = [p.lat - dLat, p.lon - dLon, p.lat + dLat, p.lon + dLon].map(v => v.toFixed(5)).join(',');
+    const qLines = `[out:json][timeout:25];(
+      way["highway"~"^(motorway|trunk)$"](around:1000,${a});
+      way["railway"="rail"](around:1000,${a});
+      way["power"="line"](around:400,${a});
+      way["landuse"="industrial"](around:600,${a});
+      way["highway"~"^(primary|secondary)$"](around:120,${a});
+    );out tags geom(${clip});`;
+    // Big areas (airports, cemeteries, landfills) only need a bounding box, not their full outline.
+    const qAreas = `[out:json][timeout:25];(
+      nwr["landuse"="landfill"](around:3000,${a});
+      nwr["landuse"="cemetery"](around:1000,${a});
+      nwr["amenity"="grave_yard"](around:1000,${a});
+      nwr["aeroway"="aerodrome"](around:8000,${a});
+    );out tags bb;`;
+    const box = $('#nuisances');
     try {
-      const data = await overpass(q);
+      const results = await Promise.allSettled([overpass(qLines), overpass(qAreas)]);
       if (run !== state.runId) return;
+      if (results.every(r => r.status === 'rejected')) throw results[0].reason;
+      const elements = results.flatMap(r => r.status === 'fulfilled' ? r.value.elements : []);
+      const partial = results.some(r => r.status === 'rejected');
       const items = {};
       const add = (k, label, el) => {
-        const geom = el.geometry || (el.lat ? [{ lat: el.lat, lon: el.lon }] : el.bounds ? [{ lat: (el.bounds.minlat + el.bounds.maxlat) / 2, lon: (el.bounds.minlon + el.bounds.maxlon) / 2 }] : null);
-        const d = Geo.distToGeometry(p, geom);
+        let d;
+        if (el.geometry) d = Geo.distToGeometry(p, el.geometry.filter(Boolean));
+        else if (el.bounds) { // distance to the bounding box (0 if the house is inside it)
+          const b = el.bounds, cl = { lat: Math.min(Math.max(p.lat, b.minlat), b.maxlat), lon: Math.min(Math.max(p.lon, b.minlon), b.maxlon) };
+          d = Geo.haversine(p, cl);
+        } else if (el.lat != null) d = Geo.haversine(p, el);
+        if (d == null || !isFinite(d)) return;
         if (!items[k] || d < items[k].d) items[k] = { label, d, name: el.tags.name || el.tags.ref || '' };
       };
+      const data = { elements };
       for (const el of data.elements) {
         const t = el.tags || {};
         if (/^(motorway|trunk)$/.test(t.highway)) add('hwy', '🛣️ Highway / freeway (noise)', el);
@@ -381,19 +487,22 @@
         else if (t.aeroway === 'aerodrome') add('air', '🛩️ Airport / airfield (plane noise)', el);
       }
       const list = Object.values(items).sort((a, b) => a.d - b.d);
-      $('#nuisances').innerHTML = list.length
+      box.innerHTML = (list.length
         ? list.map(i => `<div class="place"><span>${i.label}${i.name ? ` <span class="muted">(${esc(i.name)})</span>` : ''}</span><span class="dist ${i.d < 300 ? 'bad-t' : ''}">${fmtMi(i.d)}</span></div>`).join('')
-        : '<p class="good-t">✔ No highways, rail lines, power lines, industrial areas, cemeteries or airports found close by.</p>';
+        : '<p class="good-t">✔ No highways, rail lines, power lines, industrial areas, cemeteries or airports found close by.</p>')
+        + (partial ? '<p class="warn small">Part of this check didn’t load. <button type="button" class="btn tiny" id="retry-nuis">Retry</button></p>' : '');
     } catch (e) {
-      if (run === state.runId) $('#nuisances').innerHTML = `<p class="warn">Couldn't check (${esc(e.message)}).</p>`;
+      if (run !== state.runId) return;
+      box.innerHTML = `<p class="warn">Couldn't check right now (${esc(e.message)}). <button type="button" class="btn tiny" id="retry-nuis">Retry</button></p>`;
     }
+    const rb = $('#retry-nuis');
+    if (rb) rb.onclick = () => { box.innerHTML = '<div class="loading">Retrying…</div>'; loadNuisances(p, state.runId); };
   }
 
   // ---------- property facts ----------
   async function loadProperty(p, run) {
-    loadNuisances(p, run);
     const rows = [];
-    const put = () => { if (run === state.runId) $('#property').innerHTML = rows.map(([k, v]) => `<div class="kv"><span>${k}</span><span>${v}</span></div>`).join('') + roofNote(p); };
+    const put = () => { if (run === state.runId) $('#property').innerHTML = rows.map(([k, v]) => `<div class="kv"><span>${k}</span><span>${v}</span></div>`).join(''); };
     rows.push(['County', esc(p.county || '—')]);
     put();
     const tasks = [
@@ -419,15 +528,137 @@
     put();
   }
 
-  function roofNote(p) {
+  // ---------- roof age: search public building-permit records ----------
+  // Many cities and counties publish permits as open data on Socrata or ArcGIS. Both allow
+  // browser requests, so the app can search them directly for permits at this address.
+  const ROOF_RE = /re-?roof|shingle|tear[- ]?off|\broof(ing)?\b/i;
+  const NOT_ROOF_RE = /solar|photovoltaic|\bpv\b|roof ?top unit|\brtu\b|antenna|cell tower/i;
+  const DIRWORDS = new Set(['n', 's', 'e', 'w', 'ne', 'nw', 'se', 'sw', 'north', 'south', 'east', 'west', 'northeast', 'northwest', 'southeast', 'southwest']);
+  const U = v => String(v ?? '').toUpperCase();
+
+  function addrParts(p) {
+    const num = (p.num || (p.label.match(/^\s*(\d+[A-Za-z]?)\s/) || [])[1] || '').toUpperCase();
+    const words = (p.street || '').split(/\s+/).filter(w => w && !DIRWORDS.has(w.toLowerCase()));
+    return { num, core: U(words[0] || '').replace(/'/g, '') };
+  }
+
+  function rowToPermit(row, dateFields, source) {
+    const flat = Object.entries(row).map(([k, v]) => [k, v && typeof v === 'object' ? JSON.stringify(v) : String(v ?? '')]);
+    const text = flat.map(([, v]) => v).join(' | ');
+    const descKeys = flat.filter(([k, v]) => /desc|work|scope|type|purpose|class|comment|subtype/i.test(k) && v && !/^\d+(\.\d+)?$/.test(v) && v.length < 400);
+    const desc = [...new Set(descKeys.map(([, v]) => v.trim()))].join(' · ').slice(0, 200);
+    let date = null;
+    const pick = re => dateFields.filter(k => re.test(k)).map(k => row[k]).find(v => v != null && v !== '');
+    const raw = pick(/issue/i) ?? pick(/appl|file|submit|open/i) ?? pick(/final|complete|close/i) ?? dateFields.map(k => row[k]).find(v => v != null && v !== '');
+    if (raw != null) { const d = new Date(typeof raw === 'number' ? raw : String(raw)); if (!isNaN(d)) date = d; }
+    const roof = ROOF_RE.test(text) && !NOT_ROOF_RE.test(desc || text);
+    return { date, desc: desc || '(no description)', roof, source };
+  }
+
+  async function socrataPermits(p, parts, onSource) {
+    const placeNames = [p.city, (p.county || '').replace(/ county$/i, '')].filter(Boolean).map(s => s.toLowerCase());
+    if (!placeNames.length) return [];
+    const cat = await fetchJSON(`https://api.us.socrata.com/api/catalog/v1?only=dataset&limit=30&q=${enc('building permits ' + (p.city || p.county))}`, {}, 15000);
+    const sets = (cat.results || []).filter(r => {
+      const hay = `${r.resource.name} ${r.resource.description || ''} ${r.metadata.domain} ${JSON.stringify(r.classification?.domain_metadata || [])}`.toLowerCase().replace(/[^a-z ]/g, '');
+      return /permit/i.test(r.resource.name) && !/solar|right of way|sign|film|event|tree|food|alcohol|parking/i.test(r.resource.name)
+        && placeNames.some(n => hay.includes(n) || hay.replace(/ /g, '').includes(n.replace(/[^a-z]/g, '')));
+    }).slice(0, 4);
+    const out = [];
+    await Promise.all(sets.map(async s => {
+      const src = `${s.resource.name} (${s.metadata.domain})`;
+      try {
+        const rows = await fetchJSON(`https://${s.metadata.domain}/resource/${s.resource.id}.json?$limit=300&$q=${enc(parts.num + ' ' + parts.core)}`, {}, 20000);
+        onSource(src);
+        const dateFields = (s.resource.columns_datatype || []).map((t, i) => /date|calendar/i.test(t) ? s.resource.columns_field_name[i] : null).filter(Boolean);
+        for (const row of rows) {
+          const vals = Object.values(row).map(v => U(v && typeof v === 'object' ? JSON.stringify(v) : v));
+          const hit = vals.some(v => (v.startsWith(parts.num + ' ') || v.includes(`"${parts.num} `)) && v.includes(parts.core)) ||
+            (vals.some(v => v.trim() === parts.num) && vals.some(v => v.includes(parts.core)));
+          if (hit) out.push(rowToPermit(row, dateFields.length ? dateFields : Object.keys(row).filter(k => /date/i.test(k)), src));
+        }
+      } catch { /* this dataset failed; others may still work */ }
+    }));
+    return out;
+  }
+
+  async function arcgisPermits(p, parts, onSource) {
+    const d = 0.002, bbox = [p.lon - d, p.lat - d, p.lon + d, p.lat + d].join(',');
+    const s = await fetchJSON(`https://www.arcgis.com/sharing/rest/search?f=json&num=40&sortField=numViews&sortOrder=desc&bbox=${bbox}&q=${enc('permit type:"Feature Service"')}`, {}, 15000);
+    const items = (s.results || []).filter(r => r.url && /permit/i.test(r.title) && !/solar|right.of.way|\brow\b|sign|film|event|tree|food|alcohol|parking|street use|encroach|well|septic|oil|gas well/i.test(r.title)).slice(0, 4);
+    const out = [];
+    const sqlEsc = v => v.replace(/'/g, "''");
+    await Promise.all(items.map(async it => {
+      try {
+        let layers = [];
+        if (/\/\d+\/?$/.test(it.url)) layers = [it.url.replace(/\/$/, '')];
+        else {
+          const svc = await fetchJSON(`${it.url}?f=json`, {}, 15000);
+          const ls = [...(svc.layers || []), ...(svc.tables || [])];
+          const pref = ls.filter(l => /permit/i.test(l.name));
+          layers = (pref.length ? pref : ls).slice(0, 2).map(l => `${it.url.replace(/\/$/, '')}/${l.id}`);
+        }
+        for (const lu of layers) {
+          const info = await fetchJSON(`${lu}?f=json`, {}, 15000);
+          const fields = info.fields || [];
+          const addrF = fields.filter(f => f.type === 'esriFieldTypeString' && /addr|location|site|full_?add|street/i.test(f.name) && !/city|zip|state|unit|apt|parcel|owner|contractor|mail|applicant|name$/i.test(f.name))
+            .sort((a, b) => (/addr/i.test(b.name) ? 1 : 0) - (/addr/i.test(a.name) ? 1 : 0))[0];
+          if (!addrF) continue;
+          const where = `UPPER(${addrF.name}) LIKE '${sqlEsc(parts.num)} %' AND UPPER(${addrF.name}) LIKE '%${sqlEsc(parts.core)}%'`;
+          const r = await fetchJSON(`${lu}/query?f=json&outFields=*&returnGeometry=false&where=${enc(where)}`, {}, 20000);
+          const src = `${it.title} (${it.owner})`;
+          onSource(src);
+          const dateFields = fields.filter(f => f.type === 'esriFieldTypeDate').map(f => f.name);
+          for (const f of r.features || []) out.push(rowToPermit(f.attributes, dateFields, src));
+        }
+      } catch { /* skip broken services */ }
+    }));
+    return out;
+  }
+
+  async function loadRoof(p, run) {
+    const box = $('#roof');
+    const parts = addrParts(p);
     const g = q => `https://www.google.com/search?q=${enc(q)}`;
-    return `<div class="roof"><b>🏚️ Roof age</b><p class="small">There's no free public database of roof replacement dates. These usually find it:</p>
-      <ol class="small">
-        <li><a href="${g(`"${p.label}" new roof`)}" target="_blank" rel="noopener">Search the listing for “new roof”</a> (Zillow/Redfin descriptions often say “roof 2019”).</li>
-        <li><a href="${g(`${p.city} ${p.st} building permit search`)}" target="_blank" rel="noopener">City building-permit search</a>: look up the address for a “re-roof” permit.</li>
-        <li><a href="${g(`buildzoom ${p.label}`)}" target="_blank" rel="noopener">BuildZoom permit history</a></li>
-        <li>Ask the agent for the seller's disclosure, and have the inspector estimate it.</li>
-      </ol></div>`;
+    const links = `<div class="roof"><p class="small"><b>Also check the listing.</b> Zillow and Redfin block other apps from reading their pages, so open the listing and search the page for “roof”:</p>
+      <div class="small">
+        <a class="link" href="https://www.zillow.com/homes/${enc(p.label)}_rb/" target="_blank" rel="noopener">🏡 Zillow listing for this address</a>
+        <a class="link" href="${g(`redfin ${p.label}`)}" target="_blank" rel="noopener">🏡 Redfin listing</a>
+        <a class="link" href="${g(`"${p.num ? p.num + ' ' : ''}${p.street}" ${p.city} roof`)}" target="_blank" rel="noopener">🔎 Google: this address + “roof”</a>
+        <a class="link" href="${g(`buildzoom ${p.label}`)}" target="_blank" rel="noopener">🧾 BuildZoom permit history</a>
+        <a class="link" href="${g(`${p.city || p.county} ${p.st} building permit search by address`)}" target="_blank" rel="noopener">🏛️ City permit search website</a>
+      </div><p class="small muted">The seller's disclosure and your home inspector are the final word on roof age.</p></div>`;
+    if (!parts.num || !parts.core) {
+      box.innerHTML = `<p class="small muted">Need a full street address (with house number) to search permit records.</p>${links}`;
+      return;
+    }
+    const sources = new Set();
+    const progress = () => { if (run === state.runId) box.innerHTML = `<div class="loading">Searching public permit records${sources.size ? ` (${sources.size} source${sources.size > 1 ? 's' : ''} checked)` : ''}…</div>`; };
+    progress();
+    const onSource = s => { sources.add(s); progress(); };
+    const res = await Promise.allSettled([socrataPermits(p, parts, onSource), arcgisPermits(p, parts, onSource)]);
+    if (run !== state.runId) return;
+    const seen = new Set();
+    const permits = res.flatMap(r => r.status === 'fulfilled' ? r.value : [])
+      .filter(x => { const k = (x.date ? x.date.toISOString().slice(0, 10) : '') + x.desc; if (seen.has(k)) return false; seen.add(k); return true; })
+      .sort((a, b) => (b.date || 0) - (a.date || 0));
+    const roofs = permits.filter(x => x.roof);
+    const fmtD = d => d ? d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) : 'date unknown';
+    const row = x => `<div class="permit"><b>${fmtD(x.date)}</b> – ${esc(x.desc)}<div class="small muted">${esc(x.source)}</div></div>`;
+    let html = '';
+    if (roofs.length) {
+      const y = roofs.find(x => x.date)?.date.getFullYear();
+      html += `<p class="good-t"><b>✔ Roof permit found${y ? `: ${y} (${new Date().getFullYear() - y} years ago)` : ''}</b></p>${roofs.slice(0, 4).map(row).join('')}`;
+      if (y && !$('#f-roof').value) { $('#f-roof').value = String(y); }
+    } else if (sources.size) {
+      html += `<p><b>No roof permit on file.</b> <span class="small">Checked ${sources.size} public permit source${sources.size > 1 ? 's' : ''}${permits.length ? `, found ${permits.length} other permit${permits.length > 1 ? 's' : ''} at this address` : ' and found no permits at this address'}. The roof may be original, done before records went online, or done without a permit.</span></p>`;
+    } else {
+      html += `<p class="small"><b>This city or county doesn't publish permits in a form the app can search</b>${res.every(r => r.status === 'rejected') ? ' (or the permit search services didn’t respond)' : ''}. Use the links below.</p>`;
+    }
+    const others = permits.filter(x => !x.roof);
+    if (others.length) html += `<details class="howto"><summary>Other permits at this address (${others.length}) – HVAC, water heater, remodels…</summary>${others.slice(0, 15).map(row).join('')}</details>`;
+    if (sources.size) html += `<details class="howto"><summary class="small">Sources searched</summary><ul class="small">${[...sources].map(s => `<li>${esc(s)}</li>`).join('')}</ul></details>`;
+    box.innerHTML = html + links;
   }
 
   // ---------- links ----------
@@ -514,6 +745,10 @@
     $('#btn-compass').onclick = startCompass;
     $('#btn-lock').onclick = lockCompass;
     $('#btn-save').onclick = saveHouse;
+    $('#btn-custom-add').onclick = addCustomTerm;
+    // Enter in this box adds the term instead of submitting the address search.
+    $('#custom-term').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); addCustomTerm(); } });
+    renderCustomChips();
     $('#declination').value = store.get('decl', 0);
     $('#declination').onchange = () => store.set('decl', decl());
     document.querySelectorAll('.tabbar button').forEach(b => b.onclick = () => showView(b.dataset.view));

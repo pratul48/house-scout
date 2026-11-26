@@ -30,6 +30,15 @@
         </div>
         <button type="button" id="btn-gps" class="btn wide">📍 I'm at the house – use my location</button>
         <div id="search-results"></div>
+        <details class="howto" id="custom-box">
+          <summary>➕ Also look for… <span id="custom-count" class="muted"></span></summary>
+          <p class="small muted">Add anything you want found near every house, e.g. <i>Patel Brothers</i>, <i>mosque</i>, <i>Trader Joe's</i>, <i>dance class</i>, <i>cricket ground</i>.</p>
+          <div class="row">
+            <input id="custom-term" type="text" placeholder="Type a store, place or kind of place" enterkeyhint="done">
+            <button type="button" id="btn-custom-add" class="btn primary">Add</button>
+          </div>
+          <div id="custom-chips" class="chips"></div>
+        </details>
       </form>
 
       <div id="results" hidden>
@@ -39,7 +48,7 @@
         </div>
 
         <div class="card">
-          <h2>Which way does it face?</h2>
+          <h2>Which way do you face leaving the house?</h2>
           <div class="facing-wrap">
             <div id="dial"></div>
             <div id="facing-info"></div>
@@ -62,6 +71,7 @@
           </details>
           <details class="howto">
             <summary>✋ Set the direction myself</summary>
+            <p class="small muted">Pick the direction you face when you walk out the front door.</p>
             <div id="manual-dirs" class="dir-grid"></div>
           </details>
         </div>
@@ -85,6 +95,11 @@
         <div class="card">
           <h2>Property</h2>
           <div id="property"><div class="loading">Looking up…</div></div>
+        </div>
+
+        <div class="card">
+          <h2>🏚️ Roof age</h2>
+          <div id="roof"><div class="loading">Searching building permits…</div></div>
         </div>
 
         <div class="card">

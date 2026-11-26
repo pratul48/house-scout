@@ -1,5 +1,5 @@
 // Caches the app itself so it opens instantly. Live data (maps, places) always comes from the network.
-const CACHE = 'house-scout-v1';
+const CACHE = 'house-scout-v2';
 const SHELL = ['./', 'index.html', 'style.css', 'geo.js', 'app.js', 'manifest.json', 'icon.svg', 'icon-192.png',
   'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css', 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js'];
 
