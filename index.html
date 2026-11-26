@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f766e">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="House Scout">
+  <title>House Scout</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1>🏠 House Scout</h1>
+  </header>
+
+  <main>
+    <!-- SEARCH VIEW -->
+    <section id="view-search" class="view active">
+      <form id="search-form" class="card">
+        <label for="addr">House address</label>
+        <div class="row">
+          <input id="addr" type="search" placeholder="123 Main St, Dallas, TX" autocomplete="street-address" required>
+          <button type="submit" class="btn primary">Go</button>
+        </div>
+        <button type="button" id="btn-gps" class="btn wide">📍 I'm at the house – use my location</button>
+        <div id="search-results"></div>
+      </form>
+
+      <div id="results" hidden>
+        <div class="card" id="card-header">
+          <div id="addr-title" class="addr-title"></div>
+          <div id="verdict" class="verdict"></div>
+        </div>
+
+        <div class="card">
+          <h2>Which way does it face?</h2>
+          <div class="facing-wrap">
+            <div id="dial"></div>
+            <div id="facing-info"></div>
+          </div>
+          <details class="howto">
+            <summary>🧭 Check it with my phone's compass</summary>
+            <p>Stand at the <b>front door with your back to the door</b>, facing the street.
+              Hold the phone flat with its top pointing straight out from the house, then tap <b>Lock reading</b>.</p>
+            <div class="row">
+              <button type="button" id="btn-compass" class="btn">Start compass</button>
+              <button type="button" id="btn-lock" class="btn primary" disabled>Lock reading</button>
+            </div>
+            <div id="compass-live" class="muted"></div>
+            <label class="small">Magnetic declination (° east is +, west is −)
+              <input id="declination" type="number" step="0.1" inputmode="decimal" value="0">
+            </label>
+            <p class="small muted">Phone compasses point to magnetic north, which in the US can be up to ~15° off true north.
+              Look up your value at <a href="https://www.ngdc.noaa.gov/geomag/calculators/magcalc.shtml#declination" target="_blank" rel="noopener">NOAA</a>
+              (e.g. Seattle ≈ +15, Dallas ≈ +3, New York ≈ −13).</p>
+          </details>
+          <details class="howto">
+            <summary>✋ Set the direction myself</summary>
+            <div id="manual-dirs" class="dir-grid"></div>
+          </details>
+        </div>
+
+        <div class="card">
+          <h2>Map</h2>
+          <p class="small muted">Wrong house highlighted? Tap the correct roof on the map to re-check the direction.</p>
+          <div id="map"></div>
+        </div>
+
+        <div class="card">
+          <h2>Nearby</h2>
+          <div id="nearby"><div class="loading">Searching nearby places…</div></div>
+        </div>
+
+        <div class="card">
+          <h2>Noise &amp; nuisances</h2>
+          <div id="nuisances"><div class="loading">Checking…</div></div>
+        </div>
+
+        <div class="card">
+          <h2>Property</h2>
+          <div id="property"><div class="loading">Looking up…</div></div>
+        </div>
+
+        <div class="card">
+          <h2>Research links</h2>
+          <div id="links"></div>
+        </div>
+
+        <div class="card">
+          <h2>My notes</h2>
+          <div class="grid2">
+            <label>Price<input id="f-price" inputmode="numeric" placeholder="$450,000"></label>
+            <label>Roof replaced (year)<input id="f-roof" inputmode="numeric" placeholder="2018"></label>
+            <label>HOA / month<input id="f-hoa" inputmode="numeric" placeholder="$0"></label>
+            <label>Year built<input id="f-built" inputmode="numeric" placeholder="1998"></label>
+            <label>HVAC age<input id="f-hvac" placeholder="5 yrs"></label>
+            <label>Water heater age<input id="f-wh" placeholder="3 yrs"></label>
+          </div>
+          <label>Notes<textarea id="f-notes" rows="3" placeholder="Big backyard, needs paint…"></textarea></label>
+          <button type="button" id="btn-save" class="btn primary wide">💾 Save this house</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SAVED VIEW -->
+    <section id="view-saved" class="view">
+      <div id="saved-list"></div>
+    </section>
+  </main>
+
+  <nav class="tabbar">
+    <button data-view="view-search" class="active">🔎 Check a house</button>
+    <button data-view="view-saved">⭐ Saved <span id="saved-count"></span></button>
+  </nav>
+
+  <div id="toast" class="toast" hidden></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="geo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
