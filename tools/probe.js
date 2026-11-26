@@ -1,47 +1,43 @@
 const UA = 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1';
 async function get(label, url, opts = {}) {
   try {
-    const r = await fetch(url, { ...opts, headers: { 'User-Agent': UA, Origin: 'https://pratul48.github.io', Accept: '*/*', ...(opts.headers || {}) }, redirect: 'follow', signal: AbortSignal.timeout(25000) });
-    let t = await r.text();
-    if (opts.grep) { const re = new RegExp(opts.grep, 'gi'); const hits = []; let m; while ((m = re.exec(t)) && hits.length < 25) hits.push(t.slice(Math.max(0, m.index - 150), m.index + 250).replace(/\s+/g, ' ')); t = hits.join('\n  ~ ') || '(no grep hits) ' + t.slice(0, 400); }
-    console.log(`\n### ${label}\nHTTP ${r.status} CORS=${r.headers.get('access-control-allow-origin')} url=${r.url} len=${t.length}\n${t.slice(0, opts.max || 1500)}`);
-    try { return JSON.parse(t.replace(/^\{\}&&/, '')); } catch { return t; }
+    const r = await fetch(url, { ...opts, headers: { 'User-Agent': UA, Origin: 'https://pratul48.github.io', ...(opts.headers || {}) }, signal: AbortSignal.timeout(25000) });
+    const t = await r.text();
+    let j = null; try { j = JSON.parse(t); } catch {}
+    const show = opts.pick && j ? JSON.stringify(opts.pick(j)) : t;
+    console.log(`\n### ${label}\nHTTP ${r.status} CORS=${r.headers.get('access-control-allow-origin')} len=${t.length}\n${show.slice(0, opts.max || 1500)}`);
+    return j ?? t;
   } catch (e) { console.log(`\n### ${label}\nERROR ${e.message}`); return null; }
 }
-const O = 'https://maps.ohio.gov/arcgis/rest/services/Hosted';
+const items = j => (j.results || []).map(r => [r.title, r.owner, r.url, r.type]);
+const fieldsOf = j => (j.fields || []).map(f => f.name + ':' + (f.alias || '')).join(' | ');
+const lon = -84.31821, lat = 39.36491; // 5517 Patriot Ct, Mason (LBRS point)
+const pt = `geometry=${lon},${lat}&geometryType=esriGeometryPoint&inSR=4326&spatialRel=esriSpatialRelIntersects`;
 (async () => {
-  // a real Mason house: find one address point near downtown Mason
-  const ap = await get('LBRS address points layer', `${O}/Ohio_Statewide_LBRS_Address_Points/FeatureServer/0?f=json`, { max: 6000 });
-  const near = await get('address points near Mason', `${O}/Ohio_Statewide_LBRS_Address_Points/FeatureServer/0/query?geometry=-84.3175,39.3655&geometryType=esriGeometryPoint&inSR=4326&distance=150&units=esriSRUnit_Meter&outFields=*&outSR=4326&returnGeometry=true&resultRecordCount=5&f=json`, { max: 4000 });
-  await get('centerlines near Mason', `https://maps.ohio.gov/arcgis/rest/services/Hosted/Ohio_Statewide_LBRS_Centerlines/FeatureServer/0/query?geometry=-84.3175,39.3655&geometryType=esriGeometryPoint&inSR=4326&distance=120&units=esriSRUnit_Meter&outFields=str_name,str_type,str_pre,stype,speed,lanes,l_add_from,l_add_to,r_add_from,r_add_to&outSR=4326&returnGeometry=true&resultRecordCount=4&f=json`, { max: 3000 });
-  for (const s of ['Ohio_Day_Care_Centers', 'Ohio_Daycares_view', 'AllProviderDataProd23_view', 'AllProviderDataProdFeatures']) {
-    await get('daycare layer ' + s, `${O}/${s}/FeatureServer/0?f=json`, { max: 200, grep: '"fields":\\[|"name":"[^"]+","type":"esriField|editingInfo|lastEditDate' });
-    await get('daycare sample ' + s, `${O}/${s}/FeatureServer/0/query?geometry=-84.3175,39.3655&geometryType=esriGeometryPoint&inSR=4326&distance=4000&units=esriSRUnit_Meter&outFields=*&returnGeometry=false&resultRecordCount=3&returnCountOnly=false&f=json`, { max: 2500 });
-    await get('daycare count ' + s, `${O}/${s}/FeatureServer/0/query?geometry=-84.3175,39.3655&geometryType=esriGeometryPoint&inSR=4326&distance=4000&units=esriSRUnit_Meter&returnCountOnly=true&f=json`, { max: 200 });
-  }
-  await get('schools2526 sample', `${O}/schools2526_Geocoded/FeatureServer/0/query?geometry=-84.3175,39.3655&geometryType=esriGeometryPoint&inSR=4326&distance=5000&units=esriSRUnit_Meter&outFields=*&returnGeometry=false&resultRecordCount=3&f=json`, { max: 3000 });
-  await get('school districts', `${O}/Ohio_School_Districts_2025/FeatureServer/0/query?geometry=-84.3175,39.3655&geometryType=esriGeometryPoint&inSR=4326&outFields=*&returnGeometry=false&f=json`, { max: 1500 });
-  // Wayback imagery
-  const cfg = await get('wayback config', 'https://s3-us-west-2.amazonaws.com/config.maptiles.arcgis.com/waybackconfig.json', { max: 300 });
-  if (cfg && typeof cfg === 'object') {
-    const ids = Object.keys(cfg).map(Number).sort((a, b) => b - a);
-    console.log('releases', ids.length, JSON.stringify(cfg[ids[0]]), JSON.stringify(cfg[ids[ids.length - 1]]));
-    const z = 19, lat = 39.3655, lon = -84.3175, n = 2 ** z;
-    const x = Math.floor((lon + 180) / 360 * n), y = Math.floor((1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2 * n);
-    await get('wayback tilemap', `https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/MapServer/tilemap/${ids[0]}/${z}/${y}/${x}`, { max: 400 });
-    const r = await fetch(`https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/${ids[0]}/${z}/${y}/${x}`, { headers: { Origin: 'https://pratul48.github.io' } });
-    console.log('\n### wayback tile', r.status, r.headers.get('content-type'), 'CORS=' + r.headers.get('access-control-allow-origin'));
-    const m = cfg[ids[0]].metadataLayerUrl;
-    if (m) await get('wayback metadata', `${m}/query?geometry=${lon},${lat}&geometryType=esriGeometryPoint&inSR=4326&spatialRel=esriSpatialRelIntersects&outFields=*&returnGeometry=false&f=json`, { max: 1500 });
-    if (m) await get('wayback metadata service', `${m.replace(/\/\d+$/, '')}?f=json`, { max: 1500 });
-  }
-  // listing / auditor sources
-  const addr = '6000 Mason Montgomery Rd, Mason, OH 45040';
-  await get('redfin autocomplete', 'https://www.redfin.com/stingray/do/location-autocomplete?v=2&location=' + encodeURIComponent('4855 Wexford Way Mason OH'), { max: 1500 });
-  await get('zillow search', 'https://www.zillow.com/homes/' + encodeURIComponent('4855 Wexford Way Mason OH 45040') + '_rb/', { max: 300, grep: 'roof|captcha|px-captcha|denied' });
-  await get('realtor', 'https://www.realtor.com/api/v1/hulk_main_srp?client_id=rdc-x&schema=vesta', { max: 300 });
-  await get('wcauditor summary', 'https://www.wcauditor.org/Property_Search/summary.aspx?account_nbr=1102745', { max: 500, grep: 'roof|year built|permit|remodel' });
-  await get('warren auditor new', 'https://auditor.warrencountyohio.gov/PropertySearch/Property/Index?parcelNumber=16362870050', { max: 500, grep: 'roof|year built|permit|remodel|building' });
-  await get('census B23008', 'https://api.census.gov/data/2023/acs/acs5?get=B23008_001E,B23008_002E,B23008_004E,B23008_008E,B23008_010E,B23008_013E,B01001_003E,B01001_027E,B19013_001E&for=block%20group:*&in=state:39%20county:165%20tract:032001', { max: 800 });
-  await get('census variables B23008', 'https://api.census.gov/data/2023/acs/acs5/groups/B23008.json', { max: 200, grep: 'B23008_0\\d\\dE":\\{"label":"[^"]+' });
+  await get('site home', 'https://pratulsaini.fyi/', { max: 300 });
+  await get('site house path', 'https://pratulsaini.fyi/house/', { max: 200 });
+  await get('search USA Structures', 'https://www.arcgis.com/sharing/rest/search?f=json&num=12&q=' + encodeURIComponent('"USA Structures" owner:FEMA_GIS OR owner:fema_admin OR owner:FEMA'), { pick: items, max: 3000 });
+  await get('search USA Structures 2', 'https://www.arcgis.com/sharing/rest/search?f=json&num=12&q=' + encodeURIComponent('title:"USA Structures" type:"Feature Service"'), { pick: items, max: 3000 });
+  await get('search MS footprints', 'https://www.arcgis.com/sharing/rest/search?f=json&num=12&q=' + encodeURIComponent('Microsoft Building Footprints type:"Feature Service" owner:esri'), { pick: items, max: 3000 });
+  await get('search Warren buildings', 'https://www.arcgis.com/sharing/rest/search?f=json&num=20&bbox=-84.33,39.35,-84.30,39.38&q=' + encodeURIComponent('(building OR footprint OR structure) type:"Feature Service"'), { pick: items, max: 4000 });
+  await get('search Warren auditor', 'https://www.arcgis.com/sharing/rest/search?f=json&num=20&bbox=-84.33,39.35,-84.30,39.38&q=' + encodeURIComponent('(parcel OR auditor OR CAMA) type:"Feature Service"'), { pick: items, max: 4000 });
+  await get('search Warren mapserver', 'https://www.arcgis.com/sharing/rest/search?f=json&num=20&q=' + encodeURIComponent('Warren County Ohio type:"Map Service"'), { pick: items, max: 4000 });
+  await get('search ACS age', 'https://www.arcgis.com/sharing/rest/search?f=json&num=12&q=' + encodeURIComponent('ACS "Age and Sex" Boundaries owner:esri_demographics'), { pick: items, max: 3000 });
+  await get('search ACS parents', 'https://www.arcgis.com/sharing/rest/search?f=json&num=12&q=' + encodeURIComponent('ACS children parents labor force owner:esri_demographics'), { pick: items, max: 3000 });
+  await get('search ACS households children', 'https://www.arcgis.com/sharing/rest/search?f=json&num=12&q=' + encodeURIComponent('ACS household children under 18 owner:esri_demographics'), { pick: items, max: 3000 });
+  await get('NCES schools', `https://nces.ed.gov/opengis/rest/services/K12_School_Locations/EDGE_GEOCODE_PUBLICSCH_2324/MapServer/0/query?geometry=${lon},${lat}&geometryType=esriGeometryPoint&inSR=4326&distance=4000&units=esriSRUnit_Meter&outFields=*&returnGeometry=false&resultRecordCount=2&f=json`, { max: 1500 });
+  await get('NCES services', 'https://nces.ed.gov/opengis/rest/services/K12_School_Locations?f=json', { max: 1500 });
+  await get('schools2526 fields', 'https://maps.ohio.gov/arcgis/rest/services/Hosted/schools2526_Geocoded/FeatureServer/0?f=json', { pick: fieldsOf, max: 5000 });
+  await get('daycare program types', `https://maps.ohio.gov/arcgis/rest/services/Hosted/Ohio_Daycares_view/FeatureServer/0/query?where=1%3D1&outStatistics=${encodeURIComponent(JSON.stringify([{ statisticType: 'count', onStatisticField: 'objectid', outStatisticFieldName: 'n' }]))}&groupByFieldsForStatistics=program_type&f=json`, { pick: j => (j.features || []).map(f => f.attributes), max: 2000 });
+  await get('daycare view info', 'https://maps.ohio.gov/arcgis/rest/services/Hosted/Ohio_Daycares_view/FeatureServer/0?f=json', { pick: j => ({ fields: fieldsOf(j), edit: j.editingInfo, desc: (j.description || '').slice(0, 300) }), max: 3000 });
+  await get('daycare centers info', 'https://maps.ohio.gov/arcgis/rest/services/Hosted/Ohio_Day_Care_Centers/FeatureServer/0?f=json', { pick: j => ({ edit: j.editingInfo, desc: (j.description || '').slice(0, 300) }), max: 1000 });
+  await get('daycare near count by type', `https://maps.ohio.gov/arcgis/rest/services/Hosted/Ohio_Daycares_view/FeatureServer/0/query?${pt.replace('&spatialRel=esriSpatialRelIntersects', '')}&distance=3219&units=esriSRUnit_Meter&outStatistics=${encodeURIComponent(JSON.stringify([{ statisticType: 'count', onStatisticField: 'objectid', outStatisticFieldName: 'n' }]))}&groupByFieldsForStatistics=program_type&f=json`, { pick: j => (j.features || []).map(f => f.attributes), max: 1500 });
+  await get('LBRS AP fields', 'https://maps.ohio.gov/arcgis/rest/services/Hosted/Ohio_Statewide_LBRS_Address_Points/FeatureServer/0?f=json', { pick: j => ({ f: fieldsOf(j), max: j.maxRecordCount, desc: (j.description || '').slice(0, 600) }), max: 3000 });
+  await get('PUCO parcel geometry', `https://maps.puco.ohio.gov/arcgis/rest/services/ohio_parcels/MapServer/2/query?${pt}&outFields=PIN,COUNTY,AUD_LINK&outSR=4326&returnGeometry=true&f=json`, { max: 1500 });
+  await get('wayback meta query L0..', `https://metadata.maptiles.arcgis.com/arcgis/rest/services/World_Imagery_Metadata_2023_r08/MapServer/identify?geometry=${lon},${lat}&geometryType=esriGeometryPoint&sr=4326&layers=all&tolerance=0&mapExtent=${lon - 0.001},${lat - 0.001},${lon + 0.001},${lat + 0.001}&imageDisplay=400,400,96&returnGeometry=false&f=json`, { max: 2500 });
+  await get('wayback meta layer 6', `https://metadata.maptiles.arcgis.com/arcgis/rest/services/World_Imagery_Metadata_2023_r08/MapServer/6/query?${pt}&outFields=*&returnGeometry=false&f=json`, { max: 1500 });
+  await get('OSIP services', 'https://geo1.oit.ohio.gov/arcgis/rest/services/OSIP?f=json', { max: 1500 });
+  await get('OSIP maps.ohio', 'https://maps.ohio.gov/arcgis/rest/services/OSIP?f=json', { max: 1500 });
+  await get('Mason permit page', 'https://www.imaginemason.org/services/engineering-building-planning/building-documents/', { max: 300 });
+  await get('census key check', 'https://api.census.gov/data/2023/acs/acs5?get=NAME&for=state:39', { max: 300 });
 })();
