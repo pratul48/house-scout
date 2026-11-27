@@ -11,7 +11,7 @@
   const fmtMi = m => { const v = miles(m); return v < 0.1 ? `${Math.round(m * 3.28084)} ft` : `${v < 10 ? v.toFixed(1) : Math.round(v)} mi`; };
   const fmtMin = s => s < 3600 ? `${Math.max(1, Math.round(s / 60))} min` : `${Math.floor(s / 3600)} h ${Math.round((s % 3600) / 60)} min`;
 
-  const OVERPASS = ['https://overpass-api.de/api/interpreter', 'https://overpass.private.coffee/api/interpreter', 'https://maps.mail.ru/osm/tools/overpass/api/interpreter'];
+  const OVERPASS = ['https://overpass-api.de/api/interpreter', 'https://maps.mail.ru/osm/tools/overpass/api/interpreter'];
   const NOMINATIM = 'https://nominatim.openstreetmap.org';
   const OSRM = 'https://router.project-osrm.org';
 
@@ -38,21 +38,23 @@
   // The free Overpass servers reject (429/504) when one phone sends many queries at once,
   // so queries go through a queue (max 2 at a time) and each one retries across mirrors.
   const ovq = { active: 0, waiting: [] };
-  function overpass(query) {
-    return new Promise((resolve, reject) => { ovq.waiting.push({ query, resolve, reject }); pumpOverpass(); });
+  function overpass(query, run) {
+    return new Promise((resolve, reject) => { ovq.waiting.push({ query, run, resolve, reject }); pumpOverpass(); });
   }
   function pumpOverpass() {
     while (ovq.active < 2 && ovq.waiting.length) {
-      const job = ovq.waiting.shift(); ovq.active++;
+      const job = ovq.waiting.shift();
+      if (job.run != null && job.run !== state.runId) { job.reject(new Error('cancelled')); continue; } // user moved to another house
+      ovq.active++;
       overpassRun(job.query).then(job.resolve, job.reject).finally(() => { ovq.active--; pumpOverpass(); });
     }
   }
   async function overpassRun(query) {
     let lastErr;
-    for (let attempt = 0; attempt < 3; attempt++) {
+    for (let attempt = 0; attempt < 2; attempt++) {
       for (const url of OVERPASS) {
         try {
-          const data = await fetchJSON(url, { method: 'POST', body: 'data=' + enc(query), headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }, 45000);
+          const data = await fetchJSON(url, { method: 'POST', body: 'data=' + enc(query), headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }, 20000);
           if (data.remark && /error|timed out|out of memory/i.test(data.remark)) throw new Error('server timeout');
           return data;
         } catch (e) { lastErr = e; }
@@ -87,11 +89,41 @@
   }
 
   // ---------- search ----------
-  async function onSearch(e) {
-    e.preventDefault();
+  // Ohio addresses go to the state's LBRS locator first: it matches field-verified address points
+  // (the actual house), not an estimate along the street like general geocoders.
+  const LBRS = 'https://maps.ohio.gov/arcgis/rest/services/LBRSLocator2023/GeocodeServer';
+  let suggestTimer = null, suggestSeq = 0;
+  function onAddrInput() {
+    clearTimeout(suggestTimer);
+    const q = $('#addr').value.trim(), box = $('#suggest');
+    if (q.length < 5 || !/\d/.test(q)) { box.innerHTML = ''; return; }
+    suggestTimer = setTimeout(async () => {
+      const seq = ++suggestSeq;
+      try {
+        const j = await fetchJSON(`${LBRS}/suggest?text=${enc(q)}&maxSuggestions=5&f=json`, {}, 8000);
+        if (seq !== suggestSeq) return;
+        box.innerHTML = (j.suggestions || []).map((s, i) => `<button type="button" class="sugg" data-i="${i}">${esc(Ohio.title(s.text).replace(/, Oh,/, ', OH'))}</button>`).join('');
+        box.querySelectorAll('.sugg').forEach(b => b.onclick = () => { const s = j.suggestions[+b.dataset.i]; $('#addr').value = Ohio.title(s.text).replace(/, Oh,/, ', OH'); box.innerHTML = ''; onSearch(null, s.magicKey); });
+      } catch { box.innerHTML = ''; }
+    }, 300);
+  }
+
+  async function onSearch(e, magicKey) {
+    if (e) e.preventDefault();
+    $('#suggest').innerHTML = '';
     const q = $('#addr').value.trim(); if (!q) return;
     const box = $('#search-results'); box.innerHTML = '<div class="loading">Finding address…</div>';
     try {
+      let oh = [];
+      try { oh = await Ohio.geocode(q, magicKey); } catch { /* state locator down: fall back */ }
+      if (oh.length) {
+        const exact = oh.filter(c => c.exact);
+        const list = exact.length ? exact : oh;
+        if (list.length === 1 || list[0].score - list[1].score >= 3) { box.innerHTML = ''; return analyze(list[0]); }
+        box.innerHTML = '<p class="small muted">Which one?</p>' + list.map((r, i) => `<button class="btn wide pick" data-i="${i}">${esc(r.label)}</button>`).join('');
+        box.querySelectorAll('.pick').forEach(b => b.onclick = () => { box.innerHTML = ''; analyze(list[+b.dataset.i]); });
+        return;
+      }
       const res = await geocode(q);
       if (!res.length) { box.innerHTML = '<p class="warn">Address not found. Try adding the city and state.</p>'; return; }
       if (res.length === 1 || (res[0].importance ?? 0) - (res[1].importance ?? 0) > 0.1) { box.innerHTML = ''; return analyze(placeFromNominatim(res[0])); }
@@ -118,37 +150,78 @@
     $('#addr-title').textContent = place.label;
     $('#verdict').innerHTML = '<div class="loading">Working out which way the house faces…</div>';
     $('#facing-info').innerHTML = ''; renderDial(null);
-    ['#nearby', '#nuisances', '#property', '#roof'].forEach(s => $(s).innerHTML = '<div class="loading">Loading…</div>');
+    ['#nearby', '#nuisances', '#property', '#roof', '#daycare'].forEach(s => $(s).innerHTML = '<div class="loading">Loading…</div>');
     fillNotes(saved || findSaved(place) || {});
     renderLinks(place);
     initMap(place);
     setTimeout(() => $('#card-header').scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
 
-    // facing direction first (most important). Map-data queries are queued in this order.
-    const facingP = runFacing(place, run);
+    // Facing direction first (most important). Roof, property and daycare need the house outline/lot from it.
+    state.parcel = null; state.floodHigh = null;
+    const facingP = runFacing(place, run).catch(() => null);
     loadNuisances(place, run);
     loadNearby(place, run);
-    loadProperty(place, run);
-    loadRoof(place, run);
-    await facingP;
-    if (saved && saved.facingSource && saved.facingSource !== 'map' && run === state.runId) setFacing(saved.bearing, saved.facingSource);
+    const est = await facingP;
+    if (run !== state.runId) return;
+    if (saved && saved.facingSource && saved.facingSource !== 'map') setFacing(saved.bearing, saved.facingSource);
+    const propP = loadProperty(place, run);
+    loadRoof(place, run, est);
+    loadDaycare(place, run, est, propP);
   }
 
-  async function runFacing(point, run) {
-    const q = `[out:json][timeout:25];(way["building"](around:70,${point.lat},${point.lon});way["highway"](around:200,${point.lat},${point.lon}););out tags geom;`;
-    try {
-      const data = await overpass(q);
+  async function osmWays(point) {
+    const q = `[out:json][timeout:25];(way["building"](around:70,${point.lat},${point.lon});way["highway"](around:220,${point.lat},${point.lon}););out tags geom;`;
+    const data = await overpass(q, state.runId);
+    const ways = data.elements.filter(e => e.type === 'way');
+    return { buildings: ways.filter(w => w.tags.building), roads: ways.filter(w => w.tags.highway) };
+  }
+
+  /**
+   * Which way the house faces. In Ohio this uses official data:
+   *  the state's field-verified address point, the county lot outline, FEMA building outlines and the state street centerlines.
+   * Elsewhere (or if those fail) it uses OpenStreetMap.
+   * `tapped` = the user tapped a roof on the map: use that point and ignore the lot from the address.
+   */
+  async function runFacing(point, run, tapped) {
+    const ohio = Ohio.inOhio(point);
+    state.ohio = ohio;
+    let buildings = [], roads = [], parcel = null, srcB = 'OpenStreetMap', srcR = 'OpenStreetMap';
+    const errs = [];
+    if (ohio) {
+      const [pr, br, sr, ar] = await Promise.allSettled([Ohio.parcel(point, tapped ? null : state.place.num), Ohio.buildings(point), Ohio.streets(point), tapped ? Promise.resolve(null) : Ohio.addressPoint(point)]);
       if (run !== state.runId) return;
-      const ways = data.elements.filter(e => e.type === 'way');
-      const est = Geo.estimateFacing(point, ways.filter(w => w.tags.building), ways.filter(w => w.tags.highway), state.place.street);
-      state.estimate = est;
-      if (!est.ok) { $('#verdict').innerHTML = `<p class="warn">${esc(est.reason)} Use the compass check below.</p>`; return; }
-      setFacing(est.bearing, 'map');
-      drawEstimateOnMap(est);
-    } catch (e) {
-      if (run !== state.runId) return;
-      $('#verdict').innerHTML = `<p class="warn">Map data service is busy (${esc(e.message)}). Tap the house on the map to retry, or use the compass check below.</p>`;
+      if (ar.status === 'fulfilled' && ar.value && ar.value.subdivision) state.place.subdivision = ar.value.subdivision;
+      if (pr.status === 'fulfilled') parcel = pr.value; else errs.push('lot lines');
+      if (br.status === 'fulfilled' && br.value.length) { buildings = br.value; srcB = 'FEMA USA Structures'; }
+      if (sr.status === 'fulfilled' && sr.value.length) { roads = sr.value; srcR = 'Ohio LBRS street centerlines'; }
+      if (!tapped) state.parcel = parcel;
     }
+    if (!buildings.length || !roads.length) {
+      try {
+        const o = await osmWays(point);
+        if (run !== state.runId) return;
+        if (!buildings.length) buildings = o.buildings;
+        if (!roads.length) roads = o.roads.filter(r => r.tags.name || /residential|tertiary|secondary|primary/.test(r.tags.highway));
+      } catch (e) { errs.push('OpenStreetMap'); }
+    }
+    if (run !== state.runId) return;
+    if (!roads.length) {
+      $('#verdict').innerHTML = `<p class="warn">Couldn't load street data (${esc(errs.join(', ') || 'no data')}). Tap the house on the map to retry, or use the compass check below.</p>`;
+      return;
+    }
+    const est = Geo.estimateFacing(point, buildings, roads, state.place.street, parcel);
+    est.sources = { buildings: srcB, roads: srcR, parcel: parcel ? `${parcel.county} County parcel ${parcel.id}` : null };
+    est.allBuildings = buildings;
+    // Lot record check: the lot's own address should match the house number.
+    if (parcel && parcel.situs && state.place.num && !tapped) {
+      const n = (parcel.situs.match(/^\s*(\d+)/) || [])[1];
+      if (n && n !== String(parseInt(state.place.num, 10))) est.notes.push(`The lot under this point is recorded as "${Ohio.title(parcel.situs)}", not ${state.place.num}. Tap the correct roof on the map.`);
+    }
+    state.estimate = est;
+    if (!est.ok) { $('#verdict').innerHTML = `<p class="warn">${esc(est.reason)} Use the compass check below.</p>`; return; }
+    setFacing(est.bearing, 'map');
+    drawEstimateOnMap(est, parcel);
+    return est;
   }
 
   function setFacing(bearing, source) {
@@ -173,6 +246,9 @@
     if (source === 'map' && est && est.ok) {
       html += `<div class="small muted">Front street: ${esc(est.street)} (${Math.round(est.streetDist * 3.28)} ft from house center)</div>`;
       html += est.notes.map(n => `<p class="small warn">${esc(n)}</p>`).join('');
+      if (est.sources) html += `<details class="small muted"><summary>How this was worked out</summary>
+        <p>House outline: ${esc(est.building ? est.sources.buildings : 'not found')}. Street: ${esc(est.sources.roads)}.${est.sources.parcel ? ` Lot: ${esc(est.sources.parcel)}.` : ''}</p>
+        <p>The front of a house faces the street in its address. ${est.usedParcel ? 'The app finds where that street runs along the lot, then ' : 'The app finds the closest point on that street, then '}uses the wall of the house that faces it${est.wallDiff != null ? ` (wall is ${Math.round(est.wallDiff)}° off square to the street)` : ''}.</p></details>`;
     }
     if (source !== 'map' && est && est.ok) {
       const m = Geo.classify(est.bearing);
@@ -206,28 +282,37 @@
   function initMap(place) {
     if (typeof L === 'undefined') { $('#map').innerHTML = '<p class="warn">Map library failed to load.</p>'; return; }
     if (!state.map) {
-      const street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© OpenStreetMap' });
-      const sat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom: 19, attribution: 'Imagery © Esri' });
-      state.map = L.map('map', { layers: [sat], zoomControl: true });
-      L.control.layers({ Satellite: sat, Street: street }, null, { position: 'topright' }).addTo(state.map);
+      const street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 21, maxNativeZoom: 19, attribution: '© OpenStreetMap' });
+      const sat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom: 21, maxNativeZoom: 19, attribution: 'Imagery © Esri' });
+      // Ohio Statewide Imagery Program: 3–6 inch aerial photos, 2023–2025 around Mason. Much sharper than satellite.
+      const ohio = L.tileLayer('https://maps.ohio.gov/image/rest/services/osip_most_current_cache/MapServer/tile/{z}/{y}/{x}', { maxZoom: 21, maxNativeZoom: 20, minZoom: 6, attribution: 'Imagery © State of Ohio OSIP' });
+      state.baseLayers = { sat, ohio, street };
+      state.map = L.map('map', { layers: [Ohio.inOhio(place) ? ohio : sat], zoomControl: true, maxZoom: 21 });
+      L.control.layers({ 'Ohio aerial (newest)': ohio, 'Satellite': sat, 'Street map': street }, null, { position: 'topright' }).addTo(state.map);
       state.map.on('click', ev => {
         const p = { ...state.place, lat: ev.latlng.lat, lon: ev.latlng.lng };
         state.place = p;
         $('#verdict').innerHTML = '<div class="loading">Re-checking this building…</div>';
         if (state.layers.marker) state.layers.marker.setLatLng(ev.latlng);
-        runFacing(p, state.runId);
+        runFacing(p, state.runId, true).then(est => { if (est && est.ok) loadRoof(p, state.runId, est); });
       });
+    } else {
+      // switch the default photo layer when moving between Ohio and elsewhere
+      const want = Ohio.inOhio(place) ? state.baseLayers.ohio : state.baseLayers.sat;
+      Object.values(state.baseLayers).forEach(l => { if (l !== want && state.map.hasLayer(l)) state.map.removeLayer(l); });
+      if (!state.map.hasLayer(want)) want.addTo(state.map);
     }
     Object.values(state.layers).forEach(l => l && state.map.removeLayer(l)); state.layers = {};
     state.layers.marker = L.marker([place.lat, place.lon]).addTo(state.map);
-    state.map.setView([place.lat, place.lon], 19);
+    state.map.setView([place.lat, place.lon], 20);
     setTimeout(() => state.map.invalidateSize(), 100);
   }
 
-  function drawEstimateOnMap(est) {
+  function drawEstimateOnMap(est, parcel) {
     if (!state.map) return;
-    ['building', 'road'].forEach(k => { if (state.layers[k]) { state.map.removeLayer(state.layers[k]); delete state.layers[k]; } });
-    if (est.building) state.layers.building = L.polygon(est.building.geometry.map(g => [g.lat, g.lon]), { color: '#facc15', weight: 3, fillOpacity: 0.15 }).addTo(state.map);
+    ['building', 'road', 'parcel'].forEach(k => { if (state.layers[k]) { state.map.removeLayer(state.layers[k]); delete state.layers[k]; } });
+    if (parcel) state.layers.parcel = L.polygon(parcel.geometry.map(g => [g.lat, g.lon]), { color: '#f472b6', weight: 2, dashArray: '5 4', fill: false, interactive: false }).addTo(state.map).bindTooltip('Lot line');
+    if (est.building) state.layers.building = L.polygon(est.building.geometry.map(g => [g.lat, g.lon]), { color: '#facc15', weight: 3, fillOpacity: 0.12, interactive: false }).addTo(state.map);
     state.layers.road = L.circleMarker([est.roadPoint.lat, est.roadPoint.lon], { radius: 5, color: '#38bdf8' }).addTo(state.map).bindTooltip(est.street);
   }
 
@@ -324,7 +409,7 @@
     const vb = [p.lon - d / Math.cos(p.lat * Math.PI / 180), p.lat + d, p.lon + d / Math.cos(p.lat * Math.PI / 180), p.lat - d].map(v => v.toFixed(5)).join(',');
     const r = await nominatimQueued(`${NOMINATIM}/search?format=jsonv2&limit=20&bounded=1&viewbox=${vb}&q=${enc(term)}`);
     const seen = [];
-    return r.map(x => ({ name: x.name || x.display_name.split(',')[0], addr: x.display_name.split(',').slice(1, 3).join(',').trim(), lat: +x.lat, lon: +x.lon, dist: Geo.haversine(p, { lat: +x.lat, lon: +x.lon }) }))
+    return r.map(x => ({ category: x.category, type: x.type, name: x.name || x.display_name.split(',')[0], addr: x.display_name.split(',').slice(1, 3).join(',').trim(), lat: +x.lat, lon: +x.lon, dist: Geo.haversine(p, { lat: +x.lat, lon: +x.lon }) }))
       .sort((a, b) => a.dist - b.dist)
       .filter(x => { if (seen.some(s => Geo.haversine(s, x) < 150)) return false; seen.push(x); return true; });
   }
@@ -372,7 +457,25 @@
     };
     const failed = [];
     const customP = loadCustom(p, run, customTerms());
-    await Promise.all(groups.map(g => overpass(catQuery(g, p)).then(d => collect(d, g)).catch(() => failed.push(...g.map(c => c.key)))));
+    await Promise.all(groups.map(g => overpass(catQuery(g, p), run).then(d => collect(d, g)).catch(() => failed.push(...g.map(c => c.key)))));
+    // Backup when the OpenStreetMap query servers are overloaded: name/category search through Nominatim.
+    const FALLBACK = { costco: [['Costco Wholesale', x => /costco/i.test(x.name) && !/gas|fuel/i.test(x.name + x.type)]],
+      indian: [['Patel Brothers', x => x.category === 'shop'], ['India grocery', x => x.category === 'shop'], ['Indian market', x => x.category === 'shop'], ['Indian grocery store', x => x.category === 'shop']],
+      temple: [['Hindu temple', x => /temple|mandir|hindu/i.test(x.name)]], indianfood: [['Indian restaurant', x => /restaurant|fast_food/.test(x.type)]],
+      grocery: [['supermarket', x => x.type === 'supermarket']], hospital: [['hospital', x => x.type === 'hospital']], urgent: [['urgent care', () => true]],
+      pharmacy: [['pharmacy', x => x.type === 'pharmacy' || x.type === 'chemist']], school: [['school', x => x.type === 'school']], park: [['park', x => x.type === 'park' || x.type === 'playground']],
+      library: [['library', x => x.type === 'library']], gym: [['fitness centre', () => true]], fuel: [['gas station', x => x.type === 'fuel']], fire: [['fire station', x => x.type === 'fire_station']], police: [['police', x => x.type === 'police']] };
+    const todoFb = [...new Set([...failed.filter(k => FALLBACK[k]), 'indian'])];
+    await Promise.all(todoFb.map(async k => {
+      const c = CATS.find(x => x.key === k);
+      for (const [term, ok] of FALLBACK[k]) {
+        try {
+          const list = (await searchCustom(term, p)).filter(ok).filter(x => x.dist <= c.r);
+          if (list.length) { (results[k] ||= []).push(...list.map(x => ({ name: x.name, lat: x.lat, lon: x.lon, dist: x.dist }))); }
+        } catch { }
+      }
+      if (results[k] && results[k].length && failed.includes(k)) failed.splice(failed.indexOf(k), 1);
+    }));
     await customP;
     if (run !== state.runId) return;
     for (const k in results) {
@@ -458,7 +561,7 @@
     );out tags bb;`;
     const box = $('#nuisances');
     try {
-      const results = await Promise.allSettled([overpass(qLines), overpass(qAreas)]);
+      const results = await Promise.allSettled([overpass(qLines, run), overpass(qAreas, run)]);
       if (run !== state.runId) return;
       if (results.every(r => r.status === 'rejected')) throw results[0].reason;
       const elements = results.flatMap(r => r.status === 'fulfilled' ? r.value.elements : []);
@@ -500,10 +603,33 @@
   }
 
   // ---------- property facts ----------
+  const auditorLink = parcel => {
+    if (!parcel || !parcel.auditorUrl) return null;
+    if (/account_nbr=$/.test(parcel.auditorUrl)) return null; // Warren records missing the account number
+    return parcel.auditorUrl.replace(/^http:\/\/wedge1\.hcauditor\.org/, 'https://wedge1.hcauditor.org');
+  };
+  function auditorSearch(p, parcel) {
+    const c = (parcel && parcel.county) || (p.county || '').replace(/ County$/i, '');
+    if (/warren/i.test(c)) return 'https://auditor.warrencountyohio.gov/PropertySearch';
+    if (/butler/i.test(c)) return 'https://propertysearch.bcohio.gov/search/commonsearch.aspx?mode=address';
+    if (/hamilton/i.test(c)) return 'https://wedge1.hcauditor.org/';
+    return `https://www.google.com/search?q=${enc(`${c} County ${p.st || ''} auditor property search`)}`;
+  }
+
   async function loadProperty(p, run) {
     const rows = [];
     const put = () => { if (run === state.runId) $('#property').innerHTML = rows.map(([k, v]) => `<div class="kv"><span>${k}</span><span>${v}</span></div>`).join(''); };
-    rows.push(['County', esc(p.county || '—')]);
+    const parcel = state.parcel, est = state.estimate;
+    rows.push(['County', esc(parcel ? parcel.county + ' County' : (p.county || '—'))]);
+    if (parcel) {
+      rows.push(['Parcel ID', esc(parcel.id)]);
+      if (parcel.use) rows.push(['Land use', esc(parcel.use.replace(/^\d+:\s*/, ''))]);
+      rows.push(['Lot size', `${(parcel.areaM2 / 4046.86).toFixed(2)} acres (${Math.round(parcel.areaM2 * 10.7639).toLocaleString()} sq ft)`]);
+      const link = auditorLink(parcel) || auditorSearch(p, parcel);
+      rows.push(['Year built, sales, taxes', `<a href="${esc(link)}" target="_blank" rel="noopener">County auditor record →</a>`]);
+    }
+    if (est && est.building && est.building.tags && est.building.tags.sqft) rows.push(['House footprint', `${Math.round(est.building.tags.sqft).toLocaleString()} sq ft on the ground (not living area)`]);
+    if (p.subdivision) rows.push(['Subdivision', `${esc(p.subdivision)}<br><span class="small muted">Likely has an HOA. Ask for the covenants.</span>`]);
     put();
     const tasks = [
       fetchJSON(`https://api.open-meteo.com/v1/elevation?latitude=${p.lat}&longitude=${p.lon}`).then(r => {
@@ -511,154 +637,116 @@
       }).catch(() => {}),
       (p.country === 'us' || !p.country) ? fetchJSON(`https://hazards.fema.gov/arcgis/rest/services/public/NFHL/MapServer/28/query?geometry=${p.lon},${p.lat}&geometryType=esriGeometryPoint&inSR=4326&spatialRel=esriSpatialRelIntersects&outFields=FLD_ZONE,ZONE_SUBTY,SFHA_TF&returnGeometry=false&f=json`, {}, 20000).then(r => {
         const f = r.features && r.features[0] && r.features[0].attributes;
-        if (!f) { rows.push(['Flood zone', 'No FEMA flood map data here']); return; }
-        const high = f.SFHA_TF === 'T';
+        if (!f) { rows.push(['Flood zone', 'No FEMA flood map data here']); state.floodHigh = false; return; }
+        const high = f.SFHA_TF === 'T'; state.floodHigh = high;
         rows.push(['Flood zone', `<b class="${high ? 'bad-t' : 'good-t'}">${esc(f.FLD_ZONE)}</b> ${high ? '– HIGH risk, flood insurance likely required' : '– not high-risk'}${f.ZONE_SUBTY ? `<br><span class="small muted">${esc(f.ZONE_SUBTY.toLowerCase())}</span>` : ''}`]);
-      }).catch(() => rows.push(['Flood zone', `<a href="https://msc.fema.gov/portal/search?AddressQuery=${enc(p.label)}" target="_blank" rel="noopener">Check on FEMA →</a>`])) : Promise.resolve()
+      }).catch(() => rows.push(['Flood zone', `<a href="https://msc.fema.gov/portal/search?AddressQuery=${enc(p.label)}" target="_blank" rel="noopener">Check on FEMA →</a>`])) : Promise.resolve(),
+      state.ohio ? Ohio.schoolDistrict(p).then(d => {
+        if (d) { state.district = d; rows.push(['School district', `${esc(d.name)}<br><a class="small" href="https://reportcard.education.ohio.gov/district/overview/${esc(d.irn)}" target="_blank" rel="noopener">Ohio report card →</a>`]); }
+      }).catch(() => {}) : Promise.resolve()
     ];
     await Promise.all(tasks);
-    // OSM building details (if mapped)
-    const b = state.estimate && state.estimate.building && state.estimate.building.tags;
+    const b = est && est.building && est.building.tags;
     if (b) {
       if (b['building:levels']) rows.push(['Stories (OSM)', esc(b['building:levels'])]);
       if (b.start_date) rows.push(['Built (OSM)', esc(b.start_date)]);
-      if (b['roof:shape']) rows.push(['Roof shape (OSM)', esc(b['roof:shape'])]);
-      if (b['roof:material']) rows.push(['Roof material (OSM)', esc(b['roof:material'])]);
     }
     put();
   }
 
-  // ---------- roof age: search public building-permit records ----------
-  // Many cities and counties publish permits as open data on Socrata or ArcGIS. Both allow
-  // browser requests, so the app can search them directly for permits at this address.
-  const ROOF_RE = /re-?roof|shingle|tear[- ]?off|\broof(ing)?\b/i;
-  const NOT_ROOF_RE = /solar|photovoltaic|\bpv\b|roof ?top unit|\brtu\b|antenna|cell tower/i;
-  const DIRWORDS = new Set(['n', 's', 'e', 'w', 'ne', 'nw', 'se', 'sw', 'north', 'south', 'east', 'west', 'northeast', 'northwest', 'southeast', 'southwest']);
-  const U = v => String(v ?? '').toUpperCase();
-
-  function addrParts(p) {
-    const num = (p.num || (p.label.match(/^\s*(\d+[A-Za-z]?)\s/) || [])[1] || '').toUpperCase();
-    const words = (p.street || '').split(/\s+/).filter(w => w && !DIRWORDS.has(w.toLowerCase()));
-    return { num, core: U(words[0] || '').replace(/'/g, '') };
-  }
-
-  function rowToPermit(row, dateFields, source) {
-    const flat = Object.entries(row).map(([k, v]) => [k, v && typeof v === 'object' ? JSON.stringify(v) : String(v ?? '')]);
-    const text = flat.map(([, v]) => v).join(' | ');
-    const descKeys = flat.filter(([k, v]) => /desc|work|scope|type|purpose|class|comment|subtype/i.test(k) && v && !/^\d+(\.\d+)?$/.test(v) && v.length < 400);
-    const desc = [...new Set(descKeys.map(([, v]) => v.trim()))].join(' · ').slice(0, 200);
-    let date = null;
-    const pick = re => dateFields.filter(k => re.test(k)).map(k => row[k]).find(v => v != null && v !== '');
-    const raw = pick(/issue/i) ?? pick(/appl|file|submit|open/i) ?? pick(/final|complete|close/i) ?? dateFields.map(k => row[k]).find(v => v != null && v !== '');
-    if (raw != null) { const d = new Date(typeof raw === 'number' ? raw : String(raw)); if (!isNaN(d)) date = d; }
-    const roof = ROOF_RE.test(text) && !NOT_ROOF_RE.test(desc || text);
-    return { date, desc: desc || '(no description)', roof, source };
-  }
-
-  async function socrataPermits(p, parts, onSource) {
-    const placeNames = [p.city, (p.county || '').replace(/ county$/i, '')].filter(Boolean).map(s => s.toLowerCase());
-    if (!placeNames.length) return [];
-    const cat = await fetchJSON(`https://api.us.socrata.com/api/catalog/v1?only=dataset&limit=30&q=${enc('building permits ' + (p.city || p.county))}`, {}, 15000);
-    const sets = (cat.results || []).filter(r => {
-      const hay = `${r.resource.name} ${r.resource.description || ''} ${r.metadata.domain} ${JSON.stringify(r.classification?.domain_metadata || [])}`.toLowerCase().replace(/[^a-z ]/g, '');
-      return /permit/i.test(r.resource.name) && !/solar|right of way|sign|film|event|tree|food|alcohol|parking/i.test(r.resource.name)
-        && placeNames.some(n => hay.includes(n) || hay.replace(/ /g, '').includes(n.replace(/[^a-z]/g, '')));
-    }).slice(0, 4);
-    const out = [];
-    await Promise.all(sets.map(async s => {
-      const src = `${s.resource.name} (${s.metadata.domain})`;
-      try {
-        const rows = await fetchJSON(`https://${s.metadata.domain}/resource/${s.resource.id}.json?$limit=300&$q=${enc(parts.num + ' ' + parts.core)}`, {}, 20000);
-        onSource(src);
-        const dateFields = (s.resource.columns_datatype || []).map((t, i) => /date|calendar/i.test(t) ? s.resource.columns_field_name[i] : null).filter(Boolean);
-        for (const row of rows) {
-          const vals = Object.values(row).map(v => U(v && typeof v === 'object' ? JSON.stringify(v) : v));
-          const hit = vals.some(v => (v.startsWith(parts.num + ' ') || v.includes(`"${parts.num} `)) && v.includes(parts.core)) ||
-            (vals.some(v => v.trim() === parts.num) && vals.some(v => v.includes(parts.core)));
-          if (hit) out.push(rowToPermit(row, dateFields.length ? dateFields : Object.keys(row).filter(k => /date/i.test(k)), src));
-        }
-      } catch { /* this dataset failed; others may still work */ }
-    }));
-    return out;
-  }
-
-  async function arcgisPermits(p, parts, onSource) {
-    const d = 0.002, bbox = [p.lon - d, p.lat - d, p.lon + d, p.lat + d].join(',');
-    const s = await fetchJSON(`https://www.arcgis.com/sharing/rest/search?f=json&num=40&sortField=numViews&sortOrder=desc&bbox=${bbox}&q=${enc('permit type:"Feature Service"')}`, {}, 15000);
-    const items = (s.results || []).filter(r => r.url && /permit/i.test(r.title) && !/solar|right.of.way|\brow\b|sign|film|event|tree|food|alcohol|parking|street use|encroach|well|septic|oil|gas well/i.test(r.title)).slice(0, 4);
-    const out = [];
-    const sqlEsc = v => v.replace(/'/g, "''");
-    await Promise.all(items.map(async it => {
-      try {
-        let layers = [];
-        if (/\/\d+\/?$/.test(it.url)) layers = [it.url.replace(/\/$/, '')];
-        else {
-          const svc = await fetchJSON(`${it.url}?f=json`, {}, 15000);
-          const ls = [...(svc.layers || []), ...(svc.tables || [])];
-          const pref = ls.filter(l => /permit/i.test(l.name));
-          layers = (pref.length ? pref : ls).slice(0, 2).map(l => `${it.url.replace(/\/$/, '')}/${l.id}`);
-        }
-        for (const lu of layers) {
-          const info = await fetchJSON(`${lu}?f=json`, {}, 15000);
-          const fields = info.fields || [];
-          const addrF = fields.filter(f => f.type === 'esriFieldTypeString' && /addr|location|site|full_?add|street/i.test(f.name) && !/city|zip|state|unit|apt|parcel|owner|contractor|mail|applicant|name$/i.test(f.name))
-            .sort((a, b) => (/addr/i.test(b.name) ? 1 : 0) - (/addr/i.test(a.name) ? 1 : 0))[0];
-          if (!addrF) continue;
-          const where = `UPPER(${addrF.name}) LIKE '${sqlEsc(parts.num)} %' AND UPPER(${addrF.name}) LIKE '%${sqlEsc(parts.core)}%'`;
-          const r = await fetchJSON(`${lu}/query?f=json&outFields=*&returnGeometry=false&where=${enc(where)}`, {}, 20000);
-          const src = `${it.title} (${it.owner})`;
-          onSource(src);
-          const dateFields = fields.filter(f => f.type === 'esriFieldTypeDate').map(f => f.name);
-          for (const f of r.features || []) out.push(rowToPermit(f.attributes, dateFields, src));
-        }
-      } catch { /* skip broken services */ }
-    }));
-    return out;
-  }
-
-  async function loadRoof(p, run) {
+  // ---------- roof age ----------
+  async function loadRoof(p, run, est) {
     const box = $('#roof');
-    const parts = addrParts(p);
     const g = q => `https://www.google.com/search?q=${enc(q)}`;
-    const links = `<div class="roof"><p class="small"><b>Also check the listing.</b> Zillow and Redfin block other apps from reading their pages, so open the listing and search the page for “roof”:</p>
-      <div class="small">
-        <a class="link" href="https://www.zillow.com/homes/${enc(p.label)}_rb/" target="_blank" rel="noopener">🏡 Zillow listing for this address</a>
-        <a class="link" href="${g(`redfin ${p.label}`)}" target="_blank" rel="noopener">🏡 Redfin listing</a>
-        <a class="link" href="${g(`"${p.num ? p.num + ' ' : ''}${p.street}" ${p.city} roof`)}" target="_blank" rel="noopener">🔎 Google: this address + “roof”</a>
-        <a class="link" href="${g(`buildzoom ${p.label}`)}" target="_blank" rel="noopener">🧾 BuildZoom permit history</a>
-        <a class="link" href="${g(`${p.city || p.county} ${p.st} building permit search by address`)}" target="_blank" rel="noopener">🏛️ City permit search website</a>
-      </div><p class="small muted">The seller's disclosure and your home inspector are the final word on roof age.</p></div>`;
-    if (!parts.num || !parts.core) {
-      box.innerHTML = `<p class="small muted">Need a full street address (with house number) to search permit records.</p>${links}`;
+    const parcel = state.parcel;
+    const ohioNote = state.ohio ? `<p class="small"><b>Why there's no permit date:</b> In Mason, Warren County and most of Ohio, replacing shingles doesn't need a building permit, so no public record of roof dates exists. The app reads the roof's history from dated aerial photos instead.</p>` : '';
+    const links = `<div class="roof"><b>Confirm the exact year</b>
+      <ol class="small">
+        <li>Ask the listing agent for the <b>roofer's invoice or shingle warranty</b>. Warranties are registered with the shingle maker and show the install date.</li>
+        <li><a href="${g(`"${p.num ? p.num + ' ' : ''}${p.street}" ${p.city} roof`)}" target="_blank" rel="noopener">Search the listing text for “roof”</a>, or open <a href="https://www.zillow.com/homes/${enc(p.label)}_rb/" target="_blank" rel="noopener">Zillow</a> / <a href="${g(`redfin ${p.label}`)}" target="_blank" rel="noopener">Redfin</a>. Listings often say “new roof 2021”. (These sites block other apps from reading them.)</li>
+        <li><a href="https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${p.lat},${p.lon}" target="_blank" rel="noopener">Street View</a>: in the Google Maps app tap the photo date to step back through older years and look at the shingles.</li>
+        ${parcel ? `<li><a href="${esc(auditorLink(parcel) || auditorSearch(p, parcel))}" target="_blank" rel="noopener">County auditor record</a>: year built. If no change shows in the photos, the roof may date from then.</li>` : ''}
+        <li>Your home inspector will estimate remaining roof life.</li>
+      </ol></div>`;
+    if (!est || !est.ok || !est.building) {
+      box.innerHTML = `${ohioNote}<p class="warn small">No house outline found, so the photo comparison can't run. Tap the house's roof on the map to try again.</p>${links}`;
       return;
     }
-    const sources = new Set();
-    const progress = () => { if (run === state.runId) box.innerHTML = `<div class="loading">Searching public permit records${sources.size ? ` (${sources.size} source${sources.size > 1 ? 's' : ''} checked)` : ''}…</div>`; };
-    progress();
-    const onSource = s => { sources.add(s); progress(); };
-    const res = await Promise.allSettled([socrataPermits(p, parts, onSource), arcgisPermits(p, parts, onSource)]);
-    if (run !== state.runId) return;
-    const seen = new Set();
-    const permits = res.flatMap(r => r.status === 'fulfilled' ? r.value : [])
-      .filter(x => { const k = (x.date ? x.date.toISOString().slice(0, 10) : '') + x.desc; if (seen.has(k)) return false; seen.add(k); return true; })
-      .sort((a, b) => (b.date || 0) - (a.date || 0));
-    const roofs = permits.filter(x => x.roof);
-    const fmtD = d => d ? d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) : 'date unknown';
-    const row = x => `<div class="permit"><b>${fmtD(x.date)}</b> – ${esc(x.desc)}<div class="small muted">${esc(x.source)}</div></div>`;
-    let html = '';
-    if (roofs.length) {
-      const y = roofs.find(x => x.date)?.date.getFullYear();
-      html += `<p class="good-t"><b>✔ Roof permit found${y ? `: ${y} (${new Date().getFullYear() - y} years ago)` : ''}</b></p>${roofs.slice(0, 4).map(row).join('')}`;
-      if (y && !$('#f-roof').value) { $('#f-roof').value = String(y); }
-    } else if (sources.size) {
-      html += `<p><b>No roof permit on file.</b> <span class="small">Checked ${sources.size} public permit source${sources.size > 1 ? 's' : ''}${permits.length ? `, found ${permits.length} other permit${permits.length > 1 ? 's' : ''} at this address` : ' and found no permits at this address'}. The roof may be original, done before records went online, or done without a permit.</span></p>`;
-    } else {
-      html += `<p class="small"><b>This city or county doesn't publish permits in a form the app can search</b>${res.every(r => r.status === 'rejected') ? ' (or the permit search services didn’t respond)' : ''}. Use the links below.</p>`;
+    box.innerHTML = `${ohioNote}<div class="loading" id="roof-status">Finding dated aerial photos…</div>`;
+    const house = est.building;
+    const P = Geo.projector(est.origin);
+    const neighbours = (est.allBuildings || []).filter(b => b.id !== house.id && b.geometry && b.geometry.length > 3)
+      .filter(b => { const a = Geo.areaM2(b.geometry); return a > 60 && a < 900; })
+      .map(b => ({ b, d: Math.hypot(...Object.values(P.fwd(b.geometry[0]))) })).sort((a, b) => a.d - b.d).map(x => x.b);
+    let res;
+    try {
+      res = await Roof.history(house, neighbours, { ohio: state.ohio, county: parcel ? parcel.county : p.county }, t => { if (run === state.runId && $('#roof-status')) $('#roof-status').textContent = t; });
+    } catch (e) {
+      if (run !== state.runId) return;
+      box.innerHTML = `${ohioNote}<p class="warn small">Couldn't load the aerial photos (${esc(e.message)}).</p>${links}`;
+      return;
     }
-    const others = permits.filter(x => !x.roof);
-    if (others.length) html += `<details class="howto"><summary>Other permits at this address (${others.length}) – HVAC, water heater, remodels…</summary>${others.slice(0, 15).map(row).join('')}</details>`;
-    if (sources.size) html += `<details class="howto"><summary class="small">Sources searched</summary><ul class="small">${[...sources].map(s => `<li>${esc(s)}</li>`).join('')}</ul></details>`;
+    if (run !== state.runId) return;
+    const s = res.summary;
+    const cls = s.level === 'likely' ? 'good-t' : s.level === 'possible' ? 'warn' : '';
+    let html = `${ohioNote}<p class="${cls}"><b>${esc(s.headline)}</b></p>${s.detail ? `<p class="small">${esc(s.detail)}</p>` : ''}`;
+    if (s.level === 'likely' && s.to && !$('#f-roof').value) $('#f-roof').value = `${s.from.getFullYear()}–${s.to.getFullYear()} (photos)`;
+    if (res.photos.length) {
+      html += `<p class="small muted">${res.photos.length} dated photos of this roof (yellow outline; red = where the change was seen). Tap one to enlarge.</p><div class="roof-strip">` +
+        res.photos.map((ph, i) => `<figure class="${ph.flag ? 'flag' : ''}${ph.hidden ? ' hid' : ''}"><img src="${ph.thumb}" alt="Roof ${esc(ph.cap.date.getFullYear())}" data-i="${i}"><figcaption>${esc(ph.cap.date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' }))}<br><span>${esc(ph.cap.label)}</span>${ph.hidden ? '<br><span>roof hidden</span>' : ''}</figcaption></figure>`).join('') + '</div>';
+    }
     box.innerHTML = html + links;
+    box.querySelectorAll('.roof-strip img').forEach(im => im.onclick = () => im.closest('figure').classList.toggle('big'));
+  }
+
+  // ---------- home daycare ----------
+  async function nearestRamp(p) {
+    const d = await overpass(`[out:json][timeout:20];node["highway"="motorway_junction"](around:20000,${p.lat},${p.lon});out;`, state.runId);
+    const list = (d.elements || []).map(e => ({ name: e.tags.name || (e.tags.ref ? `Exit ${e.tags.ref}` : 'Highway ramp'), lat: e.lat, lon: e.lon, dist: Geo.haversine(p, e) })).sort((a, b) => a.dist - b.dist);
+    return list[0] || null;
+  }
+  async function driveTimes(p, targets) {
+    const coords = [p, ...targets].map(x => `${(+x.lon).toFixed(6)},${(+x.lat).toFixed(6)}`).join(';');
+    const r = await fetchJSON(`${OSRM}/table/v1/driving/${coords}?sources=0&annotations=duration`, {}, 20000);
+    if (r.code !== 'Ok') throw new Error('routing failed');
+    return targets.map((_, i) => r.durations[0][i + 1]);
+  }
+
+  async function loadDaycare(p, run, est, propP) {
+    const box = $('#daycare');
+    if (!state.ohio) { box.innerHTML = '<p class="small muted">The daycare check uses Ohio licensing data, so it only works for Ohio addresses.</p>'; return; }
+    box.innerHTML = '<div class="loading">Checking families, daycares and schools nearby…</div>';
+    await Promise.race([propP, sleep(8000)]);
+    // the house's own street (speed limit, lanes, court/circle) from the state centerlines
+    const street = est && est.ok ? est.streetTags || null : null;
+    let d;
+    try { d = await Daycare.analyze(p, { street, floodHigh: state.floodHigh, nearestRamp, driveTimes }); }
+    catch (e) { if (run === state.runId) box.innerHTML = `<p class="warn">Couldn't run the daycare check (${esc(e.message)}).</p>`; return; }
+    if (run !== state.runId) return;
+    const bar = v => `<span class="bar"><span style="width:${v * 5}%"></span></span>`;
+    const gcls = { Strong: 'good', Good: 'good', Fair: 'mid', Weak: 'bad' }[d.grade];
+    let html = `<div class="dc-score ${gcls}"><b>${d.pct}</b><span>/100</span><div>${d.grade} spot for a home daycare</div></div>`;
+    html += d.parts.map(x => `<div class="dc-part"><div class="dc-h"><span>${esc(x.label)}</span><span>${x.score}/20</span></div>${bar(x.score)}<p class="small">${esc(x.text)}</p></div>`).join('');
+    if (d.demo) {
+      const total = d.demo.age0to4 + d.demo.age5to9 + d.demo.age10to14 || 1;
+      const seg = (n, l, c) => `<div class="age"><span>${l}</span><span class="bar"><span style="width:${Math.round(n / total * 100)}%;background:${c}"></span></span><b>${n.toLocaleString()}</b></div>`;
+      html += `<h3>Kids within 3 miles</h3>${seg(d.demo.age0to4, 'Age 0–4', '#0f766e')}${seg(d.demo.age5to9, 'Age 5–9', '#14b8a6')}${seg(d.demo.age10to14, 'Age 10–14', '#5eead4')}
+        <p class="small muted">${d.demo.under6Working.toLocaleString()} children under 6 and ${d.demo.schoolWorking.toLocaleString()} school-age children (6–17) live with parents who all work. These families are the ones who need care. Census ACS 5-year estimates, ${d.demo.tracts} census tracts weighted by how much of each is within 3 miles.</p>`;
+    }
+    const near = d.providers.filter(x => x.dist <= 3 * 1609.344);
+    if (near.length) {
+      const by = {}; near.forEach(x => by[x.type] = (by[x.type] || 0) + 1);
+      html += `<h3>Licensed child care within 3 miles (${near.length})</h3><p class="small">${Object.entries(by).map(([k, v]) => `${esc(k)}: <b>${v}</b>`).join(' · ')}</p>
+        <details class="howto"><summary>Closest ${Math.min(12, near.length)}</summary>${near.slice(0, 12).map(x => `<div class="place"><span>${x.link ? `<a href="${esc(x.link)}" target="_blank" rel="noopener">${esc(x.name)}</a>` : esc(x.name)}<br><span class="small muted">${esc(x.type)}${x.stars && x.stars !== 'NR' ? ` · Step Up To Quality: ${esc(x.stars)}★` : ''}</span></span><span class="dist">${fmtMi(x.dist)}</span></div>`).join('')}</details>`;
+    }
+    if (d.elem.length) html += `<h3>Nearest elementary schools</h3>${d.elem.map(s => `<div class="place"><span>${esc(s.name)}<br><span class="small muted">Grades ${esc(s.lo || '?')}–${esc(s.hi || '?')}${s.students ? ` · ${s.students} students` : ''}</span></span><span class="dist">${s.driveMin != null ? `🚗 ${Math.max(1, Math.round(s.driveMin))} min` : fmtMi(s.dist)}</span></div>`).join('')}`;
+    html += `<div class="roof"><b>Ohio rules for a home daycare (Type B)</b><ul class="small">
+      <li>Up to <b>7 children</b> at one time, no more than <b>3 under age 2</b>. Your mom's own children under 6 who live there count toward the 7.</li>
+      <li>State law treats a Type B home as a residential use: it's allowed anywhere houses are allowed (Ohio Revised Code 5104.054). <b>HOA covenants are separate</b> and can still restrict a home business, so read them before buying.</li>
+      <li>Licensing is through the Ohio Department of Children and Youth, which includes a home inspection.</li></ul>
+      <p class="small"><a href="https://jfs.ohio.gov/child-care/information-for-providers/become-a-provider" target="_blank" rel="noopener">How to become a provider →</a> · <a href="https://codes.ohio.gov/ohio-revised-code/section-5104.054" target="_blank" rel="noopener">ORC 5104.054 →</a></p></div>
+      <p class="small muted">The score is a guide built from public data (Ohio child care licensing list, Census ACS, NCES schools, Ohio street data), not a guarantee of enrollment.</p>`;
+    box.innerHTML = html;
   }
 
   // ---------- links ----------
@@ -741,6 +829,7 @@
   // ---------- init ----------
   function init() {
     $('#search-form').addEventListener('submit', onSearch);
+    $('#addr').addEventListener('input', onAddrInput);
     $('#btn-gps').onclick = onGPS;
     $('#btn-compass').onclick = startCompass;
     $('#btn-lock').onclick = lockCompass;

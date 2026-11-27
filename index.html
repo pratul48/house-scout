@@ -28,6 +28,7 @@
           <input id="addr" type="search" placeholder="123 Main St, Dallas, TX" autocomplete="street-address" required>
           <button type="submit" class="btn primary">Go</button>
         </div>
+        <div id="suggest" class="suggest"></div>
         <button type="button" id="btn-gps" class="btn wide">📍 I'm at the house – use my location</button>
         <div id="search-results"></div>
         <details class="howto" id="custom-box">
@@ -99,7 +100,12 @@
 
         <div class="card">
           <h2>🏚️ Roof age</h2>
-          <div id="roof"><div class="loading">Searching building permits…</div></div>
+          <div id="roof"><div class="loading">Loading…</div></div>
+        </div>
+
+        <div class="card">
+          <h2>👶 Home daycare check</h2>
+          <div id="daycare"><div class="loading">Loading…</div></div>
         </div>
 
         <div class="card">
@@ -138,6 +144,9 @@
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
   <script src="geo.js"></script>
+  <script src="ohio.js"></script>
+  <script src="roof.js"></script>
+  <script src="daycare.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
