@@ -1,0 +1,24 @@
+name: e2e
+on:
+  push:
+    branches: [live-test]
+    paths: ['tools/e2e.js', 'tools/e2e-trigger.txt']
+permissions:
+  contents: write
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: npm i --no-save playwright@1.49.1 && npx playwright install --with-deps chromium
+      - run: (python3 -m http.server 8080 >/dev/null 2>&1 &) && sleep 2
+      - run: mkdir -p tools/out && rm -f tools/out/* && node tools/e2e.js > tools/out/log.txt 2>&1 || true
+      - run: |
+          git config user.name "probe-bot"
+          git config user.email "probe-bot@users.noreply.github.com"
+          git add -f tools/out
+          git commit -m "e2e output [skip ci]" || true
+          git pull --rebase origin live-test && git push

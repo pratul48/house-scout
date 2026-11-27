@@ -2,7 +2,7 @@ name: probe
 on:
   push:
     branches: [live-test]
-    paths: ['tools/**', '.github/workflows/probe.yml']
+    paths: ['tools/probe.js']
 permissions:
   contents: write
 jobs:
