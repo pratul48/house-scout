@@ -137,13 +137,13 @@
     const box = $('#search-results'); box.innerHTML = '<div class="loading">Getting your location…</div>';
     navigator.geolocation.getCurrentPosition(async pos => {
       const { latitude: lat, longitude: lon } = pos.coords;
-      try { const r = await reverse(lat, lon); box.innerHTML = ''; const p = placeFromNominatim(r); p.lat = lat; p.lon = lon; $('#addr').value = p.label; analyze(p); }
-      catch { box.innerHTML = ''; analyze({ lat, lon, label: `${lat.toFixed(5)}, ${lon.toFixed(5)}`, street: '' }); }
+      try { const r = await reverse(lat, lon); box.innerHTML = ''; const p = placeFromNominatim(r); p.lat = lat; p.lon = lon; $('#addr').value = p.label; analyze(p, null, 'gps'); }
+      catch { box.innerHTML = ''; analyze({ lat, lon, label: `${lat.toFixed(5)}, ${lon.toFixed(5)}`, street: '' }, null, 'gps'); }
     }, err => { box.innerHTML = `<p class="warn">Couldn't get location: ${esc(err.message)}</p>`; }, { enableHighAccuracy: true, timeout: 15000 });
   }
 
   // ---------- main analysis ----------
-  async function analyze(place, saved) {
+  async function analyze(place, saved, how) {
     const run = ++state.runId;
     state.place = place; state.facing = null; state.estimate = null; state.nearby = {};
     $('#results').hidden = false;
@@ -151,19 +151,24 @@
     $('#verdict').innerHTML = '<div class="loading">Working out which way the house faces…</div>';
     $('#facing-info').innerHTML = ''; renderDial(null);
     ['#nearby', '#nuisances', '#property', '#roof', '#daycare'].forEach(s => $(s).innerHTML = '<div class="loading">Loading…</div>');
-    fillNotes(saved || findSaved(place) || {});
+    fillNotes(saved && saved.notes);
+    state.rec = null; renderHeaderTools();
+    const prev = await recordSearch(place, how).catch(() => null);
+    if (run !== state.runId) return;
+    if (!saved && prev) saved = prev;
     renderLinks(place);
     initMap(place);
     setTimeout(() => $('#card-header').scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
 
     // Facing direction first (most important). Roof, property and daycare need the house outline/lot from it.
-    state.parcel = null; state.floodHigh = null;
+    state.parcel = null; state.floodHigh = null; state.floodZone = null; state.district = null;
     const facingP = runFacing(place, run).catch(() => null);
     loadNuisances(place, run);
     loadNearby(place, run);
     const est = await facingP;
     if (run !== state.runId) return;
-    if (saved && saved.facingSource && saved.facingSource !== 'map') setFacing(saved.bearing, saved.facingSource);
+    // keep a compass reading or manual choice made on an earlier visit
+    if (saved && saved.facing && saved.facing.source && saved.facing.source !== 'map') setFacing(saved.facing.bearing, saved.facing.source);
     const propP = loadProperty(place, run);
     loadRoof(place, run, est);
     loadDaycare(place, run, est, propP);
@@ -258,6 +263,7 @@
     const r = $('#reset-map'); if (r) r.onclick = ev => { ev.preventDefault(); setFacing(est.bearing, 'map'); };
     renderDial(c.bearing);
     drawArrow();
+    record({ facing: { bearing: c.bearing, dir: c.dir, name: c.name, avoid: c.avoid, source, confidence: conf, street: est && est.ok ? est.street : null } });
   }
 
   // ---------- dial ----------
@@ -485,7 +491,14 @@
     state.nearby = results; state.nearbyFailed = new Set(failed); state.nearbyDone = true;
     state.myPlaces = store.get('places', []).filter(x => x.lat).map(x => ({ ...x }));
     renderNearby(p);
+    recordNearby(run);
     await addDriveTimes(p, run);
+  }
+
+  function recordNearby(run) {
+    const one = k => { const x = (state.nearby[k] || [])[0]; return x ? { name: x.name, dist: Math.round(x.dist), driveS: x.drive && x.drive.s != null ? Math.round(x.drive.s) : null } : null; };
+    const out = {}; ['costco', 'indian', 'temple', 'indianfood', 'grocery', 'hospital', 'school'].forEach(k => out[k] = one(k));
+    record({ nearby: out }, run);
   }
 
   async function addDriveTimes(p, run) {
@@ -501,6 +514,7 @@
       if (run !== state.runId || r.code !== 'Ok') return;
       todo.forEach((t, i) => { t.drive = { s: r.durations[0][i + 1], m: r.distances[0][i + 1] }; });
       renderNearby(p);
+      recordNearby(run);
     } catch { /* straight-line distances already shown */ }
   }
 
@@ -638,7 +652,7 @@
       (p.country === 'us' || !p.country) ? fetchJSON(`https://hazards.fema.gov/arcgis/rest/services/public/NFHL/MapServer/28/query?geometry=${p.lon},${p.lat}&geometryType=esriGeometryPoint&inSR=4326&spatialRel=esriSpatialRelIntersects&outFields=FLD_ZONE,ZONE_SUBTY,SFHA_TF&returnGeometry=false&f=json`, {}, 20000).then(r => {
         const f = r.features && r.features[0] && r.features[0].attributes;
         if (!f) { rows.push(['Flood zone', 'No FEMA flood map data here']); state.floodHigh = false; return; }
-        const high = f.SFHA_TF === 'T'; state.floodHigh = high;
+        const high = f.SFHA_TF === 'T'; state.floodHigh = high; state.floodZone = f.FLD_ZONE + (high ? ' (high risk)' : '');
         rows.push(['Flood zone', `<b class="${high ? 'bad-t' : 'good-t'}">${esc(f.FLD_ZONE)}</b> ${high ? '– HIGH risk, flood insurance likely required' : '– not high-risk'}${f.ZONE_SUBTY ? `<br><span class="small muted">${esc(f.ZONE_SUBTY.toLowerCase())}</span>` : ''}`]);
       }).catch(() => rows.push(['Flood zone', `<a href="https://msc.fema.gov/portal/search?AddressQuery=${enc(p.label)}" target="_blank" rel="noopener">Check on FEMA →</a>`])) : Promise.resolve(),
       state.ohio ? Ohio.schoolDistrict(p).then(d => {
@@ -646,6 +660,7 @@
       }).catch(() => {}) : Promise.resolve()
     ];
     await Promise.all(tasks);
+    record({ property: { parcelId: parcel ? parcel.id : null, lotAcres: parcel ? +(parcel.areaM2 / 4046.86).toFixed(2) : null, footprintSqft: est && est.building && est.building.tags && est.building.tags.sqft ? Math.round(est.building.tags.sqft) : null, district: state.district ? state.district.name : null, flood: state.floodZone || null, subdivision: p.subdivision || null, auditorUrl: parcel ? auditorLink(parcel) : null } }, run);
     const b = est && est.building && est.building.tags;
     if (b) {
       if (b['building:levels']) rows.push(['Stories (OSM)', esc(b['building:levels'])]);
@@ -695,6 +710,8 @@
       html += `<p class="small muted">${res.photos.length} dated photos of this roof (yellow outline; red = where the change was seen). Tap one to enlarge.</p><div class="roof-strip">` +
         res.photos.map((ph, i) => `<figure class="${ph.flag ? 'flag' : ''}${ph.hidden ? ' hid' : ''}"><img src="${ph.thumb}" alt="Roof ${esc(ph.cap.date.getFullYear())}" data-i="${i}"><figcaption>${esc(ph.cap.date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' }))}<br><span>${esc(ph.cap.label)}</span>${ph.hidden ? '<br><span>roof hidden</span>' : ''}</figcaption></figure>`).join('') + '</div>';
     }
+    const fy = d => d ? d.getFullYear() : '';
+    record({ roof: { level: s.level, headline: s.headline, from: s.from ? +s.from : null, to: s.to ? +s.to : null, photos: res.photos.length, short: s.level === 'likely' ? `new roof ${fy(s.from)}–${fy(s.to)}` : s.level === 'possible' ? `maybe new ${fy(s.from)}–${fy(s.to)}` : s.level === 'none' ? `no change since ${fy(s.from)}` : 'unknown' } }, run);
     box.innerHTML = html + links;
     box.querySelectorAll('.roof-strip img').forEach(im => im.onclick = () => im.closest('figure').classList.toggle('big'));
   }
@@ -747,6 +764,7 @@
       <p class="small"><a href="https://jfs.ohio.gov/child-care/information-for-providers/become-a-provider" target="_blank" rel="noopener">How to become a provider →</a> · <a href="https://codes.ohio.gov/ohio-revised-code/section-5104.054" target="_blank" rel="noopener">ORC 5104.054 →</a></p></div>
       <p class="small muted">The score is a guide built from public data (Ohio child care licensing list, Census ACS, NCES schools, Ohio street data), not a guarantee of enrollment.</p>`;
     box.innerHTML = html;
+    record({ daycare: { pct: d.pct, grade: d.grade, age0to4: d.demo ? d.demo.age0to4 : null, under6Working: d.demo ? d.demo.under6Working : null, programs3mi: near.length, homes1mi: d.providers.filter(x => x.dist <= 1609.344 && Daycare.isHome(x.type)).length } }, run);
   }
 
   // ---------- links ----------
@@ -768,58 +786,123 @@
     $('#links').innerHTML = L2.map(([t, u]) => `<a class="link" href="${u}" target="_blank" rel="noopener">${t}</a>`).join('');
   }
 
-  // ---------- notes & saved ----------
+  // ---------- house database (all searched / visited houses) ----------
   const FIELDS = ['price', 'roof', 'hoa', 'built', 'hvac', 'wh', 'notes'];
-  function fillNotes(s) { FIELDS.forEach(f => $('#f-' + f).value = s[f] || ''); }
   const keyOf = p => `${(+p.lat).toFixed(4)},${(+p.lon).toFixed(4)}`;
-  function findSaved(p) { return store.get('saved', []).find(s => s.key === keyOf(p) || s.label === p.label); }
+  function fillNotes(n) { n = n || {}; FIELDS.forEach(f => $('#f-' + f).value = n[f] || ''); }
+  const readNotes = () => { const n = {}; FIELDS.forEach(f => n[f] = $('#f-' + f).value.trim()); return n; };
 
-  function saveHouse() {
-    const p = state.place; if (!p) return;
-    const list = store.get('saved', []);
-    const near = k => { const x = (state.nearby[k] || [])[0]; return x ? { name: x.name, dist: x.dist, drive: x.drive } : null; };
-    const rec = {
-      ...p, key: keyOf(p), savedAt: Date.now(),
-      bearing: state.facing ? state.facing.bearing : null, dir: state.facing ? state.facing.dir : null,
-      avoid: state.facing ? state.facing.avoid : null, facingSource: state.facing ? state.facing.source : null,
-      costco: near('costco'), indian: near('indian'), temple: near('temple')
-    };
-    FIELDS.forEach(f => rec[f] = $('#f-' + f).value.trim());
-    const i = list.findIndex(s => s.key === rec.key || s.label === rec.label);
-    if (i >= 0) list[i] = rec; else list.unshift(rec);
-    store.set('saved', list); updateCount(); toast('Saved ⭐');
+  // Write part of the current house's record. Ignored if the user has moved on to another house.
+  function record(patch, run) {
+    if (!state.key || (run != null && run !== state.runId) || !window.HouseDB) return;
+    HouseDB.update(state.key, patch).then(r => { state.rec = r; updateCount(); renderHeaderTools(); }).catch(() => {});
   }
 
-  function updateCount() { const n = store.get('saved', []).length; $('#saved-count').textContent = n ? `(${n})` : ''; }
+  async function recordSearch(place, how) {
+    state.key = keyOf(place);
+    let cur = null; try { cur = await HouseDB.get(state.key); } catch { }
+    const visits = (cur && cur.visits) || [];
+    if (how === 'gps') visits.push({ at: Date.now(), how: 'gps' });
+    const base = { label: place.label, lat: place.lat, lon: place.lon, num: place.num || '', street: place.street || '', city: place.city || '', county: place.county || '', st: place.st || '', zip: place.zip || '', country: place.country || '' };
+    state.rec = await HouseDB.update(state.key, { ...base, lastSeen: Date.now(), timesSearched: ((cur && cur.timesSearched) || 0) + 1, visits }).catch(() => null);
+    if (cur && cur.notes) fillNotes(cur.notes);
+    renderHeaderTools(); updateCount();
+    return cur;
+  }
 
-  function renderSaved() {
-    const list = store.get('saved', []);
+  function renderHeaderTools() {
+    const r = state.rec, box = $('#house-tools'); if (!box) return;
+    if (!r) { box.innerHTML = ''; return; }
+    const v = (r.visits || []).length;
+    box.innerHTML = `<button type="button" class="btn tiny" id="btn-star">${r.starred ? '⭐ Starred' : '☆ Star'}</button>
+      <button type="button" class="btn tiny" id="btn-visit">📍 ${v ? `Visited ${v}×` : 'Mark visited'}</button>
+      <span class="small muted">Searched ${r.timesSearched || 1}× · saved automatically</span>`;
+    $('#btn-star').onclick = () => record({ starred: !r.starred });
+    $('#btn-visit').onclick = () => { record({ visits: [...(r.visits || []), { at: Date.now(), how: 'tap' }] }); toast('Visit recorded'); };
+  }
+
+  let notesTimer = null;
+  function onNotesInput() { clearTimeout(notesTimer); notesTimer = setTimeout(() => record({ notes: readNotes() }), 600); }
+  function saveHouse() { record({ notes: readNotes(), starred: true }); toast('Saved ⭐'); }
+
+  async function updateCount() {
+    try { const n = (await HouseDB.all()).length; $('#saved-count').textContent = n ? `(${n})` : ''; } catch { }
+  }
+
+  const histUI = { filter: 'all', sort: 'recent', q: '' };
+  async function renderSaved() {
+    let list = [];
+    try { list = await HouseDB.all(); } catch (e) { $('#saved-list').innerHTML = `<div class="card warn">Couldn't open the house database (${esc(e.message)}).</div>`; return; }
     const places = store.get('places', []);
-    let html = `<div class="card"><h2>My important places</h2><p class="small muted">Add work, family, etc. Drive time from each house will show under “Nearby”.</p>
+    const f = histUI.filter, q = histUI.q.toLowerCase();
+    let shown = list.filter(r => f === 'all' || (f === 'starred' && r.starred) || (f === 'visited' && (r.visits || []).length) || (f === 'ok' && r.facing && !r.facing.avoid))
+      .filter(r => !q || `${r.label} ${(r.notes && r.notes.notes) || ''}`.toLowerCase().includes(q));
+    const costcoS = r => r.nearby && r.nearby.costco ? (r.nearby.costco.driveS ?? r.nearby.costco.dist * 0.06) : Infinity;
+    if (histUI.sort === 'daycare') shown.sort((a, b) => ((b.daycare && b.daycare.pct) || -1) - ((a.daycare && a.daycare.pct) || -1));
+    if (histUI.sort === 'costco') shown.sort((a, b) => costcoS(a) - costcoS(b));
+    const fmtD = t => new Date(t).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    const dd = x => x ? (x.driveS != null ? fmtMin(x.driveS) : fmtMi(x.dist)) : '—';
+    const chip = (k, l) => `<button class="chip ${histUI.filter === k ? 'on' : ''}" data-f="${k}">${l}</button>`;
+    let html = `<div class="card"><h2>🗂️ All houses (${list.length})</h2>
+      <p class="small muted">Every house you search is saved here automatically, on this phone only.</p>
+      <input id="h-q" type="search" placeholder="Search address or notes" value="${esc(histUI.q)}">
+      <div class="chips" style="margin:8px 0">${chip('all', 'All')}${chip('starred', '⭐ Starred')}${chip('visited', '📍 Visited')}${chip('ok', '✔ OK direction')}</div>
+      <label class="small">Sort <select id="h-sort"><option value="recent">Most recent</option><option value="daycare">Best daycare score</option><option value="costco">Closest Costco</option></select></label></div>`;
+    if (!shown.length) html += `<div class="card"><p class="muted">${list.length ? 'No houses match.' : 'No houses yet. Search an address and it will appear here.'}</p></div>`;
+    html += shown.map(r => {
+      const fa = r.facing;
+      const badge = fa && fa.dir ? `<span class="badge ${fa.avoid ? 'bad' : 'good'} sm">${fa.avoid ? '✖' : '✔'} ${fa.dir}</span>` : '<span class="badge sm">?</span>';
+      const n = r.notes || {};
+      const v = (r.visits || []).length;
+      return `<div class="card saved ${fa && fa.avoid ? 'dim' : ''}">
+        <div class="saved-top">${badge}<b>${esc(r.label)}</b>${r.starred ? ' ⭐' : ''}</div>
+        <div class="small muted">Last looked ${fmtD(r.lastSeen)} · searched ${r.timesSearched || 1}×${v ? ` · visited ${v}×` : ''}</div>
+        <div class="chips">${n.price ? `<span>💲${esc(n.price)}</span>` : ''}
+          ${r.roof ? `<span>🏚️ ${esc(r.roof.short || r.roof.level)}</span>` : (n.roof ? `<span>🏚️ ${esc(n.roof)}</span>` : '')}
+          ${r.daycare ? `<span>👶 Daycare ${r.daycare.pct}/100</span>` : ''}
+          ${r.nearby ? `<span>🛒 Costco ${dd(r.nearby.costco)}</span><span>🍛 ${r.nearby.indian ? esc(r.nearby.indian.name) + ' ' + dd(r.nearby.indian) : '—'}</span>` : ''}
+          ${r.property && r.property.lotAcres ? `<span>📐 ${r.property.lotAcres} ac</span>` : ''}</div>
+        ${n.notes ? `<p class="small">${esc(n.notes)}</p>` : ''}
+        <div class="row"><button class="btn" data-open="${esc(r.key)}">Open</button><button class="btn" data-star="${esc(r.key)}">${r.starred ? '★ Unstar' : '☆ Star'}</button><button class="btn danger" data-del="${esc(r.key)}">Delete</button></div></div>`;
+    }).join('');
+    html += `<div class="card"><h2>Backup</h2><p class="small muted">The browser can erase website data, for example if you clear Safari history. Export a backup now and then.</p>
+      <div class="row"><button class="btn" id="h-json">⬇️ Backup file</button><button class="btn" id="h-csv">📊 Spreadsheet (CSV)</button></div>
+      <label class="btn wide" style="text-align:center">⬆️ Restore from backup<input type="file" id="h-import" accept=".json,application/json" hidden></label></div>`;
+    html += `<div class="card"><h2>My important places</h2><p class="small muted">Add work, family, etc. Drive time from each house will show under “Nearby”.</p>
       ${places.map((x, i) => `<div class="place"><span><b>${esc(x.label)}</b> – ${esc(x.address)}</span><button class="btn tiny" data-delplace="${i}">✕</button></div>`).join('')}
       <form id="place-form" class="grid2"><input id="pl-label" placeholder="Name (e.g. Work)" required><input id="pl-addr" placeholder="Address" required>
       <button class="btn wide" style="grid-column:1/-1">+ Add place</button></form></div>`;
-    if (!list.length) html += '<div class="card"><p class="muted">No saved houses yet. Check a house and tap “Save this house”.</p></div>';
-    const sorted = [...list].sort((a, b) => (a.avoid === b.avoid ? 0 : a.avoid ? 1 : -1));
-    html += sorted.map(s => {
-      const idx = list.indexOf(s);
-      const badge = s.dir ? `<span class="badge ${s.avoid ? 'bad' : 'good'} sm">${s.avoid ? '✖' : '✔'} ${s.dir}</span>` : '<span class="badge sm">?</span>';
-      const d = x => x ? (x.drive && x.drive.s != null ? fmtMin(x.drive.s) : fmtMi(x.dist)) : '—';
-      return `<div class="card saved ${s.avoid ? 'dim' : ''}">
-        <div class="saved-top">${badge}<b>${esc(s.label)}</b></div>
-        <div class="chips">${s.price ? `<span>💲${esc(s.price)}</span>` : ''}${s.roof ? `<span>🏚️ Roof ${esc(s.roof)}</span>` : ''}${s.built ? `<span>🧱 ${esc(s.built)}</span>` : ''}${s.hoa ? `<span>HOA ${esc(s.hoa)}</span>` : ''}
-          <span>🛒 Costco ${d(s.costco)}</span><span>🍛 ${s.indian ? esc(s.indian.name) + ' ' + d(s.indian) : '—'}</span></div>
-        ${s.notes ? `<p class="small">${esc(s.notes)}</p>` : ''}
-        <div class="row"><button class="btn" data-open="${idx}">Open</button><button class="btn danger" data-del="${idx}">Delete</button></div></div>`;
-    }).join('');
-    $('#saved-list').innerHTML = html;
-    $('#saved-list').querySelectorAll('[data-open]').forEach(b => b.onclick = () => { const s = list[+b.dataset.open]; showView('view-search'); $('#addr').value = s.label; analyze(s, s); });
-    $('#saved-list').querySelectorAll('[data-del]').forEach(b => b.onclick = () => { if (!confirm('Delete this house?')) return; list.splice(+b.dataset.del, 1); store.set('saved', list); updateCount(); renderSaved(); });
-    $('#saved-list').querySelectorAll('[data-delplace]').forEach(b => b.onclick = () => { places.splice(+b.dataset.delplace, 1); store.set('places', places); renderSaved(); });
+    const box = $('#saved-list');
+    box.innerHTML = html;
+    $('#h-sort').value = histUI.sort;
+    $('#h-sort').onchange = e => { histUI.sort = e.target.value; renderSaved(); };
+    $('#h-q').oninput = e => { histUI.q = e.target.value; clearTimeout(renderSaved._t); renderSaved._t = setTimeout(() => { renderSaved().then(() => { const i = $('#h-q'); i.focus(); i.setSelectionRange(i.value.length, i.value.length); }); }, 250); };
+    box.querySelectorAll('[data-f]').forEach(b => b.onclick = () => { histUI.filter = b.dataset.f; renderSaved(); });
+    const byKey = k => list.find(r => r.key === k);
+    box.querySelectorAll('[data-open]').forEach(b => b.onclick = () => { const r = byKey(b.dataset.open); showView('view-search'); $('#addr').value = r.label; analyze(r, r); });
+    box.querySelectorAll('[data-star]').forEach(b => b.onclick = async () => { const r = byKey(b.dataset.star); await HouseDB.update(r.key, { starred: !r.starred }); renderSaved(); });
+    box.querySelectorAll('[data-del]').forEach(b => b.onclick = async () => { if (!confirm('Delete this house from the database?')) return; await HouseDB.del(b.dataset.del); updateCount(); renderSaved(); });
+    box.querySelectorAll('[data-delplace]').forEach(b => b.onclick = () => { places.splice(+b.dataset.delplace, 1); store.set('places', places); renderSaved(); });
+    const download = (name, text, type) => { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([text], { type })); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000); };
+    const stamp = new Date().toISOString().slice(0, 10);
+    $('#h-json').onclick = () => download(`house-scout-${stamp}.json`, JSON.stringify({ app: 'house-scout', version: 1, exported: Date.now(), houses: list }, null, 1), 'application/json');
+    $('#h-csv').onclick = () => {
+      const cols = ['label', 'direction', 'degrees', 'avoid', 'direction_source', 'roof', 'daycare_score', 'costco', 'indian_store', 'lot_acres', 'school_district', 'flood_zone', 'price', 'hoa', 'notes', 'times_searched', 'visits', 'last_seen', 'starred'];
+      const q2 = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
+      const rows = list.map(r => { const n = r.notes || {}, fa = r.facing || {}, nb = r.nearby || {}, pr = r.property || {};
+        return [r.label, fa.dir, fa.bearing != null ? Math.round(fa.bearing) : '', fa.avoid ? 'yes' : (fa.dir ? 'no' : ''), fa.source, r.roof ? r.roof.headline : n.roof, r.daycare ? r.daycare.pct : '', nb.costco ? dd(nb.costco) : '', nb.indian ? `${nb.indian.name} (${dd(nb.indian)})` : '', pr.lotAcres, pr.district, pr.flood, n.price, n.hoa, n.notes, r.timesSearched, (r.visits || []).length, new Date(r.lastSeen).toISOString().slice(0, 10), r.starred ? 'yes' : ''].map(q2).join(','); });
+      download(`house-scout-${stamp}.csv`, [cols.join(','), ...rows].join('\n'), 'text/csv');
+    };
+    $('#h-import').onchange = async e => {
+      const file = e.target.files[0]; if (!file) return;
+      try { const j = JSON.parse(await file.text()); const n = await HouseDB.importAll(j.houses || j); toast(`Restored ${n} houses`); updateCount(); renderSaved(); }
+      catch (err) { toast('That file is not a House Scout backup'); }
+    };
     $('#place-form').onsubmit = async e => {
       e.preventDefault();
       const label = $('#pl-label').value.trim(), address = $('#pl-addr').value.trim();
       try {
+
         const r = await geocode(address); if (!r.length) return toast('Address not found');
         places.push({ label, address, lat: +r[0].lat, lon: +r[0].lon }); store.set('places', places); renderSaved(); toast('Place added');
       } catch { toast('Lookup failed, try again'); }
@@ -834,6 +917,9 @@
     $('#btn-compass').onclick = startCompass;
     $('#btn-lock').onclick = lockCompass;
     $('#btn-save').onclick = saveHouse;
+    FIELDS.forEach(f => $('#f-' + f).addEventListener('input', onNotesInput));
+    HouseDB.migrate().catch(() => {}).then(updateCount);
+    HouseDB.persist();
     $('#btn-custom-add').onclick = addCustomTerm;
     // Enter in this box adds the term instead of submitting the address search.
     $('#custom-term').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); addCustomTerm(); } });
