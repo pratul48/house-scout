@@ -1,153 +1,117 @@
 
-### OGRIP parcels fields
-HTTP 200 CORS=* len=15026
-{"f":"OBJECTID | County | LocalParcelID | StateParcelID | StateLUC=Land Use | SitusAddressAll=Situs Address All | MailAddressAll=Mail Address | MailNumber | MailStreetPrefix | MailStreetName | MailStreetSuffix | MailUnitNumber | MailCity | MailZip | MailState=Mail State | LandArea | LandArea_PY | CurrentTo=Export Date | CAMADataSite=CAMA Data | GlobalID | Shape__Area | Shape__Length","max":2000}
+### auditor summary
+HTTP 403 CORS=null final=https://auditor.warrencountyohio.gov/PropertySearch/Summary/Index?account_nbr=1129342 len=6036
+(no hits)  Just a moment... *{box-sizing:border-box;margin:0;padding:0}html{line-height:1.15;-webkit-text-size-adjust:100%;color:#313131;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"}body{display:flex;flex-direction:column;height:100vh;min-height:100vh}.main-content{margin:8rem auto;padding-left:1.5rem;max-width:60rem}@media (width Enable JavaScript and cookies to continue 
 
-### OGRIP parcel at point
-HTTP 200 CORS=* len=4190
-[{"OBJECTID":4373587,"County":"Warren","LocalParcelID":"16361480130","StateParcelID":"39165-16361480130","StateLUC":"510: Res-Single Family","SitusAddressAll":"5517  PATRIOT CT  MASON 45040","MailAddressAll":"453 SHEPHERDS WAY MORROW OH 45152","MailNumber":null,"MailStreetPrefix":null,"MailStreetName":null,"MailStreetSuffix":null,"MailUnitNumber":null,"MailCity":"MORROW OH","MailZip":"45152","MailState":"OH","LandArea":0,"LandArea_PY":0,"CurrentTo":1691989200000,"CAMADataSite":"https://auditor.warrencountyohio.gov/PropertySearch/Summary/Index?account_nbr=1129342","GlobalID":"de3e3d5c-a8c7-4ee3-bc01-4a01909c41b3","Shape__Area":7236.5985107421875,"Shape__Length":365.27885934957766}]
+### auditor links
 
-### USA Structures fields
-HTTP 200 CORS=* len=23774
-{"f":"OBJECTID=Object Identification Code | BUILD_ID=Building ID | OCC_CLS=Building Occupancy Classification | PRIM_OCC=Primary Occupancy | SEC_OCC=Secondary Occupancy | PROP_ADDR=Street Address | PROP_CITY=City | PROP_ST=State | PROP_ZIP=ZIP Code | PROP_CNTY=County | OUTBLDG=Outbuilding or Non-Primary Structure | HEIGHT=Height (meters) | SQMETERS=Square Meters of the Building | SQFEET=Square Feet of the Building | H_ADJ_ELEV=Highest Elevation (in meters) of the Ground Adjacent to the Structure | L_ADJ_ELEV=Lowest Elevation (in meters) of the Ground Adjacent to the Structure | FIPS=County Federal Information Processing Standards (FIPS) Code | CENSUSCODE=Census Tract Identifier | PROD_DATE=Date that the Structure was Captured | SOURCE=Source of the Feature Creator | USNG=U.S. National Grid  (USNG) Coordinates | LONGITUDE=Longitude (East–West) | LATITUDE=Latitude (North–South) | IMAGE_NAME=Name of the Image  | IMAGE_DATE=Date of the Imagery | VAL_METHOD=Methodology Used to Validate Building Outline | REMARKS=Comments | UUID=Universally Unique Identifier (UUID) | B_CODE=Name of Building Code | POP_CI95_UPPER=Upper Bound (percentile 97.5) of 95% Coverage Interval on Building Population Estimate | POP_MEDIAN=Median (percentile 50) Building Population Estimate | POP_CI95_LOWER=Lower Bound (percentile 2.5) of 95% Coverage Interval on Building Population Estimate | STATE_FIPS=State Federal Information Processing Standards (FIPS) Code | GlobalID=Global Identification Code | Shape__Area=Area of the feature | Shape__Length=Length of the feature","max":2000,"name":"USA_Structures_A"}
 
-### USA Structures at point
-HTTP 200 CORS=* len=257
-{"objectIdFieldName":"OBJECTID","uniqueIdField":{"name":"OBJECTID","isSystemMaintained":true},"globalIdFieldName":"GlobalID","geometryProperties":{"shapeAreaFieldName":"Shape__Area","shapeLengthFieldName":"Shape__Length","units":"esriMeters"},"features":[]}
+### Hamilton parcel attributes fields
+HTTP 200 CORS=null final=https://cagisonline.hamilton-co.org/arcgis/rest/services/COUNTYWIDE/Cadastral/MapServer/2?f=json len=11894
+"OBJECTID | NAME=Name | UNIT | CONDONAME=CONDO NAME | PHASE | PERCENTOWN=PERCENT OWN | CONDOMTCH | BOOK | PAGE | PARCEL | MLTOWN | PARCELID | GRPPCLID | PNTPCLID | PROPTYID | AUDPCLID | AUDPTYID | TAXDST | TAXDST_DIS | TAXES_PAID | OWNER6 | OWNNM1 | OWNNM2 | OWNAD1 | OWNAD1A | OWNAD2 | LGLDS1 | LGLDS2 | LGLDS3 | PREVOWN1 | PREVOWN2 | SPLFLG | NEWFLG | MKTLND | MKTIMP | MKTCAU | CLASS | NHBDNO | ADDRNO | ADDRST | ADDRSF | BANKCD | MLNM1 | MLNM2 | MLADR1 | MLADR1A | MLADR2 | CNTDUE | DLNQDT | CNTSTG | CNTTRM | CNTFLG | RECST | SALDAT | NUMPCL | SALTYP | SALAMT | SALSRC | VALID | SALCNV | DEEDNO | INSTTY | ACREDEED | LOC_ST_IND | LOC_ST_DIR | LOC_SEC_NO | SCHOOL_CODE | SCHOOL_CODE_DIS | BOR_FLAG | HMSD_FLAG | PARSTAT | RED_25_FLAG | DIV_FLAG | MKT_TOTAL_VAL | FORECL_FLAG | ANNUAL_TAXES | FRONT_FOOTAGE | PAR_DELETED | DELQ_TAXES | DELQ_TAXES_PD | LGLDS4 | CONVEY_NO | OWNER48 | EXLUCODE | DATE_CREATED | OWNADCITY | OWNADSTATE | OWNADZIP | APPRAR | APPRAR_DIS | CONBUILD_FLAG | CURYR_FLAG | ENT_REG_FLAG | ORIG_FID | SHAPE | SE_ANNO_CAD_DATA"
 
-### MSBFP2 at point
-HTTP 200 CORS=* len=249
-{"objectIdFieldName":"OBJECTID","uniqueIdField":{"name":"OBJECTID","isSystemMaintained":true},"globalIdFieldName":"","geometryProperties":{"shapeAreaFieldName":"Shape__Area","shapeLengthFieldName":"Shape__Length","units":"esriMeters"},"features":[]}
+### Hamilton parcel poly fields
+HTTP 200 CORS=null final=https://cagisonline.hamilton-co.org/arcgis/rest/services/COUNTYWIDE/Cadastral/MapServer/0?f=json len=13117
+"OBJECTID | NAME=Name | UNIT=Condo Unit | CONDONAME=Condominium Name | PHASE=Condominium Phase | PERCENTOWN=Percentage Own | CONDOMTCH | BOOK=Book | PAGE=Page | PARCEL=Parcel | MLTOWN=Multi Own | PARCELID=Parcel ID | GRPPCLID=Group Parcel ID | PNTPCLID=Parent Parcel ID | PROPTYID=Property ID | AUDPCLID=Auditor Parcel ID | AUDPTYID=Auditor Property ID | TAXDST=Tax District | OWNER6=Owner (initial 6 characters) | OWNNM1=Owner Name 1 | OWNNM2=Owner Name 2 | OWNAD1=Owner Address 1 | OWNAD1A=Owner Address 1A | OWNAD2=Owner Address 2 | LGLDS1=Legal Description 1 | LGLDS2=Legal Description 2 | LGLDS3=Legal Description 3 | PREVOWN1=Previous Owner 1 | PREVOWN2=Previous Owner 2 | SPLFLG=Split Flag | NEWFLG=New Parcel Flag | MKTLND=Market Land Value | MKTIMP=Market Improvement Value | MKTCAU=Market Agricultural Value | CLASS=Land Use Class | NHBDNO=Neighborhood Number | ADDRNO=Address Number | ADDRST=Address Street | ADDRSF=Address Suffix | BANKCD=Bank Code | MLNM1=Mailing Name 1 | MLNM2=Mailing Name 2 | MLADR1=Mailing Address 1 | MLADR1A=Mailing Address 1A | MLADR2=Mailing Address 2 | CNTDUE | DLNQDT=Delinquent Date | CNTSTG | CNTTRM | CNTFLG | RECST | SALDAT=Sale Date | NUMPCL=Number of Parcel | SALTYP=Sale Type | SALAMT=Sale Amount | SALSRC=Sale Source | VALID=Valid | SALCNV=Sale Conversion | DEEDNO=Deed Number | INSTTY | ACREDEED=Deeded Acreage | UNIT_1=Unit | LOC_ST_IND | LOC_ST_DIR | LOC_SEC_NO | SCHOOL_CODE=School Code | BOR_FLAG=Board of Appeal Flag | HMSD_FLAG=Homestead Flag | PARSTAT | RED_25_FLAG | DIV_FLAG | MKT_TOTAL_VAL=Total Market Value | FORECL_FLAG=Foreclosure Flag | ANNUAL_TAXES=Annual Taxes | FRONT_FOOTAGE=Front Footage | TAXES_PAID=Taxes Paid | PAR_DELETED=Parcel Deleted | DELQ_TAXES=Delinquent Taxes | LGLDS4=Legal Description 4 | CONVEY_NO=Conveyance Number | OWNER48=Owner | EXLUCODE=Existing Land Use Code | NUM_UNITS=Number of Units | SHAPE | SE_ANNO_CAD_DATA | TAXDST_DIS=Tax District Name | DATE_CREATED=Date Created | OWNADCITY=Owner City | OWNADSTATE=Owner State | OWNADZIP=Owner Zipcode | APPRAR=Appraisal Area Code | APPRAR_DIS=Appraisal Area Name | CONBUILD_FLAG | CURYR_FLAG=Current Year Flag | RENT_REG_FLAG=Rental Registration Flag | SCHOOL_CODE_DIS=School Code Name | DELQ_TAXES_PD=Delinquent Taxes Paid | SHAPE.AREA | SHAPE.LEN"
 
-### USA Structures near count
-HTTP 200 CORS=* len=12
-{"count":24}
+### CAGIS services root
+HTTP 200 CORS=null final=https://cagisonline.hamilton-co.org/arcgis/rest/services?f=json len=1020
+{"currentVersion":10.91,"folders":["Basemaps","BasemapsNew","CCAT","CINC_PLANNING","Cincinnati","Cincinnati_Park_Board","CincinnatiResilient","CMHA","Construction_Coordination","COUNTYWIDE","Countywide_Layers","CSR","DTE","EACTIVITIES","EDGE","Firebird","GCWW","GIS_Framework","Hamilton","HCE","HCHD","HCSWD","Historic_Aerial","MSD","PROJECTS","Regional","Utilities"],"services":[{"name":"CAGIS_Address_Locator_Service","type":"GeocodeServer"},{"name":"CAGIS_Address_Locator","type":"GeocodeServer"},{"name":"CAGIS_Addresses_Locator_Service","type":"GeocodeServer"},{"name":"CAGIS_Elevation_Current","type":"ImageServer"},{"name":"CAGIS_Pro_Locator_testing","type":"GeocodeServer"},{"name":"CAGIS_Pro_Locator_v2_testing","type":"GeocodeServer"},{"name":"CAGIS_Pro_Locator","type":"GeocodeServer"},{"name":"CityProjects","type":"MapServer"},{"name":"ExportWebMap","type":"GPServer"},{"name":"ExtractDataTask","type":"GPServer"},{"name":"Geometry","type":"GeometryServer"},{"name":"SampleWorldCities","type":"MapServer"}]}
 
-### svc ACS_Children_by_Parental_Labor_Force_Participation_Boundaries
-HTTP 200 CORS=* len=72
-[]
+### Butler propertysearch
+HTTP 200 CORS=null final=https://propertysearch.bcohio.gov/search/commonsearch.aspx?mode=address len=45491
+(no hits)  Butler County - Address Search The System is currently unavailable due to maintenance. Please check again later. Home Property Records Search by Owner Search by Address Search by Parcel ID Advanced Search Map Search Search for Sales div.infoBox { width: 800px; margin-right: 15px; vertical
 
-### svc ACS_Population_by_Age_Boundaries
-HTTP 200 CORS=* len=72
-[]
+### NCES admin layers
+HTTP 200 CORS=null final=https://nces.ed.gov/opengis/rest/services/K12_School_Locations/EDGE_ADMINDATA_PUBLICSCH_2425/MapServer?f=json len=2916
+["1:Public School Administrative Data 2024-25"]
 
-### svc ACS_Highlights_Child_Well_Being_Boundaries
-HTTP 200 CORS=* len=13197
-["0:State","1:County","2:Tract"]
-
-### svc ACS_Median_Income_by_Race_and_Age_Selp_Emp_Boundaries
-HTTP 200 CORS=* len=13318
-["0:State","1:County","2:Tract"]
-
-### svc ACS_Context_for_Child_Well_Being_Boundaries
-HTTP 200 CORS=* len=72
-[]
-
-### search ACS age sex
-HTTP 200 CORS=https://pratul48.github.io len=194534
-[["USA Census 2020 Redistricting Blocks","esri_demographics","https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/USA_Census_2020_Redistricting_Blocks/FeatureServer"],["Bureau of Labor Statistics Monthly Unemployment (latest 14 months)","esri_demographics","https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/BLS_Monthly_Unemployment_Current_14_Months/FeatureServer"],["USA 2020 Census Population Characteristics","esri_demographics","https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/USA_Census_2020_DHC_Total_Population/FeatureServer"],["Esri Updated Demographics USA Variables 2023","esri_demographics","https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/Esri_Updated_Demographics_Variables/FeatureServer"],["County Health Rankings 2020","esri_demographics","https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/CountyHealthRankings2020_WFL1/FeatureServer"],["County Health Rankings 2022","esri_demographics","https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/2022_County_Health_Rankings/FeatureServer"],["USA 2020 Census Block Characteristics","esri_demographics","https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/USA_Census_2020_DHC_Blocks/FeatureServer"],["USA Census 2020 Redistricting Tracts","esri_demographics","https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/USA_Census_2020_Redistricting_Tracts/FeatureServer"],["ACS Educational Attainment (Latest)","esri_demographics","https://P3ePLMYs2RVChkJx.svcs.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_Educational_Attainment_View_Boundaries/FeatureServer"],["USA 2020 Census Race and Ethnicity Characteristics - Tribal Geographies","esri_demographics","https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/USA_Census_2020_DHC_Race_and_Ethnicity_Tribal/FeatureServer"],["USA Census 2020 Redistricting States","esri_demographics","https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/Census_2020_Redistricting_States/FeatureServer"],["Justice40 Tracts November 2022 Version 1.0 (Archive)","esri_demographics","https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/usa_november_2022/FeatureServer"],["ACS Population and Housing Basics (Latest)","esri_demographics","https://P3ePLMYs2RVChkJx.svcs.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_Population_and_Housing_Basics_View_Boundaries/FeatureServer"],["USA 2020 Census Race and Ethnicity Characteristics","esri_demogr
-
-### search ACS income
-HTTP 200 CORS=https://pratul48.github.io len=48388
-[["ACS Median Household Income (Latest)","esri_demographics","https://P3ePLMYs2RVChkJx.svcs.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_Median_Household_Income_View_Boundaries/FeatureServer"],["ACS Median Household Income Centroids (Latest)","esri_demographics","https://P3ePLMYs2RVChkJx.svcs.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_Median_Household_Income_View_Centroids/FeatureServer"],["ACS Median Household Income Variables - Boundaries","esri_demographics","https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_Median_Income_by_Race_and_Age_Selp_Emp_Boundaries/FeatureServer"],["ACS Median Household Income Variables - Centroids","esri_demographics","https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_Median_Income_by_Race_and_Age_Selp_Emp_Centroids/FeatureServer"]]
-
-### search ACS child well
-HTTP 200 CORS=https://pratul48.github.io len=48112
-[["ACS Context for Child Well-Being (Latest)","esri_demographics","https://P3ePLMYs2RVChkJx.svcs.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_Context_for_Child_Well_Being_View_Boundaries/FeatureServer"],["ACS Context for Child Well-Being Centroids (Latest)","esri_demographics","https://P3ePLMYs2RVChkJx.svcs.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_Context_for_Child_Well_Being_View_Centroids/FeatureServer"],["ACS Context for Child Well-Being - Centroids","esri_demographics","https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_Highlights_Child_Well_Being_Centroids/FeatureServer"],["ACS Context for Child Well-Being - Boundaries","esri_demographics","https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_Highlights_Child_Well_Being_Boundaries/FeatureServer"]]
-
-### PLFP layers
-HTTP 200 CORS=* len=3423
-["0:State","1:County","2:Tract"]
-
-### PLFP fields L2
-HTTP 200 CORS=* len=60779
-{"f":"OBJECTID=Object ID | GEOID=Geographic Identifier - FIPS Code | NAME=Tract Name | ALAND=Area of Land (Square Meters) | AWATER=Area of Water (Square Meters) | State=State Name | County=County Name | B23008_001E=Total Children Under 18 Years Living with at least One Parent | B23008_001M=Total Children Under 18 Years Living with at least One Parent - Margin of Error | B23008_002E=All Children Under 6 Years Living with at least One Parent | B23008_002M=All Children Under 6 Years Living with at least One Parent - Margin of Error | B23008_003E=Children Under 6 Years Living with Two Parents | B23008_003M=Children Under 6 Years Living with Two Parents - Margin of Error | B23008_004E=Children Under 6 Years Living with Two Parents, Both Parents in Labor Force | B23008_004M=Children Under 6 Years Living with Two Parents, Both Parents in Labor Force - Margin of Error | B23008_005E=Children Under 6 Years Living with Two Parents, Father Only in Labor Force | B23008_005M=Children Under 6 Years Living with Two Parents, Father Only in Labor Force - Margin of Error | B23008_006E=Children Under 6 Years Living with Two Parents, Mother Only in Labor Force | B23008_006M=Children Under 6 Years Living with Two Parents, Mother Only in Labor Force - Margin of Error | B23008_007E=Children Under 6 Years Living with Two Parents, Neither Parent in Labor Force | B23008_007M=Children Under 6 Years Living with Two Parents, Neither Parent in Labor Force - Margin of Error | B23008_008E=Children Under 6 Years Living with One Parent | B23008_008M=Children Under 6 Years Living with One Parent - Margin of Error | B23008_009E=Children Under 6 Years Living with Father Only | B23008_009M=Children Under 6 Years Living with Father Only - Margin of Error | B23008_010E=Children Under 6 Years Living with Father Only, Father in Labor Force | B23008_010M=Children Under 6 Years Living with Father Only, Father in Labor Force - Margin of Error | B23008_011E=Children Under 6 Years Living with Father Only, Father Not in Labor Force | B23008_011M=Children Under 6 Years Living with Father Only, Father Not in Labor Force - Margin of Error | B23008_012E=Children Under 6 Years Living with Mother Only | B23008_012M=Children Under 6 Years Living with Mother Only - Margin of Error | B23008_013E=Children Under 6 Years Living with Mother Only, Mother in Labor Force | B23008_013M=Children Under 6 Years Living with Mother Only, Mother in Labor Force - Margin of Error | B23008_014E=Children Under 6 Years Living with Mother Only, Mother Not in Labor Force | B23008_014M=Children Under 6 Years Living with Mother Only, Mother Not in Labor Force - Margin of Error | B23008_015E=All Children 6 to 17 Years Living with at least One Parent | B23008_015M=All Children 6 to 17 Years Living with at least One Parent - Margin of Error | B23008_016E=Children 6 to 17 Years Living with Two Parents | B23008_016M=Children 6 to 17 Years Living with Two Parents - Margin of Error | B23008_017E=Children 6 to 17 Years Living with Two Parents, Both Parents in Labor Force | B23008_017M=Children 6 to 17 Years Living with Two Parents, Both Parents in Labor Force - Margin of Error | B23008_018E=Children 6 to 17 Years Living with Two Parents, Father Only in Labor Force | B23008_018M=Children 6 to 17 Years Living with Two Parents, Father Only in Labor Force - Margin of Error | B23008_019E=Children 6 to 17 Years Living with Two Parents, Mother Only in Labor Force | B23008_019M=Children 6 to 17 Years Living with Two Parents, Mother Only in Labor Force - Margin of Error | B23008_020E=Children 6 to 17 Years Living with Two Parents, Neither Parent in Labor Force | B23008_020M=Children 6 to 17 Years Living with Two Parents, Neither Parent in Labor Force - Margin of Error | B23008_021E=Children 6 to 17 Years Living with One Parent | B23008_021M=Children 6 to 17 Years Living with One Parent - Margin of Error | B23008_022E=Children 6 to 17 Years Living with Father Only | B23008_022M=Children 6 to 17 Years Living with Father Only- Margin of Error | B23008_023E=Children 6 to 17 Years Living with Father Only, Father in Labor Force | B23008_023M=Children 6 to 17 Years Living with Father Only, Father in Labor Force - Margin of Error | B23008_024E=Children 6 to 17 Years Living with Father Only, Father Not in Labor Force | B23008_024M=Children 6 to 17 Years Living with Father Only, Father Not in Labor Force - Margin of Error | B23008_025E=Children 6 to 17 Years Living with Mother Only | B23008_025M=Children 6 to 17 Years Living with Mother Only - Margin of Error | B23008_026E=Children 6 to 17 Years Living with Mother Only, Mother in Labor Force | B23008_026M=Children 6 to 17 Years Living with Mother Only, Mother in Labor Force - Margin of Error | B23008_027E=Children 6 to 17 Years Living with Mother Only, Mother Not in Labor Force | B23008_027M=Children 6 to 17 Years Living with Mother Only, Mother Not in Labor Force - Margin of Error | B23008_calc_numAllInLFE=Children with All Available Parents in Labor Force | B23008_calc_numAllInLFM=Children with All Available Parents in Labor Force - Margin of Error | B23008_calc_pctAllInLFE=Percent of Children with All Available Parents in Labor Force | B23008_calc_pctAllInLFM=Percent of Children with All Available Parents in Labor Force - Margin of Error | B23008_calc_numNoneInLFE=Children with No Available Parent in Labor Force | B23008_calc_numNoneInLFM=Children with No Available Parent in Labor Force - Margin of Error | B23008_calc_pctNoneInLFE=Percent of Children with No Available Parent in Labor Force | B23008_calc_pctNoneInLFM=Percent of Children with No Available Parent in Labor Force - Margin of Error | Shape__Area=Shape Area | Shape__Length=Shape Length"}
-
-### PLFP at point L2
-HTTP 200 CORS=* len=49979
-[{"OBJECTID":51853,"GEOID":"39165031907","NAME":"Census Tract 319.07","ALAND":11749991,"AWATER":507,"State":"Ohio","County":"Warren County","B23008_001E":4544,"B23008_001M":1002,"B23008_002E":919,"B23008_002M":319,"B23008_003E":760,"B23008_003M":295,"B23008_004E":644,"B23008_004M":305,"B23008_005E":93,"B23008_005M":79,"B23008_006E":23,"B23008_006M":36,"B23008_007E":0,"B23008_007M":20,"B23008_008E":159,"B23008_008M":158,"B23008_009E":0,"B23008_009M":20,"B23008_010E":0,"B23008_010M":20,"B23008_011E":0,"B23008_011M":20,"B23008_012E":159,"B23008_012M":158,"B23008_013E":159,"B23008_013M":158,"B23008_014E":0,"B23008_014M":20,"B23008_015E":3625,"B23008_015M":975,"B23008_016E":3437,"B23008_016M":985,"B23008_017E":1553,"B23008_017M":378,"B23008_018E":1653,"B23008_018M":1026,"B23008_019E":231,"B23008_019M":258,"B23008_020E":0,"B23008_020M":20,"B23008_021E":188,"B23008_021M":162,"B23008_022E":21,"B23008_022M":35,"B23008_023E":21,"B23008_023M":35,"B23008_024E":0,"B23008_024M":20,"B23008_025E":167,"B23008_025M":157,"B23008_026E":167,"B23008_026M":157,"B23008_027E":0,"B23008_027M":20,"B23008_calc_numAllInLFE":2544,"B23008_calc_numAllInLFM":536,"B23008_calc_pctAllInLFE":56,"B23008_calc_pctAllInLFM":17.07487389001317,"B23008_calc_numNoneInLFE":0,"B23008_calc_numNoneInLFM":49,"B23008_calc_pctNoneInLFE":0,"B23008_calc_pctNoneInLFM":1.078345070422535,"Shape__Area":19694017.55078125,"Shape__Length":19561.527587728033}]
-
-### Warren auditor main
-HTTP 200 CORS=null len=26592
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home Page - Warren County Auditor</title>
-    <link href="/css/full-width-pics.css" rel="stylesheet" />
-    <link href="/css/font-awesom
-
-### search warren owner items
-HTTP 200 CORS=https://pratul48.github.io len=59068
-[["Known Locations for Lt. Warren W. Everett","RedDirtArcGIS",null],["Monroe Parcels in Warren County","comgisservice","https://services5.arcgis.com/ZpzXpUOckwsAhLFh/arcgis/rest/services/Monroe_Parcels_in_Warren_County/FeatureServer"],["Monroe Tax Parcels in Warren County","comgisservice","https://services5.arcgis.com/ZpzXpUOckwsAhLFh/arcgis/rest/services/Monroe_Tax_Parcels_in_Warren_County/FeatureServer"],["All Roads Butler and Warren Counties","comgisservice","https://services5.arcgis.com/ZpzXpUOckwsAhLFh/arcgis/rest/services/All_Roads_Butler_and_Warren_Counties/FeatureServer"],["Warren_Co_Topo","orchideric","https://services8.arcgis.com/pX44G7gzoOvJ5JiJ/arcgis/rest/services/Warren_Co_Topo/FeatureServer"],["Warren_County_Political_Jurisdictions","JeffThomas_SWCD","https://services7.arcgis.com/gGn2SSF9F5roaYd2/arcgis/rest/services/Warren_County_Political_Jurisdictions/FeatureServer"],["Warren_Service","tpenegar","https://services3.arcgis.com/nJbIFHiSnaX0z0hS/arcgis/rest/services/Warren_Service/FeatureServer"],["Warren County Basin Inspections","JeffThomas_SWCD",""],["County Boundaries","comgisservice","https://services5.arcgis.com/ZpzXpUOckwsAhLFh/arcgis/rest/services/County_Boundaries/FeatureServer"],["Geologic Map of the Circum-Pacific Region—Northeast Quadrant (1983)","kvangraafeiland_CPCTombolo","https://tiles.arcgis.com/tiles/ablkcmBFsdorjIT1/arcgis/rest/services/CPC1983_Plate_Geologic_NE_Quad/MapServer"],["Warren County_ OH_WFL1","noahc_virginiatech","https://services2.arcgis.com/V2PQwgZMTFfgM0Xu/arcgis/rest/services/Warren_County__OH_WFL1/FeatureServer"],["Parcel_Map_for_Online","JeffThomas_SWCD","https://services7.arcgis.com/gGn2SSF9F5roaYd2/arcgis/rest/services/Parcel_Map_for_Online/FeatureServer"],["Warren County_ OH 2020_WFL1","ddoryraterman_virginiatech","https://services2.arcgis.com/V2PQwgZMTFfgM0Xu/arcgis/rest/services/Warren_County__OH_2020_WFL1/FeatureServer"],["Warren County Parcels (View)","kaciedean","https://services5.arcgis.com/bRVJbF13Nwgn5oKx/arcgis/rest/services/Warren_County_Parcels_Update_(View_Layer)/FeatureServer"],["Warren_Service","tpenegar",""],["City of Franklin, OH  Interactive Zoning Map","ajuengling_mcbridedale",""],["WarrenXS","kingsleymallan","https://services.arcgis.com/GL0fWlNkwysZaKeV/arcgis/rest/services/WarrenXS/FeatureServer"],["Karst Sinkhole Inventory IN and KY 2011","IndianaMap","https://portal.igs.indiana.edu/arcgis/rest/services/Sinkhole_Inventory_IN_KY_2011/MapServer"],["Warren Cities","kaciedean","https://services5.arcgis.com/bRVJbF13Nwgn5oKx/arcgis/rest/services/Warren_Cities/FeatureServer"],["Warren County Government Campus","owenmt8656",null],["Warren County_ OH","noahc_virginiatech",""],["Warren Twps","kaciedean","https://services5.arcgis.com/bRVJbF13Nwgn5oKx/arcgis/rest/services/Warren_Twps/FeatureServer"],["Warren County Storm Reporter_fieldworker","becka_warrencountyny","https://services6.arcgis.com/Fg3XpDIUTR3JZZES/arcgis/rest/services/survey123_35e0f47268ca4edb9a4e98608b2ffa98_fieldworker/FeatureServer"],["Orthos_Natural_2015_NJ","TofO_Admin","https://maps.nj.gov/arcgis/rest/services/Basemap/Orthos_Natural_2015_NJ/MapServer"],["Warren County, OH 2020","ddoryraterman_virginiatech",""]]
-
-### Hamilton cadastral
-HTTP 200 CORS=https://pratul48.github.io len=4131
-["0:CAGIS.Ham_Parcel_Poly","1:Auditor Books and Pages","2:Hamilton County Parcel Attributes","3:Subdivisions","4:Hamilton County School Districts","5:Condominium Common Parcels","6:Condominium Units","7:Hamilton County Tax Districts"]
-
-### Butler GIS search
-HTTP 200 CORS=https://pratul48.github.io len=5191
-[["Monroe Parcels in Butler County","comgisservice","https://services5.arcgis.com/ZpzXpUOckwsAhLFh/arcgis/rest/services/Monroe_Parcels_in_Butler_County/FeatureServer"],["Fritz Rd Parcels view layer","jnally","https://services5.arcgis.com/Fq0TUmdRNerGcci4/arcgis/rest/services/Fritz_Rd_Parcels_view_layer/FeatureServer"],["Address & Property Viewer Map","zmoore@cityofoxford.org",""]]
-
-### schools2526 more fields
-HTTP 200 CORS=https://pratul48.github.io len=25064
-"loc_name=Loc_name | match_type=Match_type | addr_type=Address Type | type=Type | placename=Place Name | stpretype=Prefix Type | stname=Street Name | sttype=Suffix Type | bldgtype=Building Type | bldgname=Building Name | leveltype=Level Type | levelname=Level Name | unittype=Unit Type | unitname=Unit Name | cntryname=Country Name | school_district_ode_irn=School_District_ODE_IRN | school_district_name=School_District_NAME | county_name=County_Name | township_name=Township_Name | municipality_name=Municipality_Name | jedd_name=JEDD_Name | structype=Structure Type | user_org_type=ORG_TYPE | user_school_irn=SCHOOL_IRN | user_school_name=SCHOOL_NAME | user_address=ADDRESS | user_cnty_nm=CNTY_NM | user_org_geo_lat_num=ORG_GEO_LAT_NUM | user_org_geo_long_num=ORG_GEO_LONG_NUM | user_virtual=VIRTUAL | user_district_irn=DISTRICT_IRN | user_district_name=DISTRICT_NAME"
-
-### NCES admin fields
-HTTP 200 CORS=https://pratul48.github.io len=63
+### NCES admin L0 fields
+HTTP 200 CORS=null final=https://nces.ed.gov/opengis/rest/services/K12_School_Locations/EDGE_ADMINDATA_PUBLICSCH_2324/MapServer/0?f=json len=63
 ""
 
-### NCES admin near
-HTTP 200 CORS=https://pratul48.github.io len=63
+### NCES admin near 2324
+HTTP 200 CORS=null final=https://nces.ed.gov/opengis/rest/services/K12_School_Locations/EDGE_ADMINDATA_PUBLICSCH_2324/MapServer/0/query?where=LSTATE%3D%27OH%27%20AND%20LCITY%3D%27MASON%27&outFields=SCH_NAME,GSLO,GSHI,LEVEL,TOTAL,LATCOD,LONCOD,SCHOOL_LEVEL,STITLEI&returnGeometry=false&f=json len=63
 []
 
+### ACS income fields
+HTTP 200 CORS=* final=https://p3eplmys2rvchkjx.svcs.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_Median_Household_Income_View_Boundaries/FeatureServer/2?f=json len=40859
+"OBJECTID=Object ID | GEOID=Geographic Identifier - FIPS Code | NAME=Tract Name | ALAND=Area of Land (Square Meters) | AWATER=Area of Water (Square Meters) | State=State Name | County=County Name | B19049_001E=Median Household Income in past 12 months (inflation-adjusted dollars to last year of 5-year range) | B19049_001M=Median Household Income in past 12 months (inflation-adjusted dollars to last year of 5-year range) - Margin of Error | B19049_002E=Median Household Income in past 12 months, Householder under 25 years | B19049_002M=Median Household Income in past 12 months, Householder under 25 years - Margin of Error | B19049_003E=Median Household Income in past 12 months, Householder 25 to 44 years | B19049_003M=Median Household Income in past 12 months, Householder 25 to 44 years - Margin of Error | B19049_004E=Median Household Income in past 12 months, Householder 45 to 64 years | B19049_004M=Median Household Income in past 12 months, Householder 45 to 64 years - Margin of Error | B19049_005E=Median Household Income in past 12 months, Householder 65 years and over | B19049_005M=Median Household Income in past 12 months, Householder 65 years and over - Margin of Error | B19013B_001E=Median Household Income in past 12 months, Black or African American Alone Householder | B19013B_001M=Median Household Income in past 12 months, Black or African American Alone Householder - Margin of Error | B19013C_001E=Median Household Income in past 12 months, American Indian and Alaska N
+
+### ACS income tract
+HTTP 200 CORS=* final=https://p3eplmys2rvchkjx.svcs.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_Median_Household_Income_View_Boundaries/FeatureServer/2/query?geometry=-84.31821,39.36491&geometryType=esriGeometryPoint&inSR=4326&spatialRel=esriSpatialRelIntersects&outFields=GEOID,NAME,B19049_001E,B19013_001E&returnGeometry=false&f=json len=129
+{"error":{"code":400,"message":"Cannot perform query. Invalid query parameters.","details":["'outFields' parameter is invalid"]}}
+
+### ACS child wellbeing tract
+HTTP 200 CORS=* final=https://p3eplmys2rvchkjx.svcs.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_Context_for_Child_Well_Being_View_Boundaries/FeatureServer/2?f=json len=98007
+"NAME=Tract Name | B01001_001E=Total Population | B01001_003E=Males Under 5 Years | B01001_004E=Males 5 to 9 Years | B01001_005E=Males 10 to 14 Years | B01001_006E=Males 15 to 17 Years | B01001_007E=Males 18 to 19 Years | B01001_027E=Females Under 5 Years | B01001_028E=Females 5 to 9 Years | B01001_029E=Females 10 to 14 Years | B01001_030E=Females 15 to 17 Years | B01001_031E=Females 18 to 19 Years | B01001_calc_numLT18E=Population Less Than 18 Years | B01001_calc_pctLT18E=Percent of Population that is Less Than 18 Years | B05009_calc_numChildImmFE=Children in Immigrant Families (children who are foreign born or live with at least one parent who is foreign born) | B05009_calc_pctChildImmFE=Percent of Children in Immigrant Families (children who are foreign born or live with at least one parent who is foreign born) | B09001_002E=Total Population Under 18 in Households | B10002_002E=Grandchildren Under 18 Living with Grandparent Householder whose Grandparent Householder is Responsible for Them | B10002_calc_pctCCGE=Percent of Children who are in the Care of Grandparents | B13016_003E=Women 15 to 19 years old who had a birth in the past 12 months | B13016_calc_num15to19E=Women 15 to 19 | B13016_calc_pct15to19E=Percent of women 15 to 19 who had a birth in the past 12 months | B14005_001E=Total Population 16 to 19 Years | B14005_002E=Male Population 16 to 19 Years | B14005_calc_numFYdcE=Female Disconnected Youth 16 to 19 Years (not in school & not in labor force) | B14005_calc_numFYempE=Female Youth 16 to 19 Years who are Employed | B14005_calc_numMYdcE=Male Disconnected Youth 16 to 19 Years (not in school & not in labor force) | B14005_calc_numMYempE=Male Youth 16 to 19 Years who are Employed | B14005_calc_numTYdcE=Disconnected Youth 16 to 19 Years (not in school & not in labor force) | B14005_calc_numTYempE=Employed Youth 16 to 19 Years | B14005_calc_pctFYdcE=Percent of Female Youth 16 to 19 Years who are Disconnected (not in school & not in labor force) | B14005_calc_pctFYempE=Percent of Female Youth 16 to 19 Years who are Employed | B14005_calc_pctMYdcE=Percent of Male Youth 16 to 19 Years who are Disconnected (not in school & not in labor force) | B14005_calc_pctMYempE=Percent of Male Youth 16 to 19 Years who are Employed | B14005_calc_pctTYdcE=Percent of Youth 16 to 19 Years who are Disconnected (not in school & not in labor force) | B14005_calc_pctTYempE=Percent of Youth 16 to 19 Years who are Employed | B16003_002E=Population 5 to 17 years in limited English households | B16003_calc_pctLE17LEHE=Percent of children 5 to 17 years in limited English households | B17020_calc_numChildPovE=Child Population (under 18 years) whose income in the past 12 months is below poverty level | B17020_calc_numTotChildE=Child Population (under 18 years) for whom Poverty Status is Determined | B17020_calc_pctChildPovE=Percent of Children (under 18 years) whose income in the past 12 months is below poverty level | B23008_calc_numAllInLFE=Children with All Available Parents in Labor Force | B23008_calc_pctAllInLFE=Percent of Children with All Available Parents in Labor Force | B23008_calc_numNoneInLFE=Children with No Available Parent in Labor Force | B23008_calc_pctNoneInLFE=Percent of Children with No Available Parent in Labor Force | B27010_017E=Population Under 19 Years with no health insurance coverage | B27010_calc_pctNoInsLT19E=Percent of Population Under 19 with No Health Insurance Coverage | B28005_007E=Population Under 18 Years in Households that Have No Computer | B28005_calc_numNoBBLT18E=Population Under 18 Years in Households with No Broadband Internet Subscription | B28005_calc_pctNoBBLT18E=Percent of Population Under 18 Years in Households with No Broadband Internet Subscription | B28005_calc_pctNoCompLT18E=Percent of Population Under 18 in Households with No Computer | B09005_001E=Population Under 18 Years in Households (excluding Householders, Spouses, and Unmarried Partners) | B09005_002E=Population Under 18 Years in Married-Couple Households | B09005_003E=Population Under 18 Years in Cohabiting Couple Households | B09005_004E=Population Under 18 Years in Male Householder, No Spouse/Partner Present Households | B09005_005E=Population Under 18 Years in Female Householder, No Spouse/Partner Present Households | B09005_calc_pctMCHE=Percent of Children in Married-Couple Households | B09005_calc_pctCCHE=Percent of Children in Cohabiting Couple Households | B09005_calc_pctMHHE=Percent of Children in Male Householder, No Spouse/Partner Present Households | B09005_calc_pctFHHE=Percent of Children in Female Householder, No Spouse/Partner Present Households"
+
+### ACS age layer search
+HTTP 200 CORS=null final=https://www.arcgis.com/sharing/rest/search?f=json&num=10&q=owner%3Aesri_demographics%20title%3A%22ACS%20Population%20Variables%22%20OR%20title%3A%22Sex%20by%20Age%22 len=117540
+[["2010-2014 ACS Population Variables - Boundaries","https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_10_14_Total_Population_Boundaries/FeatureServer"],["USA Census 2020 Redistricting Blocks","https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/USA_Census_2020_Redistricting_Blocks/FeatureServer"],["Bureau of Labor Statistics Monthly Unemployment (latest 14 months)","https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/BLS_Monthly_Unemployment_Current_14_Months/FeatureServer"],["USA 2020 Census Population Characteristics","https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/USA_Census_2020_DHC_Total_Population/FeatureServer"],["Esri Updated Demographics USA Variables 2023","https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/Esri_Updated_Demographics_Variables/FeatureServer"],["County Health Rankings 2020","https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/CountyHealthRankings2020_WFL1/FeatureServer"],["USA 2020 Census Block Characteristics","https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/USA_Census_2020_DHC_Blocks/FeatureServer"],["County Health Rankings 2022","https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/2022_County_Health_Rankings/FeatureServer"],["USA Census 2020 Redistricting Tracts","https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/USA_Census_2020_Redistricting_Tracts/FeatureServer"],["ACS Educational Attainment (Latest)","https://P3ePLMYs2RVChkJx.svcs.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_Educational_Attainment_View_Boundaries/FeatureServer"]]
+
+### daycare view lastEdit
+ERROR Cannot read properties of undefined (reading 'slice')
+
+### daycare centers lastEdit
+ERROR Cannot read properties of undefined (reading 'slice')
+
 ### wayback cfg
-HTTP 200 CORS=* len=107333
+HTTP 200 CORS=null final=https://s3-us-west-2.amazonaws.com/config.maptiles.arcgis.com/waybackconfig.json len=107333
 {
     "3692": {
-        "itemID": "83b1b21c156f4
+        "ite
 
-### wayback walk
-64776 | 25982 | World Imagery (Wayback 2023-06-13) | 20211226 | Vivid Advanced | 0.5 | {"data":[1],"location":{"height":1,"left":139346,"top":199686,"width":1},"select":[25982],"size":[16918],"valid":true}
-25944 | 13161 | World Imagery (Wayback 2018-01-08) | 20160609 | Vivid - USA | 0.46 | {"data":[1],"location":{"height":1,"left":139346,"top":199686,"width":1},"select":[13161],"size":[8535],"valid":true}
-13067 | 13161 | World Imagery (Wayback 2018-01-08) | 20160609 | Vivid - USA | 0.46 | {"data":[1],"location":{"height":1,"left":139346,"top":199686,"width":1},"select":[13161],"size":[8535],"valid":true}
-13067 | 13161 | World Imagery (Wayback 2018-01-08) | 20160609 | Vivid - USA | 0.46 | {"data":[1],"location":{"height":1,"left":139346,"top":199686,"width":1},"select":[13161],"size":[8535],"valid":true}
-13067 | 13161 | World Imagery (Wayback 2018-01-08) | 20160609 | Vivid - USA | 0.46 | {"data":[1],"location":{"height":1,"left":139346,"top":199686,"width":1},"select":[13161],"size":[8535],"valid":true}
-13067 | 13161 | World Imagery (Wayback 2018-01-08) | 20160609 | Vivid - USA | 0.46 | {"data":[1],"location":{"height":1,"left":139346,"top":199686,"width":1},"select":[13161],"size":[8535],"valid":true}
-13067 | 13161 | World Imagery (Wayback 2018-01-08) | 20160609 | Vivid - USA | 0.46 | {"data":[1],"location":{"height":1,"left":139346,"top":199686,"width":1},"select":[13161],"size":[8535],"valid":true}
-13067 | 13161 | World Imagery (Wayback 2018-01-08) | 20160609 | Vivid - USA | 0.46 | {"data":[1],"location":{"height":1,"left":139346,"top":199686,"width":1},"select":[13161],"size":[8535],"valid":true}
-13067 | 13161 | World Imagery (Wayback 2018-01-08) | 20160609 | Vivid - USA | 0.46 | {"data":[1],"location":{"height":1,"left":139346,"top":199686,"width":1},"select":[13161],"size":[8535],"valid":true}
-13067 | 13161 | World Imagery (Wayback 2018-01-08) | 20160609 | Vivid - USA | 0.46 | {"data":[1],"location":{"height":1,"left":139346,"top":199686,"width":1},"select":[13161],"size":[8535],"valid":true}
-13067 | 13161 | World Imagery (Wayback 2018-01-08) | 20160609 | Vivid - USA | 0.46 | {"data":[1],"location":{"height":1,"left":139346,"top":199686,"width":1},"select":[13161],"size":[8535],"valid":true}
-13067 | 13161 | World Imagery (Wayback 2018-01-08) | 20160609 | Vivid - USA | 0.46 | {"data":[1],"location":{"height":1,"left":139346,"top":199686,"width":1},"select":[13161],"size":[8535],"valid":true}
-13067 | 13161 | World Imagery (Wayback 2018-01-08) | 20160609 | Vivid - USA | 0.46 | {"data":[1],"location":{"height":1,"left":139346,"top":199686,"width":1},"select":[13161],"size":[8535],"valid":true}
-13067 | 13161 | World Imagery (Wayback 2018-01-08) | 20160609 | Vivid - USA | 0.46 | {"data":[1],"location":{"height":1,"left":139346,"top":199686,"width":1},"select":[13161],"size":[8535],"valid":true}
-13067 | 13161 | World Imagery (Wayback 2018-01-08) | 20160609 | Vivid - USA | 0.46 | {"data":[1],"location":{"height":1,"left":139346,"top":199686,"width":1},"select":[13161],"size":[8535],"valid":true}
-13067 | 13161 | World Imagery (Wayback 2018-01-08) | 20160609 | Vivid - USA | 0.46 | {"data":[1],"location":{"height":1,"left":139346,"top":199686,"width":1},"select":[13161],"size":[8535],"valid":true}
-13067 | 13161 | World Imagery (Wayback 2018-01-08) | 20160609 | Vivid - USA | 0.46 | {"data":[1],"location":{"height":1,"left":139346,"top":199686,"width":1},"select":[13161],"size":[8535],"valid":true}
-13067 | 13161 | World Imagery (Wayback 2018-01-08) | 20160609 | Vivid - USA | 0.46 | {"data":[1],"location":{"height":1,"left":139346,"top":199686,"width":1},"select":[13161],"size":[8535],"valid":true}
-13067 | 13161 | World Imagery (Wayback 2018-01-08) | 20160609 | Vivid - USA | 0.46 | {"data":[1],"location":{"height":1,"left":139346,"top":199686,"width":1},"select":[13161],"size":[8535],"valid":true}
-13067 | 13161 | World Imagery (Wayback 2018-01-08) | 20160609 | Vivid - USA | 0.46 | {"data":[1],"location":{"height":1,"left":139346,"top":199686,"width":1},"select":[13161],"size":[8535],"valid":true}
-13067 | 13161 | World Imagery (Wayback 2018-01-08) | 20160609 | Vivid - USA | 0.46 | {"data":[1],"location":{"height":1,"left":139346,"top":199686,"width":1},"select":[13161],"size":[8535],"valid":true}
-13067 | 13161 | World Imagery (Wayback 2018-01-08) | 20160609 | Vivid - USA | 0.46 | {"data":[1],"location":{"height":1,"left":139346,"top":199686,"width":1},"select":[13161],"size":[8535],"valid":true}
-13067 | 13161 | World Imagery (Wayback 2018-01-08) | 20160609 | Vivid - USA | 0.46 | {"data":[1],"location":{"height":1,"left":139346,"top":199686,"width":1},"select":[13161],"size":[8535],"valid":true}
-13067 | 13161 | World Imagery (Wayback 2018-01-08) | 20160609 | Vivid - USA | 0.46 | {"data":[1],"location":{"height":1,"left":139346,"top":199686,"width":1},"select":[13161],"size":[8535],"valid":true}
-13067 | 13161 | World Imagery (Wayback 2018-01-08) | 20160609 | Vivid - USA | 0.46 | {"data":[1],"location":{"height":1,"left":139346,"top":199686,"width":1},"select":[13161],"size":[8535],"valid":true}
-13067 | 13161 | World Imagery (Wayback 2018-01-08) | 20160609 | Vivid - USA | 0.46 | {"data":[1],"location":{"height":1,"left":139346,"top":199686,"width":1},"select":[13161],"size":[8535],"valid":true}
-13067 | 13161 | World Imagery (Wayback 2018-01-08) | 20160609 | Vivid - USA | 0.46 | {"data":[1],"location":{"height":1,"left":139346,"top":199686,"width":1},"select":[13161],"size":[8535],"valid":true}
-13067 | 13161 | World Imagery (Wayback 2018-01-08) | 20160609 | Vivid - USA | 0.46 | {"data":[1],"location":{"height":1,"left":139346,"top":199686,"width":1},"select":[13161],"size":[8535],"valid":true}
-13067 | 13161 | World Imagery (Wayback 2018-01-08) | 20160609 | Vivid - USA | 0.46 | {"data":[1],"location":{"height":1,"left":139346,"top":199686,"width":1},"select":[13161],"size":[8535],"valid":true}
-13067 | 13161 | World Imagery (Wayback 2018-01-08) | 20160609 | Vivid - USA | 0.46 | {"data":[1],"location":{"height":1,"left":139346,"top":199686,"width":1},"select":[13161],"size":[8535],"valid":true}
-13067 | 13161 | World Imagery (Wayback 2018-01-08) | 20160609 | Vivid - USA | 0.46 | {"data":[1],"location":{"height":1,"left":139346,"top":199686,"width":1},"select":[13161],"size":[8535],"valid":true}
-13067 | 13161 | World Imagery (Wayback 2018-01-08) | 20160609 | Vivid - USA | 0.46 | {"data":[1],"location":{"height":1,"left":139346,"top":199686,"width":1},"select":[13161],"size":[8535],"valid":true}
-13067 | 13161 | World Imagery (Wayback 2018-01-08) | 20160609 | Vivid - USA | 0.46 | {"data":[1],"location":{"height":1,"left":139346,"top":199686,"width":1},"select":[13161],"size":[8535],"valid":true}
-13067 | 13161 | World Imagery (Wayback 2018-01-08) | 20160609 | Vivid - USA | 0.46 | {"data":[1],"location":{"height":1,"left":139346,"top":199686,"width":1},"select":[13161],"size":[8535],"valid":true}
-13067 | 13161 | World Imagery (Wayback 2018-01-08) | 20160609 | Vivid - USA | 0.46 | {"data":[1],"location":{"height":1,"left":139346,"top":199686,"width":1},"select":[13161],"size":[8535],"valid":true}
-13067 | 13161 | World Imagery (Wayback 2018-01-08) | 20160609 | Vivid - USA | 0.46 | {"data":[1],"location":{"height":1,"left":139346,"top":199686,"width":1},"select":[13161],"size":[8535],"valid":true}
-13067 | 13161 | World Imagery (Wayback 2018-01-08) | 20160609 | Vivid - USA | 0.46 | {"data":[1],"location":{"height":1,"left":139346,"top":199686,"width":1},"select":[13161],"size":[8535],"valid":true}
-13067 | 13161 | World Imagery (Wayback 2018-01-08) | 20160609 | Vivid - USA | 0.46 | {"data":[1],"location":{"height":1,"left":139346,"top":199686,"width":1},"select":[13161],"size":[8535],"valid":true}
-13067 | 13161 | World Imagery (Wayback 2018-01-08) | 20160609 | Vivid - USA | 0.46 | {"data":[1],"location":{"height":1,"left":139346,"top":199686,"width":1},"select":[13161],"size":[8535],"valid":true}
-13067 | 13161 | World Imagery (Wayback 2018-01-08) | 20160609 | Vivid - USA | 0.46 | {"data":[1],"location":{"height":1,"left":139346,"top":199686,"width":1},"select":[13161],"size":[8535],"valid":true}
+### releases 199 2026-11-18 2014-02-20
 
-### z20 tile 404 text/html; charset=iso-8859-1 196
+### wayback history Patriot Ct (13 calls)
+release 2025-01-30 -> capture 12/26/2021 Vivid Advanced 0.5m
+release 2024-03-07 -> capture 12/26/2021 Vivid Advanced 0.5m
+release 2023-06-13 -> capture 12/26/2021 Vivid Advanced 0.5m
+release 2023-03-15 -> capture 12/26/2021 Vivid Advanced 0.5m
+release 2022-06-08 -> capture 12/26/2021 Vivid Advanced 0.5m
+release 2022-01-12 -> capture 11/4/2020 Metro 0.5m
+release 2021-04-28 -> capture 11/4/2020 Metro 0.5m
+release 2021-02-24 -> capture 11/4/2020 Metro 0.5m
+release 2020-07-01 -> capture 10/15/2019 Metro 0.5m
+release 2020-03-23 -> capture 10/15/2019 Metro 0.5m
+release 2019-06-05 -> capture 8/22/2018 Vivid 0.5m
+release 2018-01-08 -> capture 6/9/2016 Vivid - USA 0.46m
+release 2014-02-20 -> capture 2/6/2012 US-OH-Cincinnati-W 0.3m
+
+### wayback history Mason south (13 calls)
+release 2025-01-30 -> capture 12/26/2021 Vivid Advanced 0.5m
+release 2024-03-07 -> capture 12/26/2021 Vivid Advanced 0.5m
+release 2023-06-13 -> capture 12/26/2021 Vivid Advanced 0.5m
+release 2023-03-15 -> capture 12/26/2021 Vivid Advanced 0.5m
+release 2022-06-08 -> capture 12/26/2021 Vivid Advanced 0.5m
+release 2022-01-12 -> capture 11/4/2020 Metro 0.5m
+release 2021-04-28 -> capture 11/4/2020 Metro 0.5m
+release 2021-02-24 -> capture 11/4/2020 Metro 0.5m
+release 2020-07-01 -> capture 10/15/2019 Metro 0.5m
+release 2020-03-23 -> capture 10/15/2019 Metro 0.5m
+release 2019-06-05 -> capture 8/22/2018 Vivid 0.5m
+release 2018-01-08 -> capture 8/30/2016 Vivid - USA 0.5m
+release 2014-02-20 -> capture 2/6/2012 US-OH-Cincinnati-W 0.3m
+
+### wayback history West Chester (13 calls)
+release 2025-01-30 -> capture 12/26/2021 Vivid Advanced 0.5m
+release 2024-03-07 -> capture 12/26/2021 Vivid Advanced 0.5m
+release 2023-06-13 -> capture 12/26/2021 Vivid Advanced 0.5m
+release 2023-03-15 -> capture 12/26/2021 Vivid Advanced 0.5m
+release 2022-06-08 -> capture 12/26/2021 Vivid Advanced 0.5m
+release 2022-01-12 -> capture 11/4/2020 Metro 0.5m
+release 2021-04-28 -> capture 11/4/2020 Metro 0.5m
+release 2021-02-24 -> capture 11/4/2020 Metro 0.5m
+release 2020-07-01 -> capture 10/15/2019 Metro 0.5m
+release 2020-03-23 -> capture 10/15/2019 Metro 0.5m
+release 2019-06-05 -> capture 8/22/2018 Vivid 0.5m
+release 2018-01-08 -> capture 6/9/2016 Vivid - USA 0.46m
+release 2014-02-20 -> capture 2/6/2012 US-OH-Cincinnati-W 0.3m
+
+### OSRM
+HTTP 200 CORS=* final=https://router.project-osrm.org/route/v1/driving/-84.31821,39.36491;-84.3,39.33?overview=false len=594
+{"code":"Ok","routes":[{"legs":[{"steps":[],"weight":714.1,"summary":"","duration":714.1,"distance":8208.8}],"weight_name":"routability","weight":714.1,"duration":714.1,"distance":8208.8}],"waypoints":[{"hint":"hXWggoh1oIIGAAAAGAAAAEoAAAAAAAAACUyHQCI3h0Euck9CAAAAAAYAAAAYAAAASgAAAAAAAADQfwAAA2j5-oipW
+
+### overpass alt
+ERROR The operation was aborted due to timeout
