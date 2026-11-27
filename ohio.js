@@ -33,7 +33,7 @@
   const near = (p, meters) => `geometry=${p.lon},${p.lat}&geometryType=esriGeometryPoint&inSR=4326&spatialRel=esriSpatialRelIntersects${meters ? `&distance=${meters}&units=esriSRUnit_Meter` : ''}`;
   const ring2ll = ring => ring.map(([x, y]) => ({ lat: y, lon: x }));
   const clean = s => String(s ?? '').replace(/\s+/g, ' ').trim();
-  const title = s => clean(s).toLowerCase().replace(/\b([a-z])/g, c => c.toUpperCase()).replace(/\b(Oh|Us|Sr|Nw|Ne|Sw|Se)\b/g, w => w.toUpperCase());
+  const title = s => clean(s).toLowerCase().replace(/\b([a-z])/g, c => c.toUpperCase()).replace(/\b(Oh|Us|Sr|Nw|Ne|Sw|Se|Ii|Iii|Iv|Llc|Lp|Csd)\b/g, w => w.toUpperCase());
 
   // Rough Ohio bounding box (plus a little margin).
   const inOhio = p => p.lat > 38.35 && p.lat < 42.05 && p.lon > -84.9 && p.lon < -80.45;

@@ -150,7 +150,7 @@
     $('#addr-title').textContent = place.label;
     $('#verdict').innerHTML = '<div class="loading">Working out which way the house faces…</div>';
     $('#facing-info').innerHTML = ''; renderDial(null);
-    ['#nearby', '#nuisances', '#property', '#roof', '#daycare'].forEach(s => $(s).innerHTML = '<div class="loading">Loading…</div>');
+    ['#nearby', '#nuisances', '#property', '#value', '#roof', '#daycare'].forEach(s => $(s).innerHTML = '<div class="loading">Loading…</div>');
     fillNotes(saved && saved.notes);
     state.rec = null; renderHeaderTools();
     const prev = await recordSearch(place, how).catch(() => null);
@@ -171,6 +171,7 @@
     if (saved && saved.facing && saved.facing.source && saved.facing.source !== 'map') setFacing(saved.facing.bearing, saved.facing.source);
     const propP = loadProperty(place, run);
     loadRoof(place, run, est);
+    loadValue(place, run, est);
     loadDaycare(place, run, est, propP);
   }
 
@@ -669,6 +670,75 @@
     put();
   }
 
+  // ---------- value, sale history & owner ----------
+  const money = v => v == null ? '—' : '$' + Math.round(v).toLocaleString();
+  const parseMoney = s => { const m = String(s || '').replace(/[, ]/g, '').match(/(\d+(\.\d+)?)\s*(k|m)?/i); if (!m) return null; let v = +m[1]; if (/k/i.test(m[3] || '')) v *= 1e3; if (/m/i.test(m[3] || '')) v *= 1e6; if (v < 1000) v *= 1000; return v; };
+  const parseWhen = s => { const m = String(s || '').match(/(\d{4})(?:[-/ ](\d{1,2}))?/); return m ? new Date(+m[1], m[2] ? +m[2] - 1 : 5, 15) : null; };
+
+  async function loadValue(p, run, est) {
+    const box = $('#value');
+    if (!state.ohio) { box.innerHTML = '<p class="small muted">Owner and sale lookups use Ohio county records, so they only work for Ohio addresses.</p>'; return; }
+    box.innerHTML = '<div class="loading">Looking up the owner and sale history…</div>';
+    const pt = est && est.ok && est.building ? est.origin : p; // the house itself, not the driveway end
+    const county = (state.parcel && state.parcel.county) || p.county || '';
+    const [own, z] = await Promise.all([Value.owner(pt, county).catch(() => null), Value.zhvi(p.zip)]);
+    if (run !== state.runId) return;
+    let comps = null;
+    if (own && own.county === 'Hamilton') comps = await Value.hamiltonComps(pt, own.cls).catch(() => null);
+    if (run !== state.runId) return;
+    state.valueCtx = { own, z, comps };
+    renderValue(run);
+  }
+
+  function renderValue(run) {
+    const box = $('#value'), { own, z, comps } = state.valueCtx || {};
+    const manual = (state.rec && state.rec.valueManual) || {};
+    const sale = own && own.sale ? own.sale : (parseMoney(manual.salePrice) && parseWhen(manual.saleDate) ? { price: parseMoney(manual.salePrice), date: parseWhen(manual.saleDate), manual: true } : null);
+    const auditor = own && own.auditor ? own.auditor : (parseMoney(manual.auditorValue) ? { total: parseMoney(manual.auditorValue), manual: true } : null);
+    const asking = parseMoney($('#f-price').value);
+    const pc = Value.priceCheck({ asking, sale, auditor, ratio: comps && comps.ratio, z });
+    let html = '';
+    // price check
+    html += `<label class="small">Asking price<input id="v-ask" inputmode="numeric" placeholder="$525,000" value="${esc($('#f-price').value)}"></label>`;
+    if (pc.verdict) html += `<div class="dc-score ${pc.cls}"><div>${esc(pc.verdict)}</div><span>Estimated value ${money(pc.low)} – ${money(pc.high)}</span></div>`;
+    else if (pc.value) html += `<p><b>Estimated value: ${money(pc.low)} – ${money(pc.high)}</b><br><span class="small muted">Enter the asking price to see if it's priced right.</span></p>`;
+    pc.est.forEach(e => html += `<p class="small">• ${esc(e.text)}</p>`);
+    if (z) html += `<p class="small muted">Typical single-family home in ${esc(z.zip)} (${esc(z.city)}): ${money(z.v[z.v.length - 1])}, ${Math.round((z.v[z.v.length - 1] / z.v[Math.max(0, z.v.length - 13)] - 1) * 100)}% over the past year. Source: Zillow Home Value Index.</p>`;
+    // owner
+    if (own) {
+      html += `<h3>Owner (public record)</h3><div class="kv"><span>Owner</span><span><b>${esc(own.owner || '—')}</b></span></div>`;
+      if (own.prevOwner) html += `<div class="kv"><span>Previous owner</span><span>${esc(own.prevOwner)}</span></div>`;
+      if (own.mailing) html += `<div class="kv"><span>Tax bills sent to</span><span>${esc(own.mailing)}</span></div>`;
+      if (own.type && own.type.text) html += `<p class="small">${esc(own.type.text)}</p>`;
+      if (sale) html += `<div class="kv"><span>Bought</span><span><b>${money(sale.price)}</b> on ${esc(sale.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }))}${sale.manual ? ' <span class="small muted">(you entered)</span>' : ''}<br><span class="small muted">owned ${Math.max(0, ((Date.now() - sale.date) / 3.15576e10)).toFixed(1)} years</span></span></div>`;
+      if (auditor) html += `<div class="kv"><span>County value</span><span>${money(auditor.total)}${auditor.land ? `<br><span class="small muted">land ${money(auditor.land)} + building ${money(auditor.building)}</span>` : ''}${auditor.manual ? ' <span class="small muted">(you entered)</span>' : ''}</span></div>`;
+      if (own.taxes) html += `<div class="kv"><span>Property taxes</span><span>${money(own.taxes)} / year</span></div>`;
+      if (own.deed) html += `<div class="kv"><span>Deed</span><span>${esc(own.deed)}</span></div>`;
+      if (own.subdivision) html += `<div class="kv"><span>Subdivision / lot</span><span>${esc(own.subdivision)}${own.lot ? `, lot ${esc(own.lot)}` : ''}</span></div>`;
+      const flags = [own.rental && '🏘️ Registered as a rental', own.foreclosure && '⚠️ Foreclosure flag on the county record', own.delinquent && `⚠️ ${money(own.delinquent)} in unpaid property taxes`].filter(Boolean);
+      if (flags.length) html += flags.map(x => `<p class="small warn">${esc(x)}</p>`).join('');
+    } else html += '<p class="small warn">Couldn\'t find the county owner record for this lot.</p>';
+    // manual entry for counties that block apps
+    if (!own || own.needsManual) {
+      html += `<div class="roof"><b>Add the sale price and county value</b>
+        <p class="small">${esc((own && own.county) || 'This')} County's auditor website blocks other apps, so the app can't read these two numbers itself. Open the page, then type them here:</p>
+        <a class="btn wide" href="${esc((own && own.auditorUrl) || auditorSearch(state.place, state.parcel))}" target="_blank" rel="noopener">🏛️ Open the county auditor page</a>
+        <div class="grid2" style="margin-top:8px"><label>Last sale price<input id="v-sale" inputmode="numeric" placeholder="$410,000" value="${esc(manual.salePrice || '')}"></label>
+        <label>Sale date<input id="v-date" placeholder="2019-06" value="${esc(manual.saleDate || '')}"></label>
+        <label style="grid-column:1/-1">County appraised value (“Total”)<input id="v-aud" inputmode="numeric" placeholder="$385,000" value="${esc(manual.auditorValue || '')}"></label></div>
+        <p class="small muted">On the Warren auditor page: “Sales” tab for the price and date, “Values” for the appraised total.</p></div>`;
+    } else if (own && own.auditorUrl) html += `<p class="small"><a href="${esc(own.auditorUrl)}" target="_blank" rel="noopener">Full county auditor record →</a></p>`;
+    if (comps && comps.list.length) {
+      html += `<details class="howto"><summary>Recent sales nearby (${comps.list.length})</summary>${comps.list.slice(0, 12).map(c => `<div class="place"><span>${esc(c.addr)}<br><span class="small muted">${esc(c.date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' }))} · county value ${money(c.value)}</span></span><span class="dist"><b>${money(c.price)}</b></span></div>`).join('')}</details>`;
+    }
+    html += `<p class="small muted">Estimates are a guide, not an appraisal. They don't know about remodels, condition or finished basements. Your agent's comparable sales and the lender's appraisal are the final word.</p>`;
+    box.innerHTML = html;
+    const sync = () => { $('#f-price').value = $('#v-ask').value; onNotesInput(); };
+    $('#v-ask').onchange = () => { sync(); renderValue(run); };
+    ['#v-sale', '#v-date', '#v-aud'].forEach(id => { const el = $(id); if (el) el.onchange = () => { const m = { salePrice: $('#v-sale').value.trim(), saleDate: $('#v-date').value.trim(), auditorValue: $('#v-aud').value.trim() }; if (state.rec) state.rec.valueManual = m; record({ valueManual: m }); renderValue(run); }; });
+    record({ value: { owner: own ? own.owner : null, ownerKind: own && own.type ? own.type.kind : null, salePrice: sale ? sale.price : null, saleDate: sale ? +sale.date : null, countyValue: auditor ? auditor.total : null, taxes: own ? own.taxes : null, estLow: pc.low || null, estHigh: pc.high || null, verdict: pc.verdict || null } }, run);
+  }
+
   // ---------- roof age ----------
   async function loadRoof(p, run, est) {
     const box = $('#roof');
@@ -822,7 +892,7 @@
   }
 
   let notesTimer = null;
-  function onNotesInput() { clearTimeout(notesTimer); notesTimer = setTimeout(() => record({ notes: readNotes() }), 600); }
+  function onNotesInput() { clearTimeout(notesTimer); if (state.valueCtx && document.activeElement && document.activeElement.id === 'f-price') renderValue(state.runId); notesTimer = setTimeout(() => record({ notes: readNotes() }), 600); }
   function saveHouse() { record({ notes: readNotes(), starred: true }); toast('Saved ⭐'); }
 
   async function updateCount() {
@@ -887,10 +957,10 @@
     const stamp = new Date().toISOString().slice(0, 10);
     $('#h-json').onclick = () => download(`house-scout-${stamp}.json`, JSON.stringify({ app: 'house-scout', version: 1, exported: Date.now(), houses: list }, null, 1), 'application/json');
     $('#h-csv').onclick = () => {
-      const cols = ['label', 'direction', 'degrees', 'avoid', 'direction_source', 'roof', 'daycare_score', 'costco', 'indian_store', 'lot_acres', 'school_district', 'flood_zone', 'price', 'hoa', 'notes', 'times_searched', 'visits', 'last_seen', 'starred'];
+      const cols = ['label', 'direction', 'degrees', 'avoid', 'direction_source', 'roof', 'daycare_score', 'costco', 'indian_store', 'lot_acres', 'school_district', 'flood_zone', 'owner', 'bought_for', 'bought_on', 'county_value', 'estimated_value', 'price_check', 'price', 'hoa', 'notes', 'times_searched', 'visits', 'last_seen', 'starred'];
       const q2 = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
       const rows = list.map(r => { const n = r.notes || {}, fa = r.facing || {}, nb = r.nearby || {}, pr = r.property || {};
-        return [r.label, fa.dir, fa.bearing != null ? Math.round(fa.bearing) : '', fa.avoid ? 'yes' : (fa.dir ? 'no' : ''), fa.source, r.roof ? r.roof.headline : n.roof, r.daycare ? r.daycare.pct : '', nb.costco ? dd(nb.costco) : '', nb.indian ? `${nb.indian.name} (${dd(nb.indian)})` : '', pr.lotAcres, pr.district, pr.flood, n.price, n.hoa, n.notes, r.timesSearched, (r.visits || []).length, new Date(r.lastSeen).toISOString().slice(0, 10), r.starred ? 'yes' : ''].map(q2).join(','); });
+        return [r.label, fa.dir, fa.bearing != null ? Math.round(fa.bearing) : '', fa.avoid ? 'yes' : (fa.dir ? 'no' : ''), fa.source, r.roof ? r.roof.headline : n.roof, r.daycare ? r.daycare.pct : '', nb.costco ? dd(nb.costco) : '', nb.indian ? `${nb.indian.name} (${dd(nb.indian)})` : '', pr.lotAcres, pr.district, pr.flood, (r.value || {}).owner, (r.value || {}).salePrice, (r.value || {}).saleDate ? new Date(r.value.saleDate).toISOString().slice(0, 10) : '', (r.value || {}).countyValue, (r.value || {}).estLow ? `${Math.round(r.value.estLow / 1000)}k–${Math.round(r.value.estHigh / 1000)}k` : '', (r.value || {}).verdict, n.price, n.hoa, n.notes, r.timesSearched, (r.visits || []).length, new Date(r.lastSeen).toISOString().slice(0, 10), r.starred ? 'yes' : ''].map(q2).join(','); });
       download(`house-scout-${stamp}.csv`, [cols.join(','), ...rows].join('\n'), 'text/csv');
     };
     $('#h-import').onchange = async e => {
