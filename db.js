@@ -38,11 +38,18 @@
   const clear = () => tx('readwrite', s => s.clear());
 
   // Deep-ish merge: nested objects (facing, roof, daycare…) are replaced, top-level fields merged.
-  async function update(key, patch) {
-    const cur = (await get(key)) || { key, firstSeen: Date.now(), timesSearched: 0, visits: [], starred: false };
-    const rec = { ...cur, ...patch, key, lastSeen: patch.lastSeen || cur.lastSeen || Date.now() };
-    await put(rec);
-    return rec;
+  // Updates run one at a time. Several sections finish at nearly the same moment, and two
+  // read-then-write updates running together would otherwise overwrite each other's changes.
+  let chain = Promise.resolve();
+  function update(key, patch) {
+    const job = chain.then(async () => {
+      const cur = (await get(key)) || { key, firstSeen: Date.now(), timesSearched: 0, visits: [], starred: false };
+      const rec = { ...cur, ...patch, key, lastSeen: patch.lastSeen || cur.lastSeen || Date.now() };
+      await put(rec);
+      return rec;
+    });
+    chain = job.catch(() => {});
+    return job;
   }
 
   // One-time move of the old "Saved" list (localStorage) into the database.
