@@ -1,65 +1,12 @@
 
-### search butler maps
-HTTP 200 CORS=https://pratul48.github.io len=3451
-[["6cab8380332948a4a22de12ff3b823f0","Butler County Auditor GIS Viewer","Web Map"],["022c917993fd4ba482f164f8b0b96ba7","Butler County Auditor GIS Viewer","Web Mapping Application"],["543a095386c144a68e640be0ec70aac4","Butler County Auditor GIS Viewer","Code Attachment"]]
+### housing cost fields
+[]
 
-### webmap 6cab8380332948a4a22de12ff3b823f0
-HTTP 200 CORS=https://pratul48.github.io len=46350
-{"operationalLayers":[{"id":"2018_Ortho_9466","opacity":1,"title":"2018_Ortho","url":"https://maps.b
+### at point
+[{"GEOID":"39165031907","NAME":"Census Tract 319.07"}]
 
-### butler service urls
-https://maps.butlercountyauditor.org/arcgis/rest/services/2022_Ortho/MapServer
-https://maps.butlercountyauditor.org/arcgis/rest/services/2023_Ortho/MapServer
-https://gismaps.bceo.org/server/rest/services/Public/Roads/MapServer/0
-https://maps.butlercountyauditor.org/arcgis/rest/services/FloodData/MapServer
-https://maps.butlercountyauditor.org/arcgis/rest/services/TopographyData_no_cache/MapServer
-https://maps.butlercountyauditor.org/arcgis/rest/services/basemap/MapServer
-https://maps.butlercountyauditor.org/arcgis/rest/services/Boundaries/MapServer
+### year built at point
+[{"GEOID":"39165031907","B25034_001E":4420,"B25034_002E":118,"B25034_003E":639,"B25034_004E":2063,"B25034_005E":1109,"B25034_006E":103,"B25034_007E":266,"B25034_008E":0,"B25034_009E":95,"B25034_010E":19,"B25034_011E":8,"B25035_001E":2003,"B25035_001M":1,"B25035_calc_txt001E":"2003","B25035_calc_txt001M":1}]
 
-### fields https://maps.butlercountyauditor.org/arcgis/rest/services/2022_Ortho/MapServer/0
-ERROR fetch failed
-
-### at point https://maps.butlercountyauditor.org/arcgis/rest/services/2022_Ortho/MapServer/0
-ERROR fetch failed
-
-### fields https://maps.butlercountyauditor.org/arcgis/rest/services/2023_Ortho/MapServer/0
-ERROR fetch failed
-
-### at point https://maps.butlercountyauditor.org/arcgis/rest/services/2023_Ortho/MapServer/0
-ERROR fetch failed
-
-### fields https://maps.butlercountyauditor.org/arcgis/rest/services/FloodData/MapServer/0
-ERROR fetch failed
-
-### at point https://maps.butlercountyauditor.org/arcgis/rest/services/FloodData/MapServer/0
-ERROR fetch failed
-
-### fields https://maps.butlercountyauditor.org/arcgis/rest/services/TopographyData_no_cache/MapServer/0
-ERROR fetch failed
-
-### at point https://maps.butlercountyauditor.org/arcgis/rest/services/TopographyData_no_cache/MapServer/0
-ERROR fetch failed
-
-### fields https://maps.butlercountyauditor.org/arcgis/rest/services/basemap/MapServer/0
-ERROR fetch failed
-
-### at point https://maps.butlercountyauditor.org/arcgis/rest/services/basemap/MapServer/0
-ERROR fetch failed
-
-### fields https://maps.butlercountyauditor.org/arcgis/rest/services/Boundaries/MapServer/0
-ERROR fetch failed
-
-### at point https://maps.butlercountyauditor.org/arcgis/rest/services/Boundaries/MapServer/0
-ERROR fetch failed
-
-### Warren auditor sales page
-HTTP 404 CORS=null len=0
-
-
-### Warren TaxParcels query maxRecord/capabilities
-HTTP 200 CORS=https://pratul48.github.io len=12849
-{"max":2000,"caps":"Query,Uploads","rel":[]}
-
-### Warren TaxParcels feature service root
-HTTP 200 CORS=https://pratul48.github.io len=3656
-{"layers":[{"id":0,"name":"Warren Parcels","parentLayerId":-1,"defaultVisibility":true,"subLayerIds":null,"minScale":500000,"maxScale":0,"type":"Feature Layer","geometryType":"esriGeometryPolygon"}],"tables":[]}
+### warren sales-ish fields check hamilton recent
+[{"ADDRNO":"9509","ADDRST":"CROTON","ADDRSF":"DR","SALDAT":1746748800000,"SALAMT":545950,"MKT_TOTAL_VAL":340730,"VALID":null,"SALTYP":null,"NUMPCL":1},{"ADDRNO":"9523","ADDRST":"CROTON","ADDRSF":"DR","SALDAT":1748476800000,"SALAMT":562120,"MKT_TOTAL_VAL":329800,"VALID":null,"SALTYP":null,"NUMPCL":1},{"ADDRNO":"9528","ADDRST":"CROTON","ADDRSF":"DR","SALDAT":1775520000000,"SALAMT":650000,"MKT_TOTAL_VAL":371070,"VALID":null,"SALTYP":null,"NUMPCL":1},{"ADDRNO":"9526","ADDRST":"CROTON","ADDRSF":"DR","SALDAT":1756857600000,"SALAMT":635000,"MKT_TOTAL_VAL":447620,"VALID":null,"SALTYP":null,"NUMPCL":1},{"ADDRNO":"8030","ADDRST":"REMINGTON","ADDRSF":"RD","SALDAT":1747872000000,"SALAMT":425000,"MKT_TOTAL_VAL":367000,"VALID":null,"SALTYP":null,"NUMPCL":1},{"ADDRNO":"8085","ADDRST":"REMINGTON","ADDRSF":"RD","SALDAT":1758672000000,"SALAMT":1400000,"MKT_TOTAL_VAL":922460,"VALID":null,"SALTYP":null,"NUMPCL":1},{"ADDRNO":"7975","ADDRST":"COOPER","ADDRSF":"RD","SALDAT":1746489600000,"SALAMT":1800000,"MKT_TOTAL_VAL":1295590,"VALID":null,"SALTYP":null,"NUMPCL":1},{"ADDRNO":"7995","ADDRST":"REMINGTON","ADDRSF":"RD","SALDAT":1786924800000,"SALAMT":942500,"MKT_TOTAL_VAL":680000,"VALID":null,"SALTYP":null,"NUMPCL":1},{"ADDRNO":"7920","ADDRST":"MITCHELL FARM","ADDRSF":"LN","SALDAT":1755475200000,"SALAMT":950000,"MKT_TOTAL_VAL":751400,"VALID":null,"SALTYP":null,"NUMPCL":1},{"ADDRNO":"9861","ADDRST":"TOLLGATE","ADDRSF":"LN","SALDAT":1782345600000,"SALAMT":716000,"MKT_TOTAL_VAL":374480,"VALID":null,"SALTYP":null,"NUMPCL":1},{"ADDRNO":"7963","ADDRST":"MITCHELL FARM","ADDRSF":"LN","SALDAT":1787702400000,"SALAMT":460000,"MKT_TOTAL_VAL":339500,"VALID":null,"SALTYP":null,"NUMPCL":1},{"ADDRNO":"9856","ADDRST":"TOLLGATE","ADDRSF":"LN","SALDAT":1785715200000,"SALAMT":1601000,"MKT_TOTAL_VAL":1219870,"VALID":null,"SALTYP":null,"NUMPCL":1},{"ADDRNO":"9804","ADDRST":"TOLLGATE","ADDRSF":"LN","SALDAT":1738886400000,"SALAMT":850000,"MKT_TOTAL_VAL":515860,"VALID":null,"SALTYP":null,"NUMPCL":1},{"ADDRNO":"9750","ADDRST":"ZIG ZAG","ADDRSF":"RD","SALDAT":1787616000000,"SALAMT":1700000,"MKT_TOTAL_VAL":1302310,"VALID":null,"SALTYP":null,"NUMPCL":1},{"ADDRNO":"9821","ADDRST":"KNOLLBROOK","ADDRSF":"TE","SALDAT":1765929600000,"SALAMT":440000,"MKT_TOTAL_VAL":377720,"VALID":null,"SALTYP":null,"NUMPCL":1},{"ADDRNO":"7919","ADDRST":"MITCHELL FARM","ADDRSF":"LN","SALDAT":1793059200000,"SALAMT":1050000,"MKT_TOTAL_VAL":829790,"VALID":null,"SALTYP":null,"NUMPCL":1},{"ADDRNO":"9856","ADDRST":"KNOLLBROOK","ADDRSF":"T
