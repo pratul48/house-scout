@@ -36,5 +36,19 @@ const ADDRS = (process.env.ADDRS || '').split('|').filter(Boolean).length ? proc
     const top = await page.$('#card-header'); if (top) { await top.scrollIntoViewIfNeeded(); }
     await page.screenshot({ path: `tools/out/${n}-page.png`, fullPage: true });
   }
+  // ---- database checks ----
+  await page.click('#house-tools #btn-star').catch(e => console.log('star click failed', e.message));
+  await page.click('#house-tools #btn-visit').catch(e => console.log('visit click failed', e.message));
+  await page.fill('#f-price', '$512,000'); await page.fill('#f-notes', 'Nice cul-de-sac'); await page.waitForTimeout(1500);
+  await page.reload({ waitUntil: 'networkidle' });
+  await page.click('.tabbar button[data-view=view-saved]'); await page.waitForTimeout(1500);
+  console.log('\n==== DB AFTER RELOAD\n' + await page.evaluate(() => document.querySelector('#saved-list').innerText.slice(0, 3000)));
+  const recs = await page.evaluate(async () => (await HouseDB.all()).map(r => ({ label: r.label, times: r.timesSearched, visits: (r.visits || []).length, starred: r.starred, facing: r.facing && r.facing.dir, roof: r.roof && r.roof.short, daycare: r.daycare && r.daycare.pct, costco: r.nearby && r.nearby.costco && r.nearby.costco.name, notes: r.notes, prop: r.property })));
+  console.log('==== DB RECORDS\n' + JSON.stringify(recs, null, 1));
+  await page.click('.chip[data-f=starred]'); await page.waitForTimeout(800);
+  console.log('==== STARRED FILTER: ' + await page.evaluate(() => document.querySelectorAll('#saved-list .card.saved').length) + ' cards');
+  const [dl] = await Promise.all([page.waitForEvent('download', { timeout: 10000 }).catch(() => null), page.click('#h-csv')]);
+  if (dl) { const fp = await dl.path(); console.log('==== CSV\n' + require('fs').readFileSync(fp, 'utf8').slice(0, 1500)); }
+  await page.screenshot({ path: 'tools/out/db.png', fullPage: true });
   await browser.close();
 })().catch(e => { console.log('FATAL', e); process.exit(1); });

@@ -46,6 +46,7 @@
         <div class="card" id="card-header">
           <div id="addr-title" class="addr-title"></div>
           <div id="verdict" class="verdict"></div>
+          <div id="house-tools" class="house-tools"></div>
         </div>
 
         <div class="card">
@@ -124,7 +125,7 @@
             <label>Water heater age<input id="f-wh" placeholder="3 yrs"></label>
           </div>
           <label>Notes<textarea id="f-notes" rows="3" placeholder="Big backyard, needs paint…"></textarea></label>
-          <button type="button" id="btn-save" class="btn primary wide">💾 Save this house</button>
+          <button type="button" id="btn-save" class="btn primary wide">⭐ Star this house</button>
         </div>
       </div>
     </section>
@@ -137,12 +138,13 @@
 
   <nav class="tabbar">
     <button data-view="view-search" class="active">🔎 Check a house</button>
-    <button data-view="view-saved">⭐ Saved <span id="saved-count"></span></button>
+    <button data-view="view-saved">🗂️ Houses <span id="saved-count"></span></button>
   </nav>
 
   <div id="toast" class="toast" hidden></div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="db.js"></script>
   <script src="geo.js"></script>
   <script src="ohio.js"></script>
   <script src="roof.js"></script>
