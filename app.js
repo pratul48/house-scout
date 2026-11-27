@@ -673,7 +673,13 @@
   // ---------- value, sale history & owner ----------
   const money = v => v == null ? '—' : '$' + Math.round(v).toLocaleString();
   const parseMoney = s => { const m = String(s || '').replace(/[, ]/g, '').match(/(\d+(\.\d+)?)\s*(k|m)?/i); if (!m) return null; let v = +m[1]; if (/k/i.test(m[3] || '')) v *= 1e3; if (/m/i.test(m[3] || '')) v *= 1e6; if (v < 1000) v *= 1000; return v; };
-  const parseWhen = s => { const m = String(s || '').match(/(\d{4})(?:[-/ ](\d{1,2}))?/); return m ? new Date(+m[1], m[2] ? +m[2] - 1 : 5, 15) : null; };
+  const parseWhen = s => {
+    s = String(s || '');
+    let m = s.match(/^\s*(\d{1,2})[-/](?:\d{1,2}[-/])?(\d{4})/); // 6/2019 or 6/14/2019
+    if (m) return new Date(+m[2], +m[1] - 1, 15);
+    m = s.match(/(\d{4})(?:[-/ ](\d{1,2}))?/); // 2019 or 2019-06
+    return m ? new Date(+m[1], m[2] ? +m[2] - 1 : 5, 15) : null;
+  };
 
   async function loadValue(p, run, est) {
     const box = $('#value');
@@ -687,12 +693,14 @@
     if (own && own.county === 'Hamilton') comps = await Value.hamiltonComps(pt, own.cls).catch(() => null);
     if (run !== state.runId) return;
     state.valueCtx = { own, z, comps };
+    state.valueManual = null;
     renderValue(run);
   }
 
   function renderValue(run) {
     const box = $('#value'), { own, z, comps } = state.valueCtx || {};
-    const manual = (state.rec && state.rec.valueManual) || {};
+    // what you typed this session wins over the saved copy (the database write may still be in flight)
+    const manual = state.valueManual || (state.rec && state.rec.valueManual) || {};
     const sale = own && own.sale ? own.sale : (parseMoney(manual.salePrice) && parseWhen(manual.saleDate) ? { price: parseMoney(manual.salePrice), date: parseWhen(manual.saleDate), manual: true } : null);
     const auditor = own && own.auditor ? own.auditor : (parseMoney(manual.auditorValue) ? { total: parseMoney(manual.auditorValue), manual: true } : null);
     const asking = parseMoney($('#f-price').value);
@@ -735,7 +743,10 @@
     box.innerHTML = html;
     const sync = () => { $('#f-price').value = $('#v-ask').value; onNotesInput(); };
     $('#v-ask').onchange = () => { sync(); renderValue(run); };
-    ['#v-sale', '#v-date', '#v-aud'].forEach(id => { const el = $(id); if (el) el.onchange = () => { const m = { salePrice: $('#v-sale').value.trim(), saleDate: $('#v-date').value.trim(), auditorValue: $('#v-aud').value.trim() }; if (state.rec) state.rec.valueManual = m; record({ valueManual: m }); renderValue(run); }; });
+    ['#v-sale', '#v-date', '#v-aud'].forEach(id => { const el = $(id); if (el) el.onchange = () => {
+      const m = { salePrice: $('#v-sale').value.trim(), saleDate: $('#v-date').value.trim(), auditorValue: $('#v-aud').value.trim() };
+      state.valueManual = m; record({ valueManual: m }); renderValue(run);
+    }; });
     record({ value: { owner: own ? own.owner : null, ownerKind: own && own.type ? own.type.kind : null, salePrice: sale ? sale.price : null, saleDate: sale ? +sale.date : null, countyValue: auditor ? auditor.total : null, taxes: own ? own.taxes : null, estLow: pc.low || null, estHigh: pc.high || null, verdict: pc.verdict || null } }, run);
   }
 
