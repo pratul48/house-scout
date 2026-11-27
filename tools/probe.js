@@ -1,27 +1,34 @@
 async function get(label, url, opts = {}) {
   try {
-    const r = await fetch(url, { headers: { Origin: 'https://pratul48.github.io' }, signal: AbortSignal.timeout(30000) });
+    const r = await fetch(url, { headers: { Origin: 'https://pratul48.github.io', 'User-Agent': 'Mozilla/5.0 (iPhone) Safari/604.1' }, signal: AbortSignal.timeout(25000) });
     const t = await r.text(); let j = null; try { j = JSON.parse(t); } catch {}
-    let show = t; try { if (opts.pick && j) show = JSON.stringify(opts.pick(j)); } catch (e) { show = 'pick error ' + e.message; }
-    console.log(`\n### ${label}\nHTTP ${r.status} len=${t.length}\n${show.slice(0, opts.max || 1500)}`);
-    return j;
+    let show = t; try { if (opts.pick && j) show = JSON.stringify(opts.pick(j)); } catch (e) { show = 'pick err ' + e.message; }
+    console.log(`\n### ${label}\nHTTP ${r.status} CORS=${r.headers.get('access-control-allow-origin')} len=${t.length}\n${show.slice(0, opts.max || 1500)}`);
+    return j ?? t;
   } catch (e) { console.log(`\n### ${label}\nERROR ${e.message}`); return null; }
 }
+const fieldsOf = j => (j.fields || []).map(f => f.name + (f.alias && f.alias !== f.name ? '=' + f.alias : '')).join(' | ');
 const attrs = j => (j.features || []).map(f => f.attributes);
-const P = [[-84.31821, 39.36491, 'Mason'], [-84.3570, 39.3480, 'West Chester'], [-84.3540, 39.2280, 'Montgomery'], [-84.2025, 39.4340, 'Lebanon']];
+const W = [-84.31821, 39.36491], B = [-84.3570, 39.3480], H = [-84.3540, 39.2280];
+const pt = ([x, y]) => `geometry=${x},${y}&geometryType=esriGeometryPoint&inSR=4326&spatialRel=esriSpatialRelIntersects&returnGeometry=false&f=json`;
 (async () => {
-  for (const [lon, lat, nm] of P) {
-    const g = `geometry=${lon},${lat}&geometryType=esriGeometryPoint&inSR=4326&spatialRel=esriSpatialRelIntersects&returnGeometry=false&f=json`;
-    await get('osip3 footprint ' + nm, `https://maps.ohio.gov/image/rest/services/osip_3_cache/MapServer/2/query?${g}&outFields=*`, { pick: attrs, max: 900 });
-    await get('osip3 identify ' + nm, `https://maps.ohio.gov/image/rest/services/osip_3_cache/MapServer/identify?geometry=${lon},${lat}&geometryType=esriGeometryPoint&sr=4326&layers=all&tolerance=1&mapExtent=${lon - 0.001},${lat - 0.001},${lon + 0.001},${lat + 0.001}&imageDisplay=400,400,96&returnGeometry=false&f=json`, { pick: j => (j.results || []).map(r => [r.layerName, r.attributes && (r.attributes.Name || r.attributes.name)]), max: 900 });
-    await get('osipcur footprint ' + nm, `https://maps.ohio.gov/image/rest/services/osip_most_current_cache/MapServer/2/query?${g}&outFields=*`, { pick: attrs, max: 900 });
-    await get('osipcur catalog ' + nm, `https://maps.ohio.gov/image/rest/services/osip_most_current/ImageServer/query?${g}&where=${encodeURIComponent('Category <> 2')}&outFields=OBJECTID,Name,Category,ZOrder`, { pick: attrs, max: 900 });
-    await get('index ' + nm, `https://maps.ohio.gov/arcgis/rest/services/Hosted/OSIP_Index_June_2026/FeatureServer/0/query?${g}&outFields=year,month_flown,resolution,county`, { pick: attrs, max: 400 });
-    await get('parcel ' + nm, `https://services2.arcgis.com/MlJ0G8iWUyC7jAmu/arcgis/rest/services/OhioStatewidePacels_full_view/FeatureServer/0/query?geometry=${lon},${lat}&geometryType=esriGeometryPoint&inSR=4326&distance=40&units=esriSRUnit_Meter&outFields=County,LocalParcelID,SitusAddressAll,CAMADataSite,StateLUC&returnGeometry=false&resultRecordCount=2&f=json`, { pick: attrs, max: 700 });
-    await get('structures ' + nm, `https://services2.arcgis.com/FiaPA4ga0iQKduv3/arcgis/rest/services/USA_Structures_View/FeatureServer/0/query?geometry=${lon},${lat}&geometryType=esriGeometryPoint&inSR=4326&distance=60&units=esriSRUnit_Meter&returnCountOnly=true&f=json`, { max: 200 });
+  const page = await get('wcgis page', 'https://maps.warrencountyohio.gov/wcgis/webmap/index.html?config=auditor', { max: 200 });
+  if (typeof page === 'string') {
+    const srcs = [...new Set((page.match(/(src|href)="([^"]+)"/g) || []).map(s => s.split('"')[1]))]; console.log('assets:', srcs.join(' '));
+    for (const u of srcs.filter(s => /config|app|main|\.json/i.test(s) && !/css|png|ico/i.test(s)).slice(0, 8)) {
+      const full = u.startsWith('http') ? u : 'https://maps.warrencountyohio.gov/wcgis/webmap/' + u.replace(/^\.\//, '');
+      const t = await get('asset ' + u, full, { max: 100 });
+      if (typeof t === 'string') { const urls = [...new Set(t.match(/https?:\/\/[^"'\s)]+(MapServer|FeatureServer)[^"'\s)]*/gi) || [])]; console.log('  services in ' + u + ':\n  ' + urls.slice(0, 40).join('\n  ')); }
+      else if (t) { const s = JSON.stringify(t); const urls = [...new Set(s.match(/https?:\/\/[^"'\s)]+(MapServer|FeatureServer)[^"'\s)]*/gi) || [])]; console.log('  services in ' + u + ':\n  ' + urls.slice(0, 40).join('\n  ')); }
+    }
   }
-  await get('osip3 layer 2 info', 'https://maps.ohio.gov/image/rest/services/osip_3_cache/MapServer/2?f=json', { pick: j => ({ fields: (j.fields || []).map(f => f.name).join(','), caps: j.capabilities }), max: 900 });
-  await get('LBRS geocode West Chester', 'https://maps.ohio.gov/arcgis/rest/services/LBRSLocator2023/GeocodeServer/findAddressCandidates?SingleLine=' + encodeURIComponent('7951 Tylersville Rd, West Chester, OH') + '&outFields=Addr_type,Match_addr&maxLocations=2&outSR=4326&f=json', { pick: j => (j.candidates || []).map(c => [c.address, c.score, c.attributes.Addr_type, c.location]), max: 600 });
-  await get('LBRS geocode loose', 'https://maps.ohio.gov/arcgis/rest/services/LBRSLocator2023/GeocodeServer/findAddressCandidates?SingleLine=' + encodeURIComponent('5517 patriot ct mason') + '&outFields=Addr_type,Match_addr&maxLocations=3&outSR=4326&f=json', { pick: j => (j.candidates || []).map(c => [c.address, c.score, c.attributes.Addr_type, c.location]), max: 600 });
-  await get('LBRS suggest', 'https://maps.ohio.gov/arcgis/rest/services/LBRSLocator2023/GeocodeServer/suggest?text=' + encodeURIComponent('5517 patri') + '&maxSuggestions=5&f=json', { max: 800 });
+  for (const root of ['https://maps.warrencountyohio.gov/arcgis/rest/services', 'https://maps.warrencountyohio.gov/server/rest/services', 'https://gis.warrencountyohio.gov/arcgis/rest/services', 'https://maps.warrencountyohio.gov/wcgis/rest/services']) await get('root ' + root, root + '?f=json', { max: 1500 });
+  // PUCO statewide owner
+  await get('PUCO owner Warren', `https://maps.puco.ohio.gov/arcgis/rest/services/ohio_parcels/MapServer/2/query?${pt(W)}&outFields=*`, { pick: attrs, max: 800 });
+  // Butler
+  await get('Butler search', 'https://www.arcgis.com/sharing/rest/search?f=json&num=20&bbox=-84.38,39.33,-84.33,39.37&q=' + encodeURIComponent('parcel type:"Feature Service" OR type:"Map Service"'), { pick: j => (j.results || []).map(r => [r.title, r.owner, r.url]), max: 3000 });
+  for (const root of ['https://gis.bcohio.gov/arcgis/rest/services', 'https://bcgis.bcohio.gov/arcgis/rest/services', 'https://propertysearch.bcohio.gov/arcgis/rest/services', 'https://gis.butlercountyohio.org/arcgis/rest/services']) await get('root ' + root, root + '?f=json', { max: 1200 });
+  // Hamilton parcel attributes at point
+  await get('Hamilton attrs at point', `https://cagisonline.hamilton-co.org/arcgis/rest/services/COUNTYWIDE/Cadastral/MapServer/0/query?${pt(H)}&outFields=PARCELID,OWNNM1,OWNNM2,SALDAT,SALAMT,SALTYP,VALID,MKTLND,MKTIMP,MKT_TOTAL_VAL,ANNUAL_TAXES,PREVOWN1,CLASS,ADDRNO,ADDRST,ADDRSF,ACREDEED,HMSD_FLAG,FORECL_FLAG,DELQ_TAXES,RENT_REG_FLAG`, { pick: attrs, max: 1500 });
+  await get('Hamilton comps (sales last 2y, 400m)', `https://cagisonline.hamilton-co.org/arcgis/rest/services/COUNTYWIDE/Cadastral/MapServer/0/query?geometry=${H[0]},${H[1]}&geometryType=esriGeometryPoint&inSR=4326&distance=800&units=esriSRUnit_Meter&where=${encodeURIComponent("SALAMT > 50000 AND CLASS = '510'")}&outFields=ADDRNO,ADDRST,SALDAT,SALAMT,MKT_TOTAL_VAL&returnGeometry=false&resultRecordCount=10&f=json`, { pick: j => j.error || attrs(j), max: 1500 });
 })();
