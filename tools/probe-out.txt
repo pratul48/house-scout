@@ -1,12 +1,7 @@
-
-### zip_code_market_tracker.tsv000.gz 403 null null
-
-### neighborhood_market_tracker.tsv000.gz 403 null null
-
-### city_market_tracker.tsv000.gz 403 null null
-gz err incorrect header check
-
-### lines 0 ohio 0 secs 0.004
-
-### 45040 rows
-
+### status 200 124161974 Mon, 16 Nov 2026 16:54:00 GMT CORS=null
+### cols 329 RegionID|SizeRank|RegionName|RegionType|StateName|State|City|Metro|CountyName|2000-03-31|2000-04-30|2000-05-31 ... 2026-08-31|2026-09-30|2026-10-31
+45040 77414|570|45040|zip|OH|OH|Mason|"Cincinnati| OH-KY-IN" ... 2012-01: 264018.02102665615 last: 554101.2686782276
+45069 77434|622|45069|zip|OH|OH|West Chester|"Cincinnati| OH-KY-IN" ... 2012-01: 185137.54169161222 last: 441047.35561880557
+45242 77533|5596|45242|zip|OH|OH|Montgomery|"Cincinnati| OH-KY-IN" ... 2012-01: 236200.34436967495 last: 568022.9377836023
+45036 77412|1594|45036|zip|OH|OH|Lebanon|"Cincinnati| OH-KY-IN" ... 2012-01: 179466.48253163925 last: 421821.22060933546
+### OH zips 1057
