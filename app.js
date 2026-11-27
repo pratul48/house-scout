@@ -717,6 +717,7 @@
     const onType = () => {
       clearTimeout(t);
       t = setTimeout(() => {
+        if (run !== state.runId || !$('#v-ask')) return; // moved on to another house
         $('#f-price').value = $('#v-ask').value; onNotesInput();
         if ($('#v-sale')) { state.valueManual = { salePrice: $('#v-sale').value.trim(), saleDate: $('#v-date').value.trim(), auditorValue: $('#v-aud').value.trim() }; record({ valueManual: state.valueManual }); }
         computeValue(run);
