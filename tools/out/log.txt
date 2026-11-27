@@ -1,5 +1,5 @@
 
-==================== 1. 5517 Patriot Ct, Mason, OH 45040  (161s)
+==================== 1. 5517 Patriot Ct, Mason, OH 45040  (146s)
 --- title
 5517 Patriot Ct, Mason, OH 45040
 --- verdict
@@ -44,12 +44,10 @@ No roof replacement seen from Feb 2012 to Mar 2025
 
 The roof looks the same in every clear photo in that period. A roof replaced after Mar 2025 would not show up yet.
 
-8 dated photos of this roof (yellow outline; red = where the change was seen). Tap one to enlarge.
+7 dated photos of this roof (yellow outline; red = where the change was seen). Tap one to enlarge.
 
 Feb 2012
 US-OH-Cincinnati-W (0.3 m)
-Jun 2016
-Vivid - USA (0.5 m)
 Aug 2018
 Vivid (0.5 m)
 Oct 2019
@@ -90,7 +88,7 @@ Young families nearby
 Easy, safe drop-off
 20/20
 
-quiet court/circle street, easy and safe drop-off.
+quiet court/circle street, easy and safe drop-off; 4 min to the nearest elementary school.
 
 Families can afford care
 20/20
@@ -112,6 +110,16 @@ Licensed child care within 3 miles (28)
 Pre School: 3 · Child Care Center: 24 · FCC - Type B Home: 1
 
 Closest 12
+Nearest elementary schools
+Mason Early Childhood Center Elementary School
+Grades PK–02 · 1997 students
+🚗 4 min
+Mason Intermediate Elementary School
+Grades 03–06 · 3086 students
+🚗 6 min
+Hopewell Early Childhood School
+Grades KG–02 · 727 students
+🚗 9 min
 Ohio rules for a home daycare (Type B)
 Up to 7 children at one time, no more than 3 under age 2. Your mom's own children under 6 who live there count toward the 7.
 State law treats a Type B home as a residential use: it's allowed anywhere houses are allowed (Ohio Revised Code 5104.054). HOA covenants are separate and can still restrict a home business, so read them before buying.
@@ -132,16 +140,16 @@ The score is a guide built from public data (Ohio child care licensing list, Cen
 Costco
 2.2 mi straight-line
 🍛 Indian grocery
-Bengals Quality Fish and Meats
-6.4 mi straight-line
+Patel Brothers
+6.5 mi straight-line
 OpenStreetMap misses many Indian stores. Search Google Maps →
 🛕 Hindu temple
 BAPS Shri Swaminarayan Mandir
 9.0 mi straight-line
 Search Google Maps →
 🥘 Indian restaurant
-Bawarchi Biryanis
-3.2 mi straight-line
+Brij Mohan
+8.0 mi straight-line
 🥦 Supermarket
 Kroger
 2.1 mi straight-line
@@ -188,58 +196,58 @@ Soak City Station
 Butler County Regional Airport
 11 mi straight-line
 --- errors
+[reqfail] https://metadata.maptiles.arcgis.com/arcgis/rest/services/World_Imagery_Metadata_2017_r21/MapServer/identify?geometry=-84.3182514797055,39.3 net::ERR_ABORTED
 [reqfail] https://overpass-api.de/api/interpreter net::ERR_ABORTED
-[reqfail] https://overpass.private.coffee/api/interpreter net::ERR_ABORTED
-[http 502] https://overpass-api.de/api/interpreter
-[error] Failed to load resource: the server responded with a status of 502 ()
-[error] Access to fetch at 'https://overpass.private.coffee/api/interpreter' from origin 'http://localhost:8080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.
-[reqfail] https://overpass.private.coffee/api/interpreter net::ERR_FAILED
-[error] Failed to load resource: net::ERR_FAILED
+[reqfail] https://maps.mail.ru/osm/tools/overpass/api/interpreter net::ERR_ABORTED
+[http 504] https://maps.mail.ru/osm/tools/overpass/api/interpreter
+[error] Failed to load resource: the server responded with a status of 504 (Gateway Time-out)
 
-==================== 2. 4931 Sarah Dr, Mason, OH  (0s)
+==================== 2. 4931 Sarah Dr, Mason, OH  (104s)
 --- title
-5517 Patriot Ct, Mason, OH 45040
+4931 Sarah Dr, Mason, OH 45040
 --- verdict
-✔ North facing – OK
+✖ South-East facing – avoid
 
-🚪 Walking out the front door, you face North.
+🚪 Walking out the front door, you face South-East.
+
+⚠️ This is within 9° of the OK zone. Double-check with the compass at the front door.
 --- facing
 Direction you face stepping out the front door
-N 3°
+SE 121°
 Estimated from the map · confidence: high
-Stepping out the back door you face South
-Front street: Patriot Ct (94 ft from house center)
+Stepping out the back door you face North-West
+Front street: Sarah Dr (86 ft from house center)
 How this was worked out
 --- property
 County
 Warren County
 Parcel ID
-16361480130
+12314650060
 Land use
 Res-Single Family
 Lot size
-0.17 acres (7,196 sq ft)
+0.29 acres (12,771 sq ft)
 Year built, sales, taxes
 County auditor record →
 House footprint
-2,228 sq ft on the ground (not living area)
+2,567 sq ft on the ground (not living area)
 Subdivision
-Concord Crossing
+Coddington Reserve
 Likely has an HOA. Ask for the covenants.
 School district
 Mason City School District
 Ohio report card →
 Elevation
-830 ft above sea level
+827 ft above sea level
 Flood zone
 X – not high-risk
 area of minimal flood hazard
 --- roof
 Why there's no permit date: In Mason, Warren County and most of Ohio, replacing shingles doesn't need a building permit, so no public record of roof dates exists. The app reads the roof's history from dated aerial photos instead.
 
-No roof replacement seen from Feb 2012 to Mar 2025
+Roof most likely replaced between Dec 2021 and Mar 2023
 
-The roof looks the same in every clear photo in that period. A roof replaced after Mar 2025 would not show up yet.
+The roof changed colour much more than the neighbours' roofs between those two photos and got darker, which is typical of new shingles. That makes the roof about 3–5 years old.
 
 8 dated photos of this roof (yellow outline; red = where the change was seen). Tap one to enlarge.
 
@@ -266,13 +274,13 @@ Street View: in the Google Maps app tap the photo date to step back through olde
 County auditor record: year built. If no change shows in the photos, the roof may date from then.
 Your home inspector will estimate remaining roof life.
 --- daycare
-85
+86
 /100
 Strong spot for a home daycare
 Demand vs. existing daycares
-11/20
+12/20
 
-2,226 kids under 6 with all parents working, and 28 licensed daycares/preschools within 3 miles: about 80 kids per daycare, vs 70 across Ohio (1.1× the state).
+2,176 kids under 6 with all parents working, and 27 licensed daycares/preschools within 3 miles: about 81 kids per daycare, vs 70 across Ohio (1.1× the state).
 
 Competition within 1 mile
 14/20
@@ -282,12 +290,12 @@ Competition within 1 mile
 Young families nearby
 20/20
 
-2,319 children age 0–4, 3,427 age 5–9 and 4,250 age 10–14 live within 3 miles.
+2,249 children age 0–4, 3,338 age 5–9 and 4,149 age 10–14 live within 3 miles.
 
 Easy, safe drop-off
 20/20
 
-quiet court/circle street, easy and safe drop-off.
+residential street; 3 min to the nearest elementary school.
 
 Families can afford care
 20/20
@@ -296,19 +304,29 @@ Median household income in this census tract is $166,895.
 
 Kids within 3 miles
 Age 0–4
-2,319
+2,249
 Age 5–9
-3,427
+3,338
 Age 10–14
-4,250
+4,149
 
-2,226 children under 6 and 5,860 school-age children (6–17) live with parents who all work. These families are the ones who need care. Census ACS 5-year estimates, 16 census tracts weighted by how much of each is within 3 miles.
+2,176 children under 6 and 5,704 school-age children (6–17) live with parents who all work. These families are the ones who need care. Census ACS 5-year estimates, 16 census tracts weighted by how much of each is within 3 miles.
 
-Licensed child care within 3 miles (28)
+Licensed child care within 3 miles (27)
 
-Pre School: 3 · Child Care Center: 24 · FCC - Type B Home: 1
+Pre School: 3 · Child Care Center: 23 · FCC - Type B Home: 1
 
 Closest 12
+Nearest elementary schools
+Mason Early Childhood Center Elementary School
+Grades PK–02 · 1997 students
+🚗 3 min
+Mason Intermediate Elementary School
+Grades 03–06 · 3086 students
+🚗 6 min
+Hopewell Early Childhood School
+Grades KG–02 · 727 students
+🚗 9 min
 Ohio rules for a home daycare (Type B)
 Up to 7 children at one time, no more than 3 under age 2. Your mom's own children under 6 who live there count toward the 7.
 State law treats a Type B home as a residential use: it's allowed anywhere houses are allowed (Ohio Revised Code 5104.054). HOA covenants are separate and can still restrict a home business, so read them before buying.
@@ -318,76 +336,77 @@ How to become a provider → · ORC 5104.054 →
 
 The score is a guide built from public data (Ohio child care licensing list, Census ACS, NCES schools, Ohio street data), not a guarantee of enrollment.
 --- nuis
-🚙 Busy road right next to house (Mason Road)
-276 ft
-🏭 Industrial area (R.E. Middleton Construction)
+🏭 Industrial area
 0.3 mi
 🚂 Railroad tracks (noise) (Mason Subdivision)
-0.3 mi
+0.4 mi
 --- nearby
 🛒 Costco
 Costco
-🚗 2.9 mi · 7 min
+🚗 2.7 mi · 6 min
 🍛 Indian grocery
 Bengals Quality Fish and Meats
-🚗 7.2 mi · 15 min
+🚗 7.4 mi · 15 min
 OpenStreetMap misses many Indian stores. Search Google Maps →
 🛕 Hindu temple
 BAPS Shri Swaminarayan Mandir
-🚗 12 mi · 19 min
+🚗 12 mi · 18 min
 Search Google Maps →
 🥘 Indian restaurant
 Bawarchi Biryanis
-🚗 4.2 mi · 9 min
+🚗 4.3 mi · 9 min
 🥦 Supermarket
 Kroger
-🚗 3.5 mi · 7 min
+🚗 3.6 mi · 7 min
 The Fresh Market
-🚗 3.7 mi · 8 min
+🚗 3.4 mi · 7 min
 🏥 Hospital (ER)
 The Christ Hospital Medical Center – Liberty Township
-🚗 3.4 mi · 8 min
+🚗 3.1 mi · 7 min
 🩺 Urgent care / clinic
 TriHealth Priority Clinic
-🚗 2.6 mi · 6 min
+🚗 2.4 mi · 5 min
 💊 Pharmacy
 Yost Pharmacy
-🚗 0.9 mi · 2 min
+🚗 1.0 mi · 2 min
 🏫 Schools
 Mason Early Childhood Center
-🚗 0.9 mi · 3 min
+🚗 0.7 mi · 3 min
 Saint Susanna Catholic School
-🚗 1.2 mi · 4 min
-William Mason High School
-🚗 1.8 mi · 5 min
+🚗 1.4 mi · 4 min
+Royalmont Academy
+🚗 2.3 mi · 7 min
 🌳 Park / playground
 Meadows Park
-🚗 1.6 mi · 6 min
+🚗 1.3 mi · 5 min
 📚 Library
 Mason Public Library
-🚗 0.9 mi · 3 min
+🚗 1.1 mi · 3 min
 🏋️ Gym
 Crossfit Superfly Mason
-🚗 1.1 mi · 3 min
+🚗 1.2 mi · 3 min
 ⛽ Gas station
-Om Oil
+Marathon
 🚗 1.2 mi · 3 min
 🚒 Fire station
 Mason Fire Station 51
-🚗 1.3 mi · 4 min
+🚗 1.1 mi · 4 min
 🚓 Police
 Warren County Sheriff's Office - Deerfield Township Post
-🚗 5.3 mi · 11 min
+🚗 5.5 mi · 11 min
 🚆 Train / metro station
 Soak City Station
-🚗 4.8 mi · 11 min
+🚗 5.0 mi · 11 min
 ✈️ Airport
 Butler County Regional Airport
-🚗 16 mi · 26 min
+🚗 16 mi · 25 min
 --- errors
+[reqfail] https://overpass-api.de/api/interpreter net::ERR_ABORTED
+[http 502] https://overpass-api.de/api/interpreter
+[error] Failed to load resource: the server responded with a status of 502 ()
+[reqfail] https://maps.mail.ru/osm/tools/overpass/api/interpreter net::ERR_ABORTED
 
-
-==================== 3. 5088 Lexington Ct, Mason, OH  (220s)
+==================== 3. 5088 Lexington Ct, Mason, OH  (70s)
 --- title
 5088 Lexington Ct, Mason, OH 45040
 --- verdict
@@ -422,11 +441,11 @@ House footprint
 Subdivision
 Concord Crossing
 Likely has an HOA. Ask for the covenants.
-Elevation
-827 ft above sea level
 School district
 Mason City School District
 Ohio report card →
+Elevation
+827 ft above sea level
 Flood zone
 X – not high-risk
 area of minimal flood hazard
@@ -481,7 +500,7 @@ Young families nearby
 Easy, safe drop-off
 20/20
 
-quiet court/circle street, easy and safe drop-off.
+quiet court/circle street, easy and safe drop-off; 4 min to the nearest elementary school.
 
 Families can afford care
 20/20
@@ -503,6 +522,16 @@ Licensed child care within 3 miles (28)
 Pre School: 3 · Child Care Center: 24 · FCC - Type B Home: 1
 
 Closest 12
+Nearest elementary schools
+Mason Early Childhood Center Elementary School
+Grades PK–02 · 1997 students
+🚗 4 min
+Mason Intermediate Elementary School
+Grades 03–06 · 3086 students
+🚗 6 min
+Hopewell Early Childhood School
+Grades KG–02 · 727 students
+🚗 10 min
 Ohio rules for a home daycare (Type B)
 Up to 7 children at one time, no more than 3 under age 2. Your mom's own children under 6 who live there count toward the 7.
 State law treats a Type B home as a residential use: it's allowed anywhere houses are allowed (Ohio Revised Code 5104.054). HOA covenants are separate and can still restrict a home business, so read them before buying.
@@ -512,19 +541,78 @@ How to become a provider → · ORC 5104.054 →
 
 The score is a guide built from public data (Ohio child care licensing list, Census ACS, NCES schools, Ohio street data), not a guarantee of enrollment.
 --- nuis
-Loading…
+🏭 Industrial area
+0.3 mi
+🚂 Railroad tracks (noise) (Mason Subdivision)
+0.4 mi
 --- nearby
-Loading…
+🛒 Costco
+Costco
+2.2 mi straight-line
+🍛 Indian grocery
+Bengals Quality Fish and Meats
+6.5 mi straight-line
+OpenStreetMap misses many Indian stores. Search Google Maps →
+🛕 Hindu temple
+BAPS Shri Swaminarayan Mandir
+9.1 mi straight-line
+Search Google Maps →
+🥘 Indian restaurant
+Bawarchi Biryanis
+3.2 mi straight-line
+🥦 Supermarket
+Kroger
+2.1 mi straight-line
+The Fresh Market
+2.4 mi straight-line
+🏥 Hospital (ER)
+The Christ Hospital Medical Center – Liberty Township
+2.5 mi straight-line
+🩺 Urgent care / clinic
+TriHealth Priority Clinic
+2.2 mi straight-line
+💊 Pharmacy
+Yost Pharmacy
+0.5 mi straight-line
+🏫 Schools
+Mason Early Childhood Center
+0.5 mi straight-line
+Saint Susanna Catholic School
+0.8 mi straight-line
+William Mason High School
+1.2 mi straight-line
+🌳 Park / playground
+Meadows Park
+0.6 mi straight-line
+📚 Library
+Mason Public Library
+0.5 mi straight-line
+🏋️ Gym
+Crossfit Superfly Mason
+0.6 mi straight-line
+⛽ Gas station
+Marathon
+0.7 mi straight-line
+🚒 Fire station
+Mason Fire Station 51
+0.8 mi straight-line
+🚓 Police
+Warren County Sheriff's Office - Deerfield Township Post
+4.3 mi straight-line
+🚆 Train / metro station
+Soak City Station
+2.9 mi straight-line
+✈️ Airport
+Butler County Regional Airport
+11 mi straight-line
 --- errors
-[reqfail] https://metadata.maptiles.arcgis.com/arcgis/rest/services/World_Imagery_Metadata_2017_r21/MapServer/identify?geometry=-84.3172726852534,39.3 net::ERR_ABORTED
-[reqfail] https://overpass.private.coffee/api/interpreter net::ERR_ABORTED
 [http 502] https://overpass-api.de/api/interpreter
 [error] Failed to load resource: the server responded with a status of 502 ()
+[reqfail] https://metadata.maptiles.arcgis.com/arcgis/rest/services/World_Imagery_Metadata_2017_r21/MapServer/identify?geometry=-84.3172726852534,39.3 net::ERR_ABORTED
+[reqfail] https://maps.mail.ru/osm/tools/overpass/api/interpreter net::ERR_ABORTED
 [reqfail] https://overpass-api.de/api/interpreter net::ERR_ABORTED
-[http 504] https://maps.mail.ru/osm/tools/overpass/api/interpreter
-[error] Failed to load resource: the server responded with a status of 504 (Gateway Time-out)
 
-==================== 4. 5463 Prescott Ct, Mason, OH  (220s)
+==================== 4. 5463 Prescott Ct, Mason, OH  (119s)
 --- title
 5463 Prescott Ct, Mason, OH 45040
 --- verdict
@@ -557,11 +645,11 @@ Likely has an HOA. Ask for the covenants.
 School district
 Mason City School District
 Ohio report card →
+Elevation
+823 ft above sea level
 Flood zone
 X – not high-risk
 area of minimal flood hazard
-Elevation
-823 ft above sea level
 --- roof
 Why there's no permit date: In Mason, Warren County and most of Ohio, replacing shingles doesn't need a building permit, so no public record of roof dates exists. The app reads the roof's history from dated aerial photos instead.
 
@@ -615,7 +703,7 @@ Young families nearby
 Easy, safe drop-off
 20/20
 
-quiet court/circle street, easy and safe drop-off.
+quiet court/circle street, easy and safe drop-off; 4 min to the nearest elementary school.
 
 Families can afford care
 20/20
@@ -637,6 +725,16 @@ Licensed child care within 3 miles (27)
 Pre School: 3 · Child Care Center: 23 · FCC - Type B Home: 1
 
 Closest 12
+Nearest elementary schools
+Mason Early Childhood Center Elementary School
+Grades PK–02 · 1997 students
+🚗 4 min
+Mason Intermediate Elementary School
+Grades 03–06 · 3086 students
+🚗 7 min
+Hopewell Early Childhood School
+Grades KG–02 · 727 students
+🚗 10 min
 Ohio rules for a home daycare (Type B)
 Up to 7 children at one time, no more than 3 under age 2. Your mom's own children under 6 who live there count toward the 7.
 State law treats a Type B home as a residential use: it's allowed anywhere houses are allowed (Ohio Revised Code 5104.054). HOA covenants are separate and can still restrict a home business, so read them before buying.
@@ -646,18 +744,81 @@ How to become a provider → · ORC 5104.054 →
 
 The score is a guide built from public data (Ohio child care licensing list, Census ACS, NCES schools, Ohio street data), not a guarantee of enrollment.
 --- nuis
-Loading…
+🚂 Railroad tracks (noise) (Mason Subdivision)
+0.3 mi
+🏭 Industrial area
+0.3 mi
+🪦 Cemetery (Rose Hill Cemetery)
+0.6 mi
 --- nearby
-Loading…
+Some categories couldn't load because the free map servers are busy. Retry
+
+🛒 Costco
+Couldn’t load (server busy).
+Costco warehouse locator →
+🍛 Indian grocery
+Patel Brothers
+6.6 mi straight-line
+OpenStreetMap misses many Indian stores. Search Google Maps →
+🛕 Hindu temple
+Hindu Temple of Greater Cincinnati
+16 mi straight-line
+Search Google Maps →
+🥘 Indian restaurant
+Ann India Restaurant
+13 mi straight-line
+🥦 Supermarket
+Kroger
+2.0 mi straight-line
+The Fresh Market
+2.5 mi straight-line
+🏥 Hospital (ER)
+West Chester Hospital
+2.8 mi straight-line
+🩺 Urgent care / clinic
+TriHealth Priority Clinic
+2.3 mi straight-line
+💊 Pharmacy
+Yost Pharmacy
+0.5 mi straight-line
+🏫 Schools
+Mason Early Childhood Center
+0.5 mi straight-line
+Saint Susanna Catholic School
+0.7 mi straight-line
+William Mason High School
+1.1 mi straight-line
+🌳 Park / playground
+Meadows Park
+0.6 mi straight-line
+📚 Library
+Mason Public Library
+0.4 mi straight-line
+🏋️ Gym
+Crossfit Superfly Mason
+0.5 mi straight-line
+⛽ Gas station
+Marathon
+0.6 mi straight-line
+🚒 Fire station
+Mason Fire Station 51
+0.8 mi straight-line
+🚓 Police
+Warren County Sheriff's Office - Deerfield Township Post
+4.2 mi straight-line
+🚆 Train / metro station
+Couldn’t load (server busy).
+✈️ Airport
+Couldn’t load (server busy).
 --- errors
 [reqfail] https://overpass-api.de/api/interpreter net::ERR_ABORTED
-[reqfail] https://overpass.private.coffee/api/interpreter net::ERR_ABORTED
+[reqfail] https://maps.mail.ru/osm/tools/overpass/api/interpreter net::ERR_ABORTED
 [http 502] https://overpass-api.de/api/interpreter
 [error] Failed to load resource: the server responded with a status of 502 ()
 [http 504] https://maps.mail.ru/osm/tools/overpass/api/interpreter
 [error] Failed to load resource: the server responded with a status of 504 (Gateway Time-out)
 
-==================== 5. 7836 Remington Rd, Montgomery, OH  (220s)
+==================== 5. 7836 Remington Rd, Montgomery, OH  (122s)
 --- title
 7836 Remington Road, Montgomery, Ohio, 45242
 --- verdict
@@ -692,11 +853,11 @@ House footprint
 School district
 Sycamore Community City School District
 Ohio report card →
+Elevation
+807 ft above sea level
 Flood zone
 X – not high-risk
 area of minimal flood hazard
-Elevation
-807 ft above sea level
 --- roof
 Why there's no permit date: In Mason, Warren County and most of Ohio, replacing shingles doesn't need a building permit, so no public record of roof dates exists. The app reads the roof's history from dated aerial photos instead.
 
@@ -704,7 +865,7 @@ Roof most likely replaced between Nov 2020 and Apr 2021
 
 The roof changed colour much more than the neighbours' roofs between those two photos. That makes the roof about 5–7 years old.
 
-20 dated photos of this roof (yellow outline; red = where the change was seen). Tap one to enlarge.
+18 dated photos of this roof (yellow outline; red = where the change was seen). Tap one to enlarge.
 
 Apr 1996
 Hamilton County aerial 1996
@@ -714,16 +875,12 @@ Apr 2006
 Hamilton County aerial 2006
 Apr 2010
 Hamilton County aerial 2010
-Apr 2011
-Hamilton County aerial 2011
 Feb 2012
 US-OH-Cincinnati-W (0.3 m)
 Apr 2015
 Hamilton County aerial 2015
 Jun 2016
 Vivid - USA (0.5 m)
-Apr 2017
-Hamilton County aerial 2017
 Mar 2018
 Ohio aerial 2018 (6 inch)
 Aug 2018
@@ -774,7 +931,7 @@ Young families nearby
 Easy, safe drop-off
 20/20
 
-residential street.
+residential street; 2 min to the nearest elementary school.
 
 Families can afford care
 20/20
@@ -796,6 +953,16 @@ Licensed child care within 3 miles (45)
 Child Care Center: 27 · Day Camp: 7 · Pre School: 8 · School Age Child Care: 1 · FCC - Type B Home: 2
 
 Closest 12
+Nearest elementary schools
+Montgomery Elementary School
+Grades KG–04 · 566 students
+🚗 2 min
+Maple Dale Elementary School
+Grades KG–04 · 584 students
+🚗 8 min
+Madeira Elementary School
+Grades KG–05 · 867 students
+🚗 6 min
 Ohio rules for a home daycare (Type B)
 Up to 7 children at one time, no more than 3 under age 2. Your mom's own children under 6 who live there count toward the 7.
 State law treats a Type B home as a residential use: it's allowed anywhere houses are allowed (Ohio Revised Code 5104.054). HOA covenants are separate and can still restrict a home business, so read them before buying.
@@ -810,9 +977,71 @@ The score is a guide built from public data (Ohio child care licensing list, Cen
 🛣️ Highway / freeway (noise) (Ronald Reagan Cross County Highway)
 0.6 mi
 --- nearby
-Loading…
+🛒 Costco
+Costco
+🚗 5.8 mi · 13 min
+🍛 Indian grocery
+Patel Brothers
+🚗 6.7 mi · 11 min
+OpenStreetMap misses many Indian stores. Search Google Maps →
+🛕 Hindu temple
+BAPS Shri Swaminarayan Mandir
+🚗 10 mi · 17 min
+Search Google Maps →
+🥘 Indian restaurant
+Ann India Restaurant
+🚗 9.4 mi · 16 min
+🥦 Supermarket
+Kroger Food & Drug
+🚗 0.9 mi · 3 min
+Whole Foods Market
+🚗 2.5 mi · 7 min
+🏥 Hospital (ER)
+Bethesda North Hospital
+🚗 2.1 mi · 6 min
+🩺 Urgent care / clinic
+MED+ Urgent Care
+🚗 0.2 mi · 1 min
+💊 Pharmacy
+CVS Pharmacy
+🚗 0.1 mi · 1 min
+🏫 Schools
+Montgomery Elementary School
+🚗 0.3 mi · 1 min
+Archbishop Moeller High School
+🚗 0.8 mi · 3 min
+All Saints Catholic Church and School
+🚗 1.0 mi · 3 min
+🌳 Park / playground
+Triangle Point Plaza
+🚗 0.3 mi · 1 min
+📚 Library
+Blue Ash Branch Library
+🚗 1.2 mi · 4 min
+🏋️ Gym
+Fitness Physiques
+🚗 1.6 mi · 5 min
+⛽ Gas station
+UDF Fuel
+🚗 0.4 mi · 1 min
+🚒 Fire station
+Montgomery Fire Department
+🚗 1.3 mi · 3 min
+🚓 Police
+Montgomery Police Department
+🚗 1.3 mi · 3 min
+🚆 Train / metro station
+Soak City Station
+🚗 10.0 mi · 17 min
+✈️ Airport
+Lunken Airport
+🚗 12 mi · 23 min
 --- errors
-[reqfail] https://overpass.private.coffee/api/interpreter net::ERR_ABORTED
-[reqfail] https://overpass-api.de/api/interpreter net::ERR_ABORTED
 [http 502] https://overpass-api.de/api/interpreter
 [error] Failed to load resource: the server responded with a status of 502 ()
+[reqfail] https://cagisonline.hamilton-co.org/arcgis/rest/services/Basemaps/Cagis_Aerial_2011/MapServer/export?bbox=-9390417.04297433,4754424.81684567 net::ERR_ABORTED
+[reqfail] https://cagisonline.hamilton-co.org/arcgis/rest/services/Basemaps/Cagis_Aerial_2017/MapServer/export?bbox=-9390417.04297433,4754424.81684567 net::ERR_ABORTED
+[reqfail] https://overpass-api.de/api/interpreter net::ERR_ABORTED
+[reqfail] https://maps.mail.ru/osm/tools/overpass/api/interpreter net::ERR_ABORTED
+[http 504] https://maps.mail.ru/osm/tools/overpass/api/interpreter
+[error] Failed to load resource: the server responded with a status of 504 (Gateway Time-out)
