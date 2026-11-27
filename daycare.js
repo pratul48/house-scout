@@ -127,7 +127,7 @@
     // drive times: nearest elementary + nearest highway ramp
     let elemMin = null, highwayMin = null, ramp = null;
     try {
-      ramp = await ctx.nearestRamp(p);
+      ramp = await Promise.race([ctx.nearestRamp(p), new Promise(r => setTimeout(() => r(null), 15000))]);
     } catch { }
     const targets = [...elem, ...(ramp ? [ramp] : [])];
     if (targets.length) {

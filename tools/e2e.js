@@ -20,7 +20,7 @@ const ADDRS = (process.env.ADDRS || '').split('|').filter(Boolean).length ? proc
     try { await page.waitForSelector('#results:not([hidden]), .pick', { timeout: 30000 }); } catch {}
     if (await page.$('.pick')) await page.click('.pick');
     const done = async () => page.evaluate(() => ['#verdict', '#nearby', '#nuisances', '#property', '#roof', '#daycare'].every(s => { const e = document.querySelector(s); return e && !e.querySelector('.loading'); }));
-    for (let i = 0; i < 150 && !(await done()); i++) await page.waitForTimeout(1000);
+    for (let i = 0; i < 220 && !(await done()); i++) await page.waitForTimeout(1000);
     const secs = Math.round((Date.now() - t0) / 1000);
     const txt = await page.evaluate(() => {
       const g = s => (document.querySelector(s) || {}).innerText || '';

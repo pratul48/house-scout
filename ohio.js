@@ -66,10 +66,23 @@
   }
 
   /** The lot the point sits on. */
-  async function parcel(p) {
-    const j = await getJSON(`${PARCELS}/query?${near(p)}&outFields=County,LocalParcelID,StateLUC,SitusAddressAll,CAMADataSite,CurrentTo&outSR=4326&returnGeometry=true&f=json`);
-    const f = (j.features || [])[0];
-    if (!f || !f.geometry || !f.geometry.rings) return null;
+  // Ohio address points are often placed at the end of the driveway, sometimes in the road right-of-way,
+  // so "the lot under the point" can miss. Look within 40 m and prefer: matching house number, then the closest lot.
+  async function parcel(p, houseNum) {
+    const j = await getJSON(`${PARCELS}/query?${near(p, 40)}&outFields=County,LocalParcelID,StateLUC,SitusAddressAll,CAMADataSite,CurrentTo&outSR=4326&returnGeometry=true&resultRecordCount=30&f=json`);
+    const P = Geo.projector(p);
+    const cands = (j.features || []).filter(f => f.geometry && f.geometry.rings).map(f => {
+      const ring = f.geometry.rings.slice().sort((a, b) => b.length - a.length)[0];
+      const poly = ring.map(([x, y]) => P.fwd({ lat: y, lon: x }));
+      const inside = Geo.pointInPolygon({ x: 0, y: 0 }, poly);
+      let d = 0;
+      if (!inside) { d = Infinity; for (let i = 1; i < poly.length; i++) { const a = poly[i - 1], b = poly[i], dx = b.x - a.x, dy = b.y - a.y, L2 = dx * dx + dy * dy; const t = L2 ? Math.max(0, Math.min(1, (-a.x * dx - a.y * dy) / L2)) : 0; d = Math.min(d, Math.hypot(a.x + t * dx, a.y + t * dy)); } }
+      const num = (String(f.attributes.SitusAddressAll || '').match(/^\s*(\d+)/) || [])[1];
+      return { f, d, numMatch: !!houseNum && num === String(parseInt(houseNum, 10)), numOther: !!num && !!houseNum && num !== String(parseInt(houseNum, 10)) };
+    }).filter(c => !c.numOther || c.d === 0);
+    cands.sort((a, b) => (b.numMatch - a.numMatch) || (a.d - b.d));
+    const f = cands[0] && (cands[0].numMatch || cands[0].d < 25) ? cands[0].f : null;
+    if (!f) return null;
     const ring = f.geometry.rings.slice().sort((a, b) => b.length - a.length)[0];
     const geometry = ring2ll(ring);
     const a = f.attributes;

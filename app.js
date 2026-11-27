@@ -49,10 +49,10 @@
   }
   async function overpassRun(query) {
     let lastErr;
-    for (let attempt = 0; attempt < 3; attempt++) {
+    for (let attempt = 0; attempt < 2; attempt++) {
       for (const url of OVERPASS) {
         try {
-          const data = await fetchJSON(url, { method: 'POST', body: 'data=' + enc(query), headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }, 45000);
+          const data = await fetchJSON(url, { method: 'POST', body: 'data=' + enc(query), headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }, 25000);
           if (data.remark && /error|timed out|out of memory/i.test(data.remark)) throw new Error('server timeout');
           return data;
         } catch (e) { lastErr = e; }
@@ -186,7 +186,7 @@
     let buildings = [], roads = [], parcel = null, srcB = 'OpenStreetMap', srcR = 'OpenStreetMap';
     const errs = [];
     if (ohio) {
-      const [pr, br, sr, ar] = await Promise.allSettled([Ohio.parcel(point), Ohio.buildings(point), Ohio.streets(point), tapped ? Promise.resolve(null) : Ohio.addressPoint(point)]);
+      const [pr, br, sr, ar] = await Promise.allSettled([Ohio.parcel(point, tapped ? null : state.place.num), Ohio.buildings(point), Ohio.streets(point), tapped ? Promise.resolve(null) : Ohio.addressPoint(point)]);
       if (run !== state.runId) return;
       if (ar.status === 'fulfilled' && ar.value && ar.value.subdivision) state.place.subdivision = ar.value.subdivision;
       if (pr.status === 'fulfilled') parcel = pr.value; else errs.push('lot lines');
@@ -407,7 +407,7 @@
     const vb = [p.lon - d / Math.cos(p.lat * Math.PI / 180), p.lat + d, p.lon + d / Math.cos(p.lat * Math.PI / 180), p.lat - d].map(v => v.toFixed(5)).join(',');
     const r = await nominatimQueued(`${NOMINATIM}/search?format=jsonv2&limit=20&bounded=1&viewbox=${vb}&q=${enc(term)}`);
     const seen = [];
-    return r.map(x => ({ name: x.name || x.display_name.split(',')[0], addr: x.display_name.split(',').slice(1, 3).join(',').trim(), lat: +x.lat, lon: +x.lon, dist: Geo.haversine(p, { lat: +x.lat, lon: +x.lon }) }))
+    return r.map(x => ({ category: x.category, type: x.type, name: x.name || x.display_name.split(',')[0], addr: x.display_name.split(',').slice(1, 3).join(',').trim(), lat: +x.lat, lon: +x.lon, dist: Geo.haversine(p, { lat: +x.lat, lon: +x.lon }) }))
       .sort((a, b) => a.dist - b.dist)
       .filter(x => { if (seen.some(s => Geo.haversine(s, x) < 150)) return false; seen.push(x); return true; });
   }
@@ -456,6 +456,24 @@
     const failed = [];
     const customP = loadCustom(p, run, customTerms());
     await Promise.all(groups.map(g => overpass(catQuery(g, p)).then(d => collect(d, g)).catch(() => failed.push(...g.map(c => c.key)))));
+    // Backup when the OpenStreetMap query servers are overloaded: name/category search through Nominatim.
+    const FALLBACK = { costco: [['Costco Wholesale', x => /costco/i.test(x.name) && !/gas|fuel/i.test(x.name + x.type)]],
+      indian: [['Patel Brothers', x => x.category === 'shop'], ['India grocery', x => x.category === 'shop'], ['Indian market', x => x.category === 'shop'], ['Indian grocery store', x => x.category === 'shop']],
+      temple: [['Hindu temple', x => /temple|mandir|hindu/i.test(x.name)]], indianfood: [['Indian restaurant', x => /restaurant|fast_food/.test(x.type)]],
+      grocery: [['supermarket', x => x.type === 'supermarket']], hospital: [['hospital', x => x.type === 'hospital']], urgent: [['urgent care', () => true]],
+      pharmacy: [['pharmacy', x => x.type === 'pharmacy' || x.type === 'chemist']], school: [['school', x => x.type === 'school']], park: [['park', x => x.type === 'park' || x.type === 'playground']],
+      library: [['library', x => x.type === 'library']], gym: [['fitness centre', () => true]], fuel: [['gas station', x => x.type === 'fuel']], fire: [['fire station', x => x.type === 'fire_station']], police: [['police', x => x.type === 'police']] };
+    const todoFb = failed.filter(k => FALLBACK[k]);
+    await Promise.all(todoFb.map(async k => {
+      const c = CATS.find(x => x.key === k);
+      for (const [term, ok] of FALLBACK[k]) {
+        try {
+          const list = (await searchCustom(term, p)).filter(ok).filter(x => x.dist <= c.r);
+          if (list.length) { (results[k] ||= []).push(...list.map(x => ({ name: x.name, lat: x.lat, lon: x.lon, dist: x.dist }))); }
+        } catch { }
+      }
+      if (results[k] && results[k].length) failed.splice(failed.indexOf(k), 1);
+    }));
     await customP;
     if (run !== state.runId) return;
     for (const k in results) {
