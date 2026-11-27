@@ -1,211 +1,65 @@
 
-### image folder
-HTTP 200 CORS=https://pratul48.github.io len=307
-{"currentVersion":11.5,"folders":["Imagery","Utilities"],"services":[{"name":"osip_3_cache","type":"MapServer"},{"name":"osip_most_current_cache","type":"MapServer"},{"name":"osip_most_current","type":"ImageServer"},{"name":"OSIPI_DEM","type":"ImageServer"},{"name":"River_Mile_Maps","type":"ImageServer"}]}
+### catalog datasets at Mason
+HTTP 200 CORS=https://pratul48.github.io len=1109
+[{"OBJECTID":16,"Name":"war_2023_6in","Category":5,"LowPS":0.5,"ZOrder":20},{"OBJECTID":903,"Name":"war_2025","Category":1,"LowPS":0.5,"ZOrder":10}]
 
-### osip cache info
-HTTP 200 CORS=https://pratul48.github.io len=5599
-{"desc":"","sr":{"wkid":102100,"latestWkid":3857,"xyTolerance":0.001,"zTolerance":0.001,"mTolerance":0.001,"falseX":-20037700,"falseY":-30241100,"xyUnits":10000,"falseZ":-100000,"zUnits":10000,"falseM":-100000,"mUnits":10000},"lods":[{"level":20,"resolution":0.14929107082380833,"scale":564.248588},{"level":21,"resolution":0.07464553541190416,"scale":282.124294},{"level":22,"resolution":0.03732276770595208,"scale":141.062147},{"level":23,"resolution":0.01866138385297604,"scale":70.5310735}],"origin":{"x":-20037508.342787,"y":20037508.342787},"rows":256,"fmt":"MIXED","layers":[{"id":0,"name":"osip_most_current","parentLayerId":-1,"defaultVisibility":true,"subLayerIds":[1,2,3],"minScale":0,"maxScale":0,"type":"Mosaic Layer","supportsDynamicLegends":false,"layerId":0,"layerName":"osip_most_current","serviceItemId":"5b79a50c630348fbb89cfc23573e178c"},{"id":1,"name":"Boundary","parentLayerId":0,"defaultVisibility":false,"subLayerIds":null,"minScale":0,"maxScale":0,"type":"Feature Layer","geometryType":"esriGeometryPolygon","supportsDynamicLegends":true,"legend":[{"label":"","imageData":"iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAO0lEQVQ4je3VIQ4AMAxCUZZw/yuzrK4a3HhpKr+oKQUIQXzrzPgEaIJJbNBGP7E16GOgsTT4zQ0VfAMXpesGTbdHvcEAAAAASUVORK5CYII=","contentType":"image/png","groupId":"0","height":20,"width":20}],"layerId":1,"layerName":"Boundary","serviceItemId":"5b79a50c630348fbb89cfc23573e178c"},{"id":2,"name":"Footprint","parentLayerId":0,"defaultVisibility":false,"subLayerIds":null,"minScale":0,"maxScale":0,"type":"Feature Layer","geometryType":"esriGeometryPolygon","supportsDynamicLegends":true,"legend":[{"label":"","imageData":"iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAO0lEQVQ4je3VIQ4AMAxCUZpw/yuzZFPV4MYXlU9gSghCMN47mIgm6IHBWNCOPrEr6MeAsSr4z4bKvYEDou0GTfPqtc0AAAAASUVORK5CYII=","contentType":"image/png","groupId":"0","height":20,"width":20}],"layerId":2,"layerName":"Footprint","serviceItemId":"5b79a50c630348fbb89cfc23573e178c"},{"id":3,"name":"Image","parentLayerId":0,"defaultVisibility":true,"subLayerIds":null,"minScale":0,"maxScale":0,"type":"Raster Layer","supportsDynamicLegends":true,"legend":[{"label":"Red:   Band_1","imageData":"iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAOklEQVQ4jWNhoDJgoZmB/8GIfMAIRrR0IbUAC9VMgoJRAykHLFQwAwWMGkg5YBnBBjJCyzOqGUgtAABgfwJTnasaYgAAAABJRU5ErkJggg==","contentType":"image/png","groupId":"0","height":20,"width":20},{"label":"Green: Band_2
+### export lock war_2023_6in
+HTTP 200 CORS=https://pratul48.github.io IMAGE image/jpeg 2109 bytes
 
-### osip tile z19 Mason (Warren)
-HTTP 200 CORS=https://pratul48.github.io IMAGE image/jpeg 14630 bytes
+### export lock war_2025
+HTTP 200 CORS=https://pratul48.github.io IMAGE image/jpeg 12420 bytes
 
-### osip tile z20 Mason (Warren)
-HTTP 200 CORS=https://pratul48.github.io IMAGE image/jpeg 10812 bytes
+### osip_3_cache info
+HTTP 200 CORS=https://pratul48.github.io len=5494
+{"desc":"This is a cached aerial image service of Ohio collected between the years of 2017 through 2024. This third statewide collection of Ohio Statewide Imagery Program is known as OSIP III. This imagery is provided by the Ohio Department of Administrative Services (DAS), Office of Information Technology (","sr":102100,"lods":[21,22,23],"layers":["osip_3_cache","Boundary","Footprint","Image"]}
 
-### osip tile z21 Mason (Warren)
-HTTP 404 CORS=https://pratul48.github.io len=648
-<html lang="en">
-<head>
-<title>
-Error: Not Found</title>
-<link href="/image/rest/static/main.css" rel="stylesheet" type="text/css"/>
-</head>
-<body>
-<table width="100%" class="userTable">
-<tr>
-<td class="titlecell">ArcGIS REST Framework</td>
-</tr>
-</table>
-<table width="100%" class="navTable">
-<tr valign="top">
-<td class="breadcrumbs">
-<a href="/image/rest/services">Home</a>
-</td>
-</tr>
-</table>
-<div class="cbody">
-<br/>
-<br/>
-<b>Error: </b>Not Found<br/>
-<b>Code: </b>404<br/><br/>
-<script type="text/javascript" src="/image/rest/static/js/rest.js"></script>
-<div style="color:#ff6666"> </div></div>
-</body>
-</html>
+### osip_3_cache tile z20
+HTTP 200 CORS=https://pratul48.github.io IMAGE image/jpeg 10226 bytes
 
+### osip_3_cache tile z19
+HTTP 200 CORS=https://pratul48.github.io IMAGE image/jpeg 16089 bytes
 
-### OSIP_Most_Current_Index Mason (Warren)
-HTTP 200 CORS=https://pratul48.github.io len=1300
-[{"muni":null,"year":2023,"name":"Warren","county":"Warren","SHAPE__Length":451988.64582035574,"resolution":"6 inch","month_flown":3,"objectid":43,"SHAPE__Area":11368432101.243793}]
+### Imagery folder
+HTTP 200 CORS=https://pratul48.github.io len=62
+{"error":{"code":499,"message":"Token Required","details":[]}}
 
-### OSIP_4 index Mason (Warren)
-HTTP 200 CORS=https://pratul48.github.io len=3255
-[{"fileextension":"TIF","begdate":null,"year":"2025","zippath":"https://gis1.oit.ohio.gov/ZIPARCHIVES_IV/IMAGERY/0_5INGEOTIFF/WAR/AS14520500.zip","pixelresolution":"0.5","title":"AS14520500.tif","procdate":"20251212, 20251212","primary_capture_date":"2025-03-10","caldate":"20250310","enddate":null,"folder":"WAR","month":"03","fullpath":"S:\\imagery\\2025\\WAR\\IMAGERY\\TIFFS\\AS14520500.tif.xml","name":"AS14520500","tile_name":"AS14520500","sourcetype":"XML","SHAPE__Length":9999.999685000006,"day":"10","objectid":87475,"SHAPE__Area":6249999.606250014,"pubdate":"20251212"}]
-
-### OSIP_3 index Mason (Warren)
+### OSIP3 index sample anywhere
 HTTP 200 CORS=https://pratul48.github.io len=63
 []
 
-### osip tile z19 West Chester (Butler)
-HTTP 200 CORS=https://pratul48.github.io IMAGE image/jpeg 14937 bytes
-
-### osip tile z20 West Chester (Butler)
-HTTP 200 CORS=https://pratul48.github.io IMAGE image/png 133335 bytes
-
-### osip tile z21 West Chester (Butler)
-HTTP 404 CORS=https://pratul48.github.io len=648
-<html lang="en">
-<head>
-<title>
-Error: Not Found</title>
-<link href="/image/rest/static/main.css" rel="stylesheet" type="text/css"/>
-</head>
-<body>
-<table width="100%" class="userTable">
-<tr>
-<td class="titlecell">ArcGIS REST Framework</td>
-</tr>
-</table>
-<table width="100%" class="navTable">
-<tr valign="top">
-<td class="breadcrumbs">
-<a href="/image/rest/services">Home</a>
-</td>
-</tr>
-</table>
-<div class="cbody">
-<br/>
-<br/>
-<b>Error: </b>Not Found<br/>
-<b>Code: </b>404<br/><br/>
-<script type="text/javascript" src="/image/rest/static/js/rest.js"></script>
-<div style="color:#ff6666"> </div></div>
-</body>
-</html>
-
-
-### OSIP_Most_Current_Index West Chester (Butler)
-HTTP 200 CORS=https://pratul48.github.io len=1300
-[{"muni":null,"year":2023,"name":"Butler","county":"Butler","SHAPE__Length":486058.16977073334,"resolution":"3 inch","month_flown":2,"objectid":40,"SHAPE__Area":13110184986.056345}]
-
-### OSIP_4 index West Chester (Butler)
-HTTP 200 CORS=https://pratul48.github.io len=2663
-[]
-
-### OSIP_3 index West Chester (Butler)
+### OSIP3 index Warren
 HTTP 200 CORS=https://pratul48.github.io len=63
-[]
+{"code":404,"message":"Layer not found","details":[]}
 
-### osip tile z19 Montgomery (Hamilton)
-HTTP 200 CORS=https://pratul48.github.io IMAGE image/png 140227 bytes
-
-### osip tile z20 Montgomery (Hamilton)
-HTTP 200 CORS=https://pratul48.github.io IMAGE image/jpeg 12402 bytes
-
-### osip tile z21 Montgomery (Hamilton)
-HTTP 404 CORS=https://pratul48.github.io len=648
-<html lang="en">
-<head>
-<title>
-Error: Not Found</title>
-<link href="/image/rest/static/main.css" rel="stylesheet" type="text/css"/>
-</head>
-<body>
-<table width="100%" class="userTable">
-<tr>
-<td class="titlecell">ArcGIS REST Framework</td>
-</tr>
-</table>
-<table width="100%" class="navTable">
-<tr valign="top">
-<td class="breadcrumbs">
-<a href="/image/rest/services">Home</a>
-</td>
-</tr>
-</table>
-<div class="cbody">
-<br/>
-<br/>
-<b>Error: </b>Not Found<br/>
-<b>Code: </b>404<br/><br/>
-<script type="text/javascript" src="/image/rest/static/js/rest.js"></script>
-<div style="color:#ff6666"> </div></div>
-</body>
-</html>
-
-
-### OSIP_Most_Current_Index Montgomery (Hamilton)
-HTTP 200 CORS=https://pratul48.github.io len=1303
-[{"muni":null,"year":2018,"name":"Hamilton","county":"Hamilton","SHAPE__Length":551334.1986238235,"resolution":"6 inch","month_flown":3,"objectid":47,"SHAPE__Area":11514775489.291945}]
-
-### OSIP_4 index Montgomery (Hamilton)
-HTTP 200 CORS=https://pratul48.github.io len=2663
-[]
-
-### OSIP_3 index Montgomery (Hamilton)
+### OSIP3 layer fields
 HTTP 200 CORS=https://pratul48.github.io len=63
-[]
+""
 
-### osip image service
-HTTP 200 CORS=https://pratul48.github.io len=7294
-{"desc":"<font face='Avenir Next W01, Avenir Next W00, Avenir Next, Avenir, Helvetica Neue, sans-serif'><span style='font-size:16px;'>This the not cached  image service for the OSIP Most Current Imagery dataset.   This service has imagery from 2017 - 2024.   The imagery is varying resolutions.  Please note t","px":0.08,"sr":3753,"fields":"OBJECTID,Shape,Name,MinPS,MaxPS,LowPS,HighPS,Category,Tag,GroupName,ProductName,CenterX,CenterY,ZOrder,Shape_Length,Shape_Area"}
+### OSIP index June 2026 fields+Mason
+HTTP 200 CORS=https://pratul48.github.io len=1323
+[{"muni":null,"year":2025,"name":"Warren","county":"Warren","SHAPE__Length":451988.64582035574,"resolution":"6 inch","month_flown":3,"objectid":43,"SHAPE__Area":11368432101.243793}]
 
-### osip image catalog at Mason
-HTTP 200 CORS=https://pratul48.github.io len=1842839
-[{"OBJECTID":16,"Name":"war_2023_6in","MinPS":0,"MaxPS":5,"LowPS":0.5,"HighPS":0.5,"Category":5,"Tag":"Dataset","GroupName":"","ProductName":"","CenterX":1497487.515494151,"CenterY":-82722.72955690496,"ZOrder":20,"Shape_Length":485192.96821906255,"Shape_Area":12018863906.707249},{"OBJECTID":903,"Name":"war_2025","MinPS":0,"MaxPS":150,"LowPS":0.5,"HighPS":50,"Category":1,"Tag":"Dataset","GroupName":"","ProductName":"","CenterX":1497487.5174023483,"CenterY":-82722.72874564062,"ZOrder":10,"Shape_Length":485193.48029881436,"Shape_Area":12018861789.718616},{"OBJECTID":350245,"Name":"Ov_iA1_L01_R00001052_C0000146A.tif","MinPS":5,"MaxPS":13.5,"LowPS":4.5,"HighPS":4.5,"Category":2,"Tag":"Dataset","GroupName":"","ProductName":"","CenterX":1455088.8741389737,"CenterY":-100809.99994123727,"ZOrder":null,"Shape_Length":92160.0000628233,"Shape_Area":530841600.72372437},{"OBJECTID":352209,"Name":"Ov_iA1_L02_R00000570_C000006CE.tif","MinPS":13.5,"MaxPS":40.5,"LowPS":13.5,"HighPS":13.5,"Category":2,"Tag":"Dataset","GroupName":"","ProductName":"","CenterX":1478128.8741546795,"CenterY":-123849.99995694308,"ZOrder":null,"Shape_Length":276480.0001884699,"Shape_Area":4777574406.513519},{"OBJECTID":352459,"Name":"Ov_iA1_L03_R000001D0_C00000244.tif","MinPS":40.5,"MaxPS":121.5,"LowPS":40.5,"HighPS":40.5,"Category":2,"Tag":"Dataset","GroupName":"","ProductName":"","CenterX":1413038.6127798702,"CenterY":-55481.957398993196,"ZOrder":null,"Shape_Length":820607.8933350659,"Shape_Area":41320045053.052216},
+### CAGIS 2010
+HTTP 200 CORS=https://pratul48.github.io IMAGE image/jpeg 24151 bytes
 
-### CAGIS 2024 info
-HTTP 200 CORS=https://pratul48.github.io len=4063
-{"sr":{"wkid":102723,"latestWkid":3735,"xyTolerance":0.00328083333333333,"zTolerance":2,"mTolerance":2,"falseX":-119670700,"falseY":-95612900,"xyUnits":37024245.69851244,"falseZ":0,"zUnits":1,"falseM":-100000,"mUnits":10000},"lods":[{"level":9,"resolution":1.0416666666666665,"scale":1200},{"level":10,"resolution":0.5208333333333333,"scale":600},{"level":11,"resolution":0.26041666666666663,"scale":300}],"origin":{"x":-119670700,"y":147665500.00000003},"single":true,"fmt":"MIXED","ext":{"xmin":1250000,"ymin":350000,"xmax":1500000,"ymax":550000,"spatialReference":{"wkid":102723,"latestWkid":3735,"xyTolerance":0.00328083333333333,"zTolerance":2,"mTolerance":2,"falseX":-119670700,"falseY":-95612900,"xyUnits":37024245.69851244,"falseZ":0,"zUnits":1,"falseM":-100000,"mUnits":10000}}}
+### CAGIS 2017
+HTTP 200 CORS=https://pratul48.github.io IMAGE image/jpeg 26268 bytes
 
-### CAGIS 2024 export
-HTTP 200 CORS=https://pratul48.github.io IMAGE image/jpeg 2419 bytes
+### CAGIS 2022
+HTTP 200 CORS=https://pratul48.github.io IMAGE image/jpeg 28113 bytes
 
-### CAGIS 2010 export
-HTTP 200 CORS=https://pratul48.github.io IMAGE image/jpeg 24883 bytes
+### CAGIS 2024
+HTTP 200 CORS=https://pratul48.github.io IMAGE image/jpeg 2555 bytes
 
-### Ohio osip export
-HTTP 500 CORS=https://pratul48.github.io len=668
-<html lang="en">
-<head>
-<title>
-Error: Error exporting map</title>
-<link href="/image/rest/static/main.css" rel="stylesheet" type="text/css"/>
-</head>
-<body>
-<table width="100%" class="userTable">
-<tr>
-<td class="titlecell">ArcGIS REST Framework</td>
-</tr>
-</table>
-<table width="100%" class="navTable">
-<tr valign="top">
-<td class="breadcrumbs">
-<a href="/image/rest/services">Home</a>
-</td>
-</tr>
-</table>
-<div class="cbody">
-<br/>
-<br/>
-<b>Error: </b>Error exporting map<br/>
-<b>Code: </b>500<br/><br/>
-<script type="text/javascript" src="/image/rest/static/js/rest.js"></script>
-<div style="color:#ff6666"> </div></div>
-</body>
-</html>
+### CAGIS 2025
+HTTP 200 CORS=https://pratul48.github.io IMAGE image/jpeg 22830 bytes
 
+### CAGIS 2026
+HTTP 200 CORS=https://pratul48.github.io IMAGE image/jpeg 2555 bytes
 
-### osip2 1ft
-ERROR fetch failed
+### CAGIS Current
+HTTP 200 CORS=https://pratul48.github.io IMAGE image/jpeg 2555 bytes
+
+### CAGIS 2025 layers
+HTTP 200 CORS=https://pratul48.github.io len=3839
+{"layers":[[0,"2025 Hamilton County Color Ortho",0,0]],"desc":"CAGIS Nearmap Aerial Imagery 2021","cr":"CAGIS"}
