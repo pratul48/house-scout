@@ -1,28 +1,10 @@
-const zlib = require('zlib');
 (async () => {
-  for (const f of ['zip_code_market_tracker.tsv000.gz', 'neighborhood_market_tracker.tsv000.gz', 'city_market_tracker.tsv000.gz']) {
-    const u = 'https://redfin-public-data.s3.us-west-2.amazonaws.com/redfin_market_tracker/' + f;
-    try { const r = await fetch(u, { method: 'HEAD' }); console.log('\n### ' + f, r.status, r.headers.get('content-length'), r.headers.get('last-modified')); } catch (e) { console.log(f, 'ERR', e.message); }
-  }
-  // stream the zip file, print header + first Ohio 45040 rows
-  const u = 'https://redfin-public-data.s3.us-west-2.amazonaws.com/redfin_market_tracker/zip_code_market_tracker.tsv000.gz';
-  const r = await fetch(u);
-  const gun = zlib.createGunzip(); let buf = '', header = null, n = 0, hits = [], ohio = 0, t0 = Date.now(), done = false;
-  const { Readable } = require('stream');
-  Readable.fromWeb(r.body).pipe(gun);
-  await new Promise(res => {
-    gun.on('data', ch => {
-      if (done) return;
-      buf += ch.toString(); let i;
-      while ((i = buf.indexOf('\n')) >= 0) {
-        const line = buf.slice(0, i); buf = buf.slice(i + 1); n++;
-        if (!header) { header = line.split('\t').map(s => s.replace(/"/g, '')); console.log('\n### header\n' + header.join(' | ')); continue; }
-        if (line.includes('"Zip Code: 45040"')) { if (hits.length < 4) hits.push(line); }
-        if (line.includes('\t"OH"\t') || line.includes('"Ohio"')) ohio++;
-      }
-    });
-    gun.on('end', res); gun.on('error', e => { console.log('gz err', e.message); res(); });
-  });
-  console.log('\n### lines', n, 'ohio', ohio, 'secs', (Date.now() - t0) / 1000);
-  console.log('\n### 45040 rows\n' + hits.map(h => h.split('\t').map((v, k) => header[k] + '=' + v).join(' ; ')).join('\n\n'));
+  const u = 'https://files.zillowstatic.com/research/public_csvs/zhvi/Zip_zhvi_uc_sfr_tier_0.33_0.67_sm_sa_month.csv';
+  try {
+    const r = await fetch(u); console.log('### status', r.status, r.headers.get('content-length'), r.headers.get('last-modified'), 'CORS=' + r.headers.get('access-control-allow-origin'));
+    const t = await r.text(); const lines = t.split('\n'); const h = lines[0].split(',');
+    console.log('### cols', h.length, h.slice(0, 12).join('|'), '...', h.slice(-3).join('|'));
+    for (const z of ['45040', '45069', '45242', '45036']) { const l = lines.find(x => x.includes(`"${z}"`) || x.split(',')[2] === z); if (l) { const v = l.split(','); console.log(z, v.slice(0, 9).join('|'), '... 2012-01:', v[h.indexOf('2012-01-31')], 'last:', v[v.length - 1]); } else console.log(z, 'not found'); }
+    console.log('### OH zips', lines.filter(l => /,"?OH"?,/.test(l)).length);
+  } catch (e) { console.log('ERR', e.message); }
 })();
