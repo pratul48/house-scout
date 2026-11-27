@@ -32,8 +32,8 @@ const ADDRS = (process.env.ADDRS || '').split('|').filter(Boolean).length ? proc
     console.log('--- errors\n' + [...new Set(errors)].slice(0, 30).join('\n'));
     // map screenshot (zoomed on the house) and roof strip
     const card = await page.$('#map'); if (card) { await card.scrollIntoViewIfNeeded(); await page.waitForTimeout(2500); await card.screenshot({ path: `tools/out/${n}-map.png` }); await page.evaluate(() => { const m = document.querySelector('.leaflet-control-zoom-out'); m.click(); m.click(); }); await page.waitForTimeout(3000); await card.screenshot({ path: `tools/out/${n}-map-wide.png` }); }
-    if (await page.$('#v-ask')) { await page.fill('#v-ask', a.includes('Remington') ? '$480,000' : '$575,000'); await page.dispatchEvent('#v-ask', 'change'); await page.waitForTimeout(500); }
-    if (await page.$('#v-sale')) { await page.fill('#v-sale', '$310,000'); await page.fill('#v-date', '2014-07'); await page.fill('#v-aud', '$402,000'); await page.dispatchEvent('#v-aud', 'change'); await page.waitForTimeout(800); }
+    if (await page.$('#v-ask')) { await page.fill('#v-ask', a.includes('Remington') ? '$480,000' : '$575,000'); await page.waitForTimeout(700); }
+    if (await page.$('#v-sale')) { await page.fill('#v-sale', '$310,000'); await page.fill('#v-date', '2014-07'); await page.fill('#v-aud', '$402,000'); await page.waitForTimeout(1200); await page.waitForTimeout(800); }
     console.log('--- value after typing\n' + await page.evaluate(() => document.querySelector('#value').innerText));
     const vc = await page.$('#value'); if (vc) { await vc.scrollIntoViewIfNeeded(); await vc.screenshot({ path: `tools/out/${n}-value.png` }); }
     const rs = await page.$('.roof-strip'); if (rs) { await rs.scrollIntoViewIfNeeded(); await rs.screenshot({ path: `tools/out/${n}-roof.png` }); }
