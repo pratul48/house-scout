@@ -1,5 +1,5 @@
 
-==================== 1. 7836 Remington Rd, Montgomery, OH  (4s)
+==================== 1. 7836 Remington Rd, Montgomery, OH  (3s)
 --- title
 7836 Remington Road, Montgomery, Ohio, 45242
 --- value
@@ -60,14 +60,6 @@ Year built, sales, taxes
 County auditor record →
 House footprint
 1,188 sq ft on the ground (not living area)
-School district
-Sycamore Community City School District
-Ohio report card →
-Elevation
-807 ft above sea level
-Flood zone
-X – not high-risk
-area of minimal flood hazard
 --- roof
 Why there's no permit date: In Mason, Warren County and most of Ohio, replacing shingles doesn't need a building permit, so no public record of roof dates exists. The app reads the roof's history from dated aerial photos instead.
 
@@ -79,8 +71,7 @@ Loading…
 --- nearby
 Loading…
 --- errors
-[http 502] https://overpass-api.de/api/interpreter
-[error] Failed to load resource: the server responded with a status of 502 ()
+
 --- value after typing
 Asking price
 A little high: 11% above the estimate
@@ -110,7 +101,7 @@ Recent sales nearby (73)
 
 Estimates are a guide, not an appraisal. They don't know about remodels, condition or finished basements. Your agent's comparable sales and the lender's appraisal are the final word.
 
-==================== 2. 5517 Patriot Ct, Mason, OH 45040  (3s)
+==================== 2. 5517 Patriot Ct, Mason, OH 45040  (1s)
 --- title
 5517 Patriot Ct, Mason, OH 45040
 --- value
@@ -169,14 +160,6 @@ House footprint
 Subdivision
 Concord Crossing
 Likely has an HOA. Ask for the covenants.
-School district
-Mason City School District
-Ohio report card →
-Elevation
-830 ft above sea level
-Flood zone
-X – not high-risk
-area of minimal flood hazard
 --- roof
 Why there's no permit date: In Mason, Warren County and most of Ohio, replacing shingles doesn't need a building permit, so no public record of roof dates exists. The app reads the roof's history from dated aerial photos instead.
 
@@ -240,7 +223,6 @@ Closest Costco
 Last looked Nov 27 · searched 1× · visited 1×
 💲$512,000
 🏚️ no change since 2012
-📐 0.17 ac
 
 Nice cul-de-sac
 
@@ -251,7 +233,6 @@ Delete
 7836 Remington Road, Montgomery, Ohio, 45242
 Last looked Nov 27 · searched 1×
 💲$480,000
-📐 0.24 ac
 Open
 ☆ Star
 Delete
@@ -284,15 +265,6 @@ Add work, family, etc. Drive time from each house will show under “Nearby”.
    "hvac": "",
    "wh": "",
    "notes": "Nice cul-de-sac"
-  },
-  "prop": {
-   "parcelId": "16361480130",
-   "lotAcres": 0.17,
-   "footprintSqft": 2228,
-   "district": "Mason City School District",
-   "flood": "X",
-   "subdivision": "Concord Crossing",
-   "auditorUrl": "https://auditor.warrencountyohio.gov/PropertySearch/Summary/Index?account_nbr=1129342"
   }
  },
  {
@@ -309,20 +281,11 @@ Add work, family, etc. Drive time from each house will show under “Nearby”.
    "hvac": "",
    "wh": "",
    "notes": ""
-  },
-  "prop": {
-   "parcelId": "6030001002100",
-   "lotAcres": 0.24,
-   "footprintSqft": 1188,
-   "district": "Sycamore Community City School District",
-   "flood": "X",
-   "subdivision": null,
-   "auditorUrl": null
   }
  }
 ]
 ==== STARRED FILTER: 1 cards
 ==== CSV
 label,direction,degrees,avoid,direction_source,roof,daycare_score,costco,indian_store,lot_acres,school_district,flood_zone,owner,bought_for,bought_on,county_value,estimated_value,price_check,price,hoa,notes,times_searched,visits,last_seen,starred
-"5517 Patriot Ct, Mason, OH 45040","N","3","no","map","No roof replacement seen from Feb 2012 to Mar 2025","","","","0.17","Mason City School District","X","Hoffmaster Properties II LLC","","","","","","$512,000","","Nice cul-de-sac","1","1","2026-11-27","yes"
-"7836 Remington Road, Montgomery, Ohio, 45242","SW","204","yes","map","","","","","0.24","Sycamore Community City School District","X","Ck Executive Rentals 4 LLC","","","298340","390k–477k","A little high: 11% above the estimate","$480,000","","","1","0","2026-11-27",""
+"5517 Patriot Ct, Mason, OH 45040","N","3","no","map","No roof replacement seen from Feb 2012 to Mar 2025","","","","","","","Hoffmaster Properties II LLC","","","402000","","","$512,000","","Nice cul-de-sac","1","1","2026-11-27","yes"
+"7836 Remington Road, Montgomery, Ohio, 45242","SW","204","yes","map","","","","","","","","Ck Executive Rentals 4 LLC","","","298340","390k–477k","A little high: 11% above the estimate","$480,000","","","1","0","2026-11-27",""
