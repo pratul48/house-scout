@@ -14,11 +14,13 @@ const ADDRS = (process.env.ADDRS || '').split('|').filter(Boolean).length ? proc
   for (const a of ADDRS) {
     n++; errors.length = 0;
     const t0 = Date.now();
+    const prevTitle = await page.evaluate(() => (document.querySelector('#addr-title') || {}).textContent || '');
     await page.fill('#addr', a);
     await page.click('#search-form button[type=submit]');
     // pick first choice if asked
     try { await page.waitForSelector('#results:not([hidden]), .pick', { timeout: 30000 }); } catch {}
     if (await page.$('.pick')) await page.click('.pick');
+    for (let i = 0; i < 40; i++) { const t = await page.evaluate(() => (document.querySelector('#addr-title') || {}).textContent || ''); if (t && t !== prevTitle) break; await page.waitForTimeout(500); }
     const done = async () => page.evaluate(() => ['#verdict', '#nearby', '#nuisances', '#property', '#roof', '#daycare'].every(s => { const e = document.querySelector(s); return e && !e.querySelector('.loading'); }));
     for (let i = 0; i < 220 && !(await done()); i++) await page.waitForTimeout(1000);
     const secs = Math.round((Date.now() - t0) / 1000);
@@ -29,7 +31,7 @@ const ADDRS = (process.env.ADDRS || '').split('|').filter(Boolean).length ? proc
     console.log(`\n==================== ${n}. ${a}  (${secs}s)\n` + Object.entries(txt).map(([k, v]) => `--- ${k}\n${v}`).join('\n'));
     console.log('--- errors\n' + [...new Set(errors)].slice(0, 30).join('\n'));
     // map screenshot (zoomed on the house) and roof strip
-    const card = await page.$('#map'); if (card) { await card.scrollIntoViewIfNeeded(); await page.waitForTimeout(2500); await card.screenshot({ path: `tools/out/${n}-map.png` }); }
+    const card = await page.$('#map'); if (card) { await card.scrollIntoViewIfNeeded(); await page.waitForTimeout(2500); await card.screenshot({ path: `tools/out/${n}-map.png` }); await page.evaluate(() => { const m = document.querySelector('.leaflet-control-zoom-out'); m.click(); m.click(); }); await page.waitForTimeout(3000); await card.screenshot({ path: `tools/out/${n}-map-wide.png` }); }
     const rs = await page.$('.roof-strip'); if (rs) { await rs.scrollIntoViewIfNeeded(); await rs.screenshot({ path: `tools/out/${n}-roof.png` }); }
     const top = await page.$('#card-header'); if (top) { await top.scrollIntoViewIfNeeded(); }
     await page.screenshot({ path: `tools/out/${n}-page.png`, fullPage: true });

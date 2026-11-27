@@ -11,7 +11,7 @@
   const fmtMi = m => { const v = miles(m); return v < 0.1 ? `${Math.round(m * 3.28084)} ft` : `${v < 10 ? v.toFixed(1) : Math.round(v)} mi`; };
   const fmtMin = s => s < 3600 ? `${Math.max(1, Math.round(s / 60))} min` : `${Math.floor(s / 3600)} h ${Math.round((s % 3600) / 60)} min`;
 
-  const OVERPASS = ['https://overpass-api.de/api/interpreter', 'https://overpass.private.coffee/api/interpreter', 'https://maps.mail.ru/osm/tools/overpass/api/interpreter'];
+  const OVERPASS = ['https://overpass-api.de/api/interpreter', 'https://maps.mail.ru/osm/tools/overpass/api/interpreter'];
   const NOMINATIM = 'https://nominatim.openstreetmap.org';
   const OSRM = 'https://router.project-osrm.org';
 
@@ -38,12 +38,14 @@
   // The free Overpass servers reject (429/504) when one phone sends many queries at once,
   // so queries go through a queue (max 2 at a time) and each one retries across mirrors.
   const ovq = { active: 0, waiting: [] };
-  function overpass(query) {
-    return new Promise((resolve, reject) => { ovq.waiting.push({ query, resolve, reject }); pumpOverpass(); });
+  function overpass(query, run) {
+    return new Promise((resolve, reject) => { ovq.waiting.push({ query, run, resolve, reject }); pumpOverpass(); });
   }
   function pumpOverpass() {
     while (ovq.active < 2 && ovq.waiting.length) {
-      const job = ovq.waiting.shift(); ovq.active++;
+      const job = ovq.waiting.shift();
+      if (job.run != null && job.run !== state.runId) { job.reject(new Error('cancelled')); continue; } // user moved to another house
+      ovq.active++;
       overpassRun(job.query).then(job.resolve, job.reject).finally(() => { ovq.active--; pumpOverpass(); });
     }
   }
@@ -52,7 +54,7 @@
     for (let attempt = 0; attempt < 2; attempt++) {
       for (const url of OVERPASS) {
         try {
-          const data = await fetchJSON(url, { method: 'POST', body: 'data=' + enc(query), headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }, 25000);
+          const data = await fetchJSON(url, { method: 'POST', body: 'data=' + enc(query), headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }, 20000);
           if (data.remark && /error|timed out|out of memory/i.test(data.remark)) throw new Error('server timeout');
           return data;
         } catch (e) { lastErr = e; }
@@ -169,7 +171,7 @@
 
   async function osmWays(point) {
     const q = `[out:json][timeout:25];(way["building"](around:70,${point.lat},${point.lon});way["highway"](around:220,${point.lat},${point.lon}););out tags geom;`;
-    const data = await overpass(q);
+    const data = await overpass(q, state.runId);
     const ways = data.elements.filter(e => e.type === 'way');
     return { buildings: ways.filter(w => w.tags.building), roads: ways.filter(w => w.tags.highway) };
   }
@@ -455,7 +457,7 @@
     };
     const failed = [];
     const customP = loadCustom(p, run, customTerms());
-    await Promise.all(groups.map(g => overpass(catQuery(g, p)).then(d => collect(d, g)).catch(() => failed.push(...g.map(c => c.key)))));
+    await Promise.all(groups.map(g => overpass(catQuery(g, p), run).then(d => collect(d, g)).catch(() => failed.push(...g.map(c => c.key)))));
     // Backup when the OpenStreetMap query servers are overloaded: name/category search through Nominatim.
     const FALLBACK = { costco: [['Costco Wholesale', x => /costco/i.test(x.name) && !/gas|fuel/i.test(x.name + x.type)]],
       indian: [['Patel Brothers', x => x.category === 'shop'], ['India grocery', x => x.category === 'shop'], ['Indian market', x => x.category === 'shop'], ['Indian grocery store', x => x.category === 'shop']],
@@ -559,7 +561,7 @@
     );out tags bb;`;
     const box = $('#nuisances');
     try {
-      const results = await Promise.allSettled([overpass(qLines), overpass(qAreas)]);
+      const results = await Promise.allSettled([overpass(qLines, run), overpass(qAreas, run)]);
       if (run !== state.runId) return;
       if (results.every(r => r.status === 'rejected')) throw results[0].reason;
       const elements = results.flatMap(r => r.status === 'fulfilled' ? r.value.elements : []);
@@ -699,7 +701,7 @@
 
   // ---------- home daycare ----------
   async function nearestRamp(p) {
-    const d = await overpass(`[out:json][timeout:20];node["highway"="motorway_junction"](around:20000,${p.lat},${p.lon});out;`);
+    const d = await overpass(`[out:json][timeout:20];node["highway"="motorway_junction"](around:20000,${p.lat},${p.lon});out;`, state.runId);
     const list = (d.elements || []).map(e => ({ name: e.tags.name || (e.tags.ref ? `Exit ${e.tags.ref}` : 'Highway ramp'), lat: e.lat, lon: e.lon, dist: Geo.haversine(p, e) })).sort((a, b) => a.dist - b.dist);
     return list[0] || null;
   }

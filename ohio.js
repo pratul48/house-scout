@@ -139,9 +139,9 @@
   /** Public schools within `meters` with grade spans (NCES 2024-25). */
   async function schools(p, meters) {
     try {
-      const j = await getJSON(`${NCES}/query?${near(p, meters)}&outFields=SCH_NAME,GSLO,GSHI,SCHOOL_LEVEL,LEVEL,TOTAL,LATCOD,LONCOD,LEA_NAME&returnGeometry=false&resultRecordCount=200&f=json`);
+      const j = await getJSON(`${NCES}/query?${near(p, meters)}&outFields=SCH_NAME,GSLO,GSHI,SCHOOL_LEVEL,TOTAL,LATCOD,LONCOD,LEA_NAME,SY_STATUS_TEXT&returnGeometry=false&resultRecordCount=200&f=json`);
       const list = (j.features || []).map(f => f.attributes).filter(a => a.LATCOD).map(a => ({
-        name: title(a.SCH_NAME), lo: a.GSLO, hi: a.GSHI, level: a.SCHOOL_LEVEL || a.LEVEL, students: a.TOTAL > 0 ? a.TOTAL : null, district: title(a.LEA_NAME),
+        name: title(a.SCH_NAME), lo: a.GSLO, hi: a.GSHI, level: a.SCHOOL_LEVEL, students: a.TOTAL > 0 ? a.TOTAL : null, district: title(a.LEA_NAME),
         lat: a.LATCOD, lon: a.LONCOD, dist: Geo.haversine(p, { lat: a.LATCOD, lon: a.LONCOD })
       }));
       if (list.length) return list.sort((a, b) => a.dist - b.dist);
