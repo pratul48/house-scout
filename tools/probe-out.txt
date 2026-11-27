@@ -1,128 +1,149 @@
 
-### osip3 footprint Mason
-HTTP 200 len=4708
-[{"OBJECTID":16,"Name":"war_2023_6in","MinPS":0,"MaxPS":150,"LowPS":0.5,"HighPS":0.5,"Category":1,"Tag":"Dataset","GroupName":"","ProductName":"","CenterX":1497479.0918511197,"CenterY":-82721.54786830553,"ZOrder":null,"TypeID":16,"ItemTS":45715.682275451385,"UriHash":"86A18C961C86ABDDA2FCFB1E96D3D9DF","Shape_Length":485197.6921908338,"Shape_Area":12022303961.733902},{"OBJECTID":137,"Name":"Ov_i5E_L01_R00000497_C000005BD.tif","MinPS":5,"MaxPS":25,"LowPS":16,"HighPS":16,"Category":2,"Tag":"Dataset","GroupName":"","ProductName":"","CenterX":1417981.3440234736,"CenterY":-76491.99985685945,"ZOrder":null,"TypeID":94,"ItemTS":46079.764789560184,"UriHash":"1AEDD35A1914B1DC5417882C857F5092","Shape_Length":327680.00080665946,"Shape_Area":6710886433.0407715},{"OBJECTID":305,"Name":"Ov_i5E_L02_R00000092_C000000B7.tif","MinPS":128,"MaxPS":1024,"LowPS":128,"HighPS":128,"Category":2,"Tag":"Dataset","Gr
+### wcgis page
+HTTP 200 CORS=null len=5198
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="./shortcut.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0
+assets: ./shortcut.ico https://js.arcgis.com/calcite-components/3.3.3/calcite.esm.js https://js.arcgis.com/4.33/esri/themes/dark/main.css https://unpkg.com/react@17/umd/react.production.min.js https://unpkg.com/react-dom@17/umd/react-dom.production.min.js https://embedded-explorer.eagleview.com/static/embedded-explorer-widget.js https://js.arcgis.com/4.33/ https://js.arcgis.com/4.33/map-components ./assets/index-CeQp-DGm.js ./assets/index-CzzY9K0E.css https://maps.warrencountyohio.gov/cdn-cgi/content?id=zsJSzQ0Q4V4iBAtLMdZDqv42QL.hbrDrQHrPYFRvm3k-1795743725.3495135-1.2.1.1-BXH.FsXIt.ZqGeEWj2nLM86P2Q53d1HV2X8UhqcsifQyBsXus_QvdOQreztddDdK
 
-### osip3 identify Mason
-HTTP 200 len=4996
-[["Boundary",null],["Footprint","war_2023_6in"],["Footprint","Ov_i5E_L01_R00000497_C000005BD.tif"],["Footprint","Ov_i5E_L02_R00000092_C000000B7.tif"],["Footprint","Ov_i5E_L03_R00000012_C00000016.tif"],["Footprint","Ov_i5E_L04_R00000002_C00000002.tif"],["Footprint","Ov_i5E_L05_R00000000_C00000000.tif"],["Footprint","Ov_i5E_L06_R00000000_C00000000.tif"],["Image","war_2023_6in"]]
+### root https://maps.warrencountyohio.gov/arcgis/rest/services
+HTTP 404 CORS=null len=2669
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+<title>404 - File or directory not found.</title>
+<style type="text/css">
+<!--
+body{margin:0;font-size:.7em;font-family:Verdana, Arial, Helvetica, sans-serif;background:#EEEEEE;}
+fieldset{padding:0 15px 10px 15px;} 
+h1{font-size:2.4em;margin:0;color:#FFF;}
+h2{font-size:1.7em;margin:0;color:#CC0000;} 
+h3{font-size:1.2em;margin:10px 0 0 0;color:#000000;} 
+#header{width:96%;margin:0 0 0 0;padding:6px 2% 6px 2%;font-family:"trebuchet MS", Verdana, sans-serif;color:#FFF;
+background-color:#555555;}
+#content{margin:0 0 0 2%;position:relative;}
+.content-container{background:#FFF;width:96%;margin-top:8px;padding:10px;position:relative;}
+-->
+</style>
+</head>
+<body><a href="https://maps.warrencountyohio.gov/cdn-cgi/content?id=6RtbeM7.MWLeSiuWPwXeWkObPZ0OMsYJnuVrhrSSHRU-1795743725.4518218-1.2.1.1-oreSSfuBaYPBJOTllgHQDZt70brHtLoqc0anRjdsMRWUBxk0gRdv8qbHANbO7DKp" aria-hidden="true" rel="nofollow noopener" style="display: none !important; visibility: hidden !important"></a>
+<div id="header"><h1>Server Error</h1></div>
+<div id="content">
+ <div class="content-container"><fieldset>
+  <h2>404 - File or directory not found.</h2>
+  <h3>The resource you are looking for might have been removed, had its name changed, or is temporarily unavailabl
 
-### osipcur footprint Mason
-HTTP 200 len=80
-[]
+### root https://maps.warrencountyohio.gov/server/rest/services
+HTTP 200 CORS=https://pratul48.github.io len=270
+{"currentVersion":11.5,"folders":["AuditorsMap","Basemap","BOE","Dynamic","Engineer","Hosted","Maproom","PSN","test","Tools","Utilities","WaterSewer"],"services":[{"name":"SWCD_MS4_Inspections","type":"FeatureServer"},{"name":"SWCD_MS4_Inspections","type":"MapServer"}]}
 
-### osipcur catalog Mason
-HTTP 200 len=1009
-[{"OBJECTID":16,"Name":"war_2023_6in","Category":5,"ZOrder":20},{"OBJECTID":903,"Name":"war_2025","Category":1,"ZOrder":10}]
+### root https://gis.warrencountyohio.gov/arcgis/rest/services
+ERROR fetch failed
 
-### index Mason
-HTTP 200 len=657
-[{"year":2025,"county":"Warren","month_flown":3,"resolution":"6 inch"}]
+### root https://maps.warrencountyohio.gov/wcgis/rest/services
+HTTP 404 CORS=null len=2669
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+<title>404 - File or directory not found.</title>
+<style type="text/css">
+<!--
+body{margin:0;font-size:.7em;font-family:Verdana, Arial, Helvetica, sans-serif;background:#EEEEEE;}
+fieldset{padding:0 15px 10px 15px;} 
+h1{font-size:2.4em;margin:0;color:#FFF;}
+h2{font-size:1.7em;margin:0;color:#CC0000;} 
+h3{font-size:1.2em;margin:10px 0 0 0;color:#000000;} 
+#header{width:96%;margin:0 0 0 0;padding:6px 2% 6px 2%;font-family:"trebuchet MS", Verdana, sans-serif;color:#FFF;
+background-color:#555555;}
+#content{margin:0 0 0 2%;position:relative;}
+.content-container{background:#FFF;width:96%;margin-top:8px;padding:10px;position:relative;}
+-->
+</style>
+</head>
+<body><a href="https://maps.warrencountyohio.gov/cdn-cgi/content?id=5hh703TMgjmqM59hffnj1ikx7kB1fWO2UPGvJ3goCIU-1795743725.6395464-1.2.1.1-DQz9A1FN4H6IIwHdgXYW0fd1zVzQn08a9S_1Nnble.37wHaoTygvgw9s6oL_.1nb" aria-hidden="true" rel="nofollow noopener" style="display: none !important; visibility: hidden !important"></a>
+<div id="header"><h1>Server Error</h1></div>
+<div id="content">
+ <div class="content-container"><fieldset>
+  <h2>404 - File or directory not found.</h2>
+  <h3>The resource you are looking for might have been removed, had its name changed, or is temporarily unavailabl
 
-### parcel Mason
-HTTP 200 len=1392
-[{"County":"Warren","LocalParcelID":"16361010020","SitusAddressAll":null,"CAMADataSite":"https://auditor.warrencountyohio.gov/PropertySearch/Summary/Index?account_nbr=","StateLUC":null},{"County":"Warren","LocalParcelID":"16361440010","SitusAddressAll":null,"CAMADataSite":"https://auditor.warrencountyohio.gov/PropertySearch/Summary/Index?account_nbr=","StateLUC":null}]
+### PUCO owner Warren
+HTTP 200 CORS=https://pratul48.github.io len=1541
+[{"OBJECTID":1441887,"PIN":"16361480130","COUNTY":"WARREN","STATEWIDE_PIN":"WAR_16361480130","ASSR_ACRES":0.166,"CALC_ACRES":0.16612924505696,"OWNER1":"HOFFMASTER PROPERTIES II*                    ","OWNER2":null,"AUD_LINK":"https://www.wcauditor.org/Property_Search/summary.aspx?account_nbr=1129342","Shape_Length":144.21179051963713,"Shape_Area":1126.4139027091837}]
 
-### structures Mason
-HTTP 200 len=12
-{"count":13}
+### Butler search
+HTTP 200 CORS=https://pratul48.github.io len=110275
+[["Regrid USA Nationwide Parcel Boundaries","data_regrid","https://tiles.arcgis.com/tiles/KzeiCaQsMoeCfoCq/arcgis/rest/services/Regrid_Nationwide_Parcel_Boundaries_v1/MapServer"],["Ohio Statewide Parcels Public View","ogrip_agol","https://services2.arcgis.com/MlJ0G8iWUyC7jAmu/arcgis/rest/services/OhioStatewidePacels_full_view/FeatureServer"],["Surface Ownership Parcels, detailed","USFSEnterpriseContent","https://apps.fs.usda.gov/arcx/rest/services/EDW/EDW_SurfaceOwnership_01/MapServer"],["Stark County Parcels","StarkCountyOH","https://scgisa.starkcountyohio.gov/arcgis/rest/services/Auditor/StarkCountyParcels/MapServer"],["Surface Ownership Parcels, detailed (Feature Layer)","USFSEnterpriseContent","https://apps.fs.usda.gov/arcx/rest/services/EDW/EDW_SurfaceOwnership_01/MapServer/0"],["Parcel_Map_Notes_submit","NDGISHub","https://services1.arcgis.com/GOcSXpzwBHyk2nog/arcgis/rest/services/Parcel_Map_Notes_submit/FeatureServer"],["Parcel Extraction - USA","esri_analytics",null],["Land and Water Conservation Fund Parcels","USFSEnterpriseContent","https://apps.fs.usda.gov/arcx/rest/services/EDW/EDW_LandAndWaterConservationFundParcels_01/MapServer"],["Surface Ownership Parcels (Feature Layer)","USFSEnterpriseContent","https://apps.fs.usda.gov/arcx/rest/services/EDW/EDW_BasicOwnership_01/MapServer/0"],["Parcels withdrawn from settlement, sale, mineral location, and/or entry","USFSEnterpriseContent","https://apps.fs.usda.gov/arcx/rest/services/EDW/EDW_Withdrawal_01/MapServer"],["Landstats US and Canada Nationwide Parcel Layer","landrecords",""],["Palm_Beach_County_Parcels_for_Legend","pat10263@esri.com_telecomrc","https://services.arcgis.com/B7X7NCOKKXditlwZ/arcgis/rest/services/Palm_Beach_County_Parcels_for_Legend/FeatureServer"],["Parcel Map Notes_submit","MNordquist_PWA","https://services.arcgis.com/pEosvuftL1Kgj1UF/arcgis/rest/services/Parcel_Map_Notes_submit/FeatureServer"],["Parcels - Legal Description Drafting","TelCyte","https://services8.arcgis.com/bspqcASG7WIqqFvk/arcgis/rest/services/ParcelDrafter_a703ec64633b4977b6331ba60b083cfb/FeatureServer"],["Parcel Drafter","saukagoadmin","https://services.arcgis.com/iwDlR6c2PKIpwnf7/arcgis/rest/services/ParcelDrafterTest/FeatureServer"],["Community Parcels","ArcGISforEM","https://services3.arcgis.com/srAyaQgvZkzUzL4M/arcgis/rest/services/CommunityParcelsService/FeatureServer"],["Parcels withdrawn from settlement, sale, mineral location, and/or entry (Feature Layer)","USFSEnterpriseContent","https://apps.fs.usda.gov/arcx/rest/services/EDW/EDW_Withdrawal_01/MapServer/0"],["Survey parcels described by metes and bounds (Feature Layer)","USFSEnterpriseContent","https://apps.fs.usda.gov/arcx/rest/services/EDW/EDW_Tract_01/MapServer/0"],["Addressing_Energov_WFL1","aallen_PPines","https://services6.arcgis.com/OlJkQnf39yF1a7pM/arcgis/rest/services/Addressing_Energov_WFL1/FeatureServer"],["Primary Parcels - Far North (LINZ)","FNDC_GIS","https://maps.fndc.govt.nz/hosting/rest/services/Hosted/PrimaryParcels_FarNort
 
-### osip3 footprint West Chester
-HTTP 200 len=4709
-[{"OBJECTID":30,"Name":"but_2023_6in","MinPS":0,"MaxPS":150,"LowPS":0.5,"HighPS":0.5,"Category":1,"Tag":"Dataset","GroupName":"","ProductName":"","CenterX":1382303.8777114567,"CenterY":-76052.65031861616,"ZOrder":null,"TypeID":30,"ItemTS":45715.682275706014,"UriHash":"C08A8C3CF8EF206C3594A8558F696325","Shape_Length":515207.06020685274,"Shape_Area":13873653299.794079},{"OBJECTID":137,"Name":"Ov_i5E_L01_R00000497_C000005BD.tif","MinPS":5,"MaxPS":25,"LowPS":16,"HighPS":16,"Category":2,"Tag":"Dataset","GroupName":"","ProductName":"","CenterX":1417981.3440234736,"CenterY":-76491.99985685945,"ZOrder":null,"TypeID":94,"ItemTS":46079.764789560184,"UriHash":"1AEDD35A1914B1DC5417882C857F5092","Shape_Length":327680.00080665946,"Shape_Area":6710886433.0407715},{"OBJECTID":305,"Name":"Ov_i5E_L02_R00000092_C000000B7.tif","MinPS":128,"MaxPS":1024,"LowPS":128,"HighPS":128,"Category":2,"Tag":"Dataset","G
+### root https://gis.bcohio.gov/arcgis/rest/services
+ERROR fetch failed
 
-### osip3 identify West Chester
-HTTP 200 len=4996
-[["Boundary",null],["Footprint","but_2023_6in"],["Footprint","Ov_i5E_L01_R00000497_C000005BD.tif"],["Footprint","Ov_i5E_L02_R00000092_C000000B7.tif"],["Footprint","Ov_i5E_L03_R00000012_C00000016.tif"],["Footprint","Ov_i5E_L04_R00000002_C00000002.tif"],["Footprint","Ov_i5E_L05_R00000000_C00000000.tif"],["Footprint","Ov_i5E_L06_R00000000_C00000000.tif"],["Image","but_2023_6in"]]
+### root https://bcgis.bcohio.gov/arcgis/rest/services
+ERROR fetch failed
 
-### osipcur footprint West Chester
-HTTP 200 len=80
-[]
+### root https://propertysearch.bcohio.gov/arcgis/rest/services
+HTTP 404 CORS=null len=1726
+<!DOCTYPE html>
 
-### osipcur catalog West Chester
-HTTP 200 len=934
-[{"OBJECTID":30,"Name":"but_2023_6in","Category":1,"ZOrder":11}]
+<html>
+<head runat="server">
+    <meta http-equiv="X-UA-Compatible" content="IE=9"> 
+    <title>Page Not Found</title>
+    <style>
+        BODY {
+            background-color: #F2F4E9;
+        }
+        .msg-frame {
+            width:480px;
+            height:200px;
+            position:absolute;
+            left:50%;
+            top:50%;
+            margin:-100px 0 0 -240px;
+            background-image:url(../images/frame.png);
+            background-repeat:no-repeat;
+        }
+        .msg-body {
+            width:450px;
+            height:170px;
+            position:relative;
+            left:15px;
+            top:10px;
+        }
+        .msg-body-content {
+            position:relative;
+            top:10px;
+        }
+        .msg-icon {
+            width:440px;
+            height:80px;
+            position:relative;
+            left:5px;
+            background-image:url(../images/pagenotfound.png);
+            background-repeat:no-repeat;
+        }
+        .msg-text {
+            position:relative;
+            top:10px;
+            font-family:Arial; font-size:11pt;
+        }
+    </style>
+</head>
+<body>
+    <div 
 
-### index West Chester
-HTTP 200 len=657
-[{"year":2023,"county":"Butler","month_flown":2,"resolution":"3 inch"}]
+### root https://gis.butlercountyohio.org/arcgis/rest/services
+ERROR fetch failed
 
-### parcel West Chester
-HTTP 200 len=1508
-[{"County":"Butler","LocalParcelID":"M5620169000042","SitusAddressAll":"8015  CASTLE ROCK LN  WEST CHESTER 45069","CAMADataSite":"https://propertysearch.bcohio.gov/maps/map.aspx?UseSearch=no&pin=M5620169000042","StateLUC":"510: Res-Single Family"},{"County":"Butler","LocalParcelID":"M5610014000030","SitusAddressAll":"8015  TYLERSVILLE RD  WEST CHESTER 45069","CAMADataSite":"https://propertysearch.bcohio.gov/maps/map.aspx?UseSearch=no&pin=M5610014000030","StateLUC":"419: Com-Other"}]
+### Hamilton attrs at point
+HTTP 200 CORS=https://pratul48.github.io len=2761
+[{"PARCELID":"060300040010","OWNNM1":"9468 MONTGOMERY RD LLC","OWNNM2":null,"SALDAT":1669161600000,"SALAMT":650000,"SALTYP":null,"VALID":null,"MKTLND":347840,"MKTIMP":302160,"MKT_TOTAL_VAL":650000,"ANNUAL_TAXES":18515.29,"PREVOWN1":null,"CLASS":444,"ADDRNO":"9468","ADDRST":"MONTGOMERY","ADDRSF":"RD","ACREDEED":0.223,"HMSD_FLAG":"N","FORECL_FLAG":"N","DELQ_TAXES":0,"RENT_REG_FLAG":null}]
 
-### structures West Chester
-HTTP 200 len=11
-{"count":9}
-
-### osip3 footprint Montgomery
-HTTP 200 len=4708
-[{"OBJECTID":81,"Name":"ham_2018_6in","MinPS":0,"MaxPS":150,"LowPS":0.5,"HighPS":0.5,"Category":1,"Tag":"Dataset","GroupName":"","ProductName":"","CenterX":1389592.8438034977,"CenterY":-167075.85439628878,"ZOrder":null,"TypeID":81,"ItemTS":45715.682276631946,"UriHash":"066899E40484A4ABF2DCAE5005CAF35C","Shape_Length":640342.2201489286,"Shape_Area":13589336188.184172},{"OBJECTID":124,"Name":"Ov_i5E_L01_R00000496_C000005BD.tif","MinPS":5,"MaxPS":25,"LowPS":16,"HighPS":16,"Category":2,"Tag":"Dataset","GroupName":"","ProductName":"","CenterX":1417992.0369635068,"CenterY":-158338.70936852426,"ZOrder":null,"TypeID":94,"ItemTS":46079.764788113425,"UriHash":"B43E0C6B8C77EC8BD6E84580D87B1F6C","Shape_Length":332620.5552028278,"Shape_Area":6698527931.697834},{"OBJECTID":305,"Name":"Ov_i5E_L02_R00000092_C000000B7.tif","MinPS":128,"MaxPS":1024,"LowPS":128,"HighPS":128,"Category":2,"Tag":"Dataset","Gr
-
-### osip3 identify Montgomery
-HTTP 200 len=5000
-[["Boundary",null],["Footprint","ham_2018_6in"],["Footprint","Ov_i5E_L01_R00000496_C000005BD.tif"],["Footprint","Ov_i5E_L02_R00000092_C000000B7.tif"],["Footprint","Ov_i5E_L03_R00000012_C00000016.tif"],["Footprint","Ov_i5E_L04_R00000002_C00000002.tif"],["Footprint","Ov_i5E_L05_R00000000_C00000000.tif"],["Footprint","Ov_i5E_L06_R00000000_C00000000.tif"],["Image","ham_2018_6in"]]
-
-### osipcur footprint Montgomery
-HTTP 200 len=80
-[]
-
-### osipcur catalog Montgomery
-HTTP 200 len=934
-[{"OBJECTID":81,"Name":"ham_2018_6in","Category":1,"ZOrder":10}]
-
-### index Montgomery
-HTTP 200 len=659
-[{"year":2018,"county":"Hamilton","month_flown":3,"resolution":"6 inch"}]
-
-### parcel Montgomery
-HTTP 200 len=1334
-[{"County":"Hamilton","LocalParcelID":"6030003013600","SitusAddressAll":null,"CAMADataSite":null,"StateLUC":null},{"County":"Hamilton","LocalParcelID":"6030001002100","SitusAddressAll":"7836  REMINGTON RD   ","CAMADataSite":"http://wedge1.hcauditor.org/view/re/6030001002100","StateLUC":"510: Res-Single Family"}]
-
-### structures Montgomery
-HTTP 200 len=12
-{"count":10}
-
-### osip3 footprint Lebanon
-HTTP 200 len=4708
-[{"OBJECTID":16,"Name":"war_2023_6in","MinPS":0,"MaxPS":150,"LowPS":0.5,"HighPS":0.5,"Category":1,"Tag":"Dataset","GroupName":"","ProductName":"","CenterX":1497479.0918511197,"CenterY":-82721.54786830553,"ZOrder":null,"TypeID":16,"ItemTS":45715.682275451385,"UriHash":"86A18C961C86ABDDA2FCFB1E96D3D9DF","Shape_Length":485197.6921908338,"Shape_Area":12022303961.733902},{"OBJECTID":138,"Name":"Ov_i5E_L01_R00000497_C000005BE.tif","MinPS":5,"MaxPS":25,"LowPS":16,"HighPS":16,"Category":2,"Tag":"Dataset","GroupName":"","ProductName":"","CenterX":1499901.3440610915,"CenterY":-76491.99985685945,"ZOrder":null,"TypeID":94,"ItemTS":46079.76478967592,"UriHash":"E890C9BC284B3AA827681B26DC6B1AD9","Shape_Length":327680.0001505017,"Shape_Area":6710886406.164551},{"OBJECTID":305,"Name":"Ov_i5E_L02_R00000092_C000000B7.tif","MinPS":128,"MaxPS":1024,"LowPS":128,"HighPS":128,"Category":2,"Tag":"Dataset","Group
-
-### osip3 identify Lebanon
-HTTP 200 len=4996
-[["Boundary",null],["Footprint","war_2023_6in"],["Footprint","Ov_i5E_L01_R00000497_C000005BE.tif"],["Footprint","Ov_i5E_L02_R00000092_C000000B7.tif"],["Footprint","Ov_i5E_L03_R00000012_C00000016.tif"],["Footprint","Ov_i5E_L04_R00000002_C00000002.tif"],["Footprint","Ov_i5E_L05_R00000000_C00000000.tif"],["Footprint","Ov_i5E_L06_R00000000_C00000000.tif"],["Image","war_2023_6in"]]
-
-### osipcur footprint Lebanon
-HTTP 200 len=80
-[]
-
-### osipcur catalog Lebanon
-HTTP 200 len=1009
-[{"OBJECTID":16,"Name":"war_2023_6in","Category":5,"ZOrder":20},{"OBJECTID":903,"Name":"war_2025","Category":1,"ZOrder":10}]
-
-### index Lebanon
-HTTP 200 len=657
-[{"year":2025,"county":"Warren","month_flown":3,"resolution":"6 inch"}]
-
-### parcel Lebanon
-HTTP 200 len=1392
-[{"County":"Warren","LocalParcelID":"13363610150","SitusAddressAll":null,"CAMADataSite":"https://auditor.warrencountyohio.gov/PropertySearch/Summary/Index?account_nbr=","StateLUC":null},{"County":"Warren","LocalParcelID":"13363610040","SitusAddressAll":null,"CAMADataSite":"https://auditor.warrencountyohio.gov/PropertySearch/Summary/Index?account_nbr=","StateLUC":null}]
-
-### structures Lebanon
-HTTP 200 len=12
-{"count":14}
-
-### osip3 layer 2 info
-HTTP 200 len=6828
-{"fields":"OBJECTID,Shape,Raster,Name,MinPS,MaxPS,LowPS,HighPS,Category,Tag,GroupName,ProductName,CenterX,CenterY,ZOrder,TypeID,ItemTS,UriHash,Uri,Shape_Length,Shape_Area","caps":"Map,Query,Data"}
-
-### LBRS geocode West Chester
-HTTP 200 len=366
-[["7951 TYLERSVILLE RD, WEST CHESTER, OH, 45069",100,"PointAddress",{"x":-84.3599385,"y":39.351294}]]
-
-### LBRS geocode loose
-HTTP 200 len=341
-[["5517 PATRIOT CT, MASON, OH, 45040",100,"PointAddress",{"x":-84.318219,"y":39.364956}]]
-
-### LBRS suggest
-HTTP 200 len=355
-{"suggestions":[{"text":"5517 PATRIOT AVE, ORIENT, OH, 43146","magicKey":"dHA9MCN0dj1mZWM1MjFkNiNsb2M9MTU1ODU2I2xuZz0wI2ZhPTUyNDI4OCNobj01NTE3I2xicz0xMDk6MTAyMDM5","isCollection":false},{"text":"5517 PATRIOT CT, MASON, OH, 45040","magicKey":"dHA9MCN0dj1mZWM1MjFkNiNsb2M9MTk2MDY0I2xuZz0wI2ZhPTI2MjE0NCNobj01NTE3I2xicz0xMDk6MTAyMDQy","isCollection":false}]}
+### Hamilton comps (sales last 2y, 400m)
+HTTP 200 CORS=https://pratul48.github.io len=104
+{"code":400,"extendedCode":-2147220985,"message":"Unable to complete operation.","details":[]}
