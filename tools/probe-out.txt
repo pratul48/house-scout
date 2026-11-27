@@ -1,60 +1,211 @@
 
-### NCES 2425 L1 fields
-HTTP 200 CORS=https://pratul48.github.io len=15189
-"OBJECTID | Shape | NCESSCH | SURVYEAR | LEAID | ST_LEAID | LEA_NAME | SCH_NAME | LSTREET1 | LSTREET2 | LCITY | LSTATE | LZIP | LZIP4 | PHONE | CHARTER_TEXT | VIRTUAL | GSLO | GSHI | SCHOOL_LEVEL | STATUS | SCHOOL_TYPE_TEXT | SY_STATUS_TEXT | ULOCALE | NMCNTY | CNTY | TOTFRL | FRELCH | REDLCH | DIRECTCERT | PK | KG | G01 | G02 | G03 | G04 | G05 | G06 | G07 | G08 | G09 | G10 | G11 | G12 | G13 | UG | AE | TOTMENROL | TOTFENROL | TOTAL | MEMBER | FTE | STUTERATIO | AMALM | AMALF | AM | ASALM | ASALF | AS | BLALM | BLALF | BL | HPALM | HPALF | HP | HIALM | HIALF | HI | TRALM | TRALF | TR | WHALM | WHALF | WH | LATCOD | LONCOD"
+### image folder
+HTTP 200 CORS=https://pratul48.github.io len=307
+{"currentVersion":11.5,"folders":["Imagery","Utilities"],"services":[{"name":"osip_3_cache","type":"MapServer"},{"name":"osip_most_current_cache","type":"MapServer"},{"name":"osip_most_current","type":"ImageServer"},{"name":"OSIPI_DEM","type":"ImageServer"},{"name":"River_Mile_Maps","type":"ImageServer"}]}
 
-### NCES 2425 near
-HTTP 200 CORS=https://pratul48.github.io len=11940
-[{"OBJECTID":69136,"NCESSCH":"390461100450","SURVYEAR":"2024-2025","LEAID":"3904611","ST_LEAID":"OH-046110","LEA_NAME":"Lakota Local","SCH_NAME":"Independence Elementary School","LSTREET1":"7480 Princeton Rd","LSTREET2":"","LCITY":"Liberty Township","LSTATE":"OH ","LZIP":"45044","LZIP4":"9619","PHONE":"(513) 755-8300","CHARTER_TEXT":"No","VIRTUAL":"Not Virtual","GSLO":"03","GSHI":"06","SCHOOL_LEVEL":"Elementary","STATUS":"1","SCHOOL_TYPE_TEXT":"Regular School","SY_STATUS_TEXT":"Open","ULOCALE":"21-Suburb: Large","NMCNTY":"Butler County","CNTY":"39017","TOTFRL":122,"FRELCH":113,"REDLCH":9,"DIRECTCERT":-1,"PK":-2,"KG":-2,"G01":-2,"G02":-2,"G03":141,"G04":143,"G05":166,"G06":158,"G07":-2,"G08":-2,"G09":-2,"G10":-2,"G11":-2,"G12":-2,"G13":-2,"UG":-2,"AE":-2,"TOTMENROL":307,"TOTFENROL":301,"TOTAL":608,"MEMBER":608,"FTE":28,"STUTERATIO":21.71,"AMALM":0,"AMALF":0,"AM":0,"ASALM":25,"ASALF":30,"AS":55,"BLALM":30,"BLALF":26,"BL":56,"HPALM":0,"HPALF":2,"HP":2,"HIALM":13,"HIALF":13,"HI":26,"TRALM":28,"TRALF":18,"TR":46,"WHALM":211,"WHALF":212,"WH":423,"LATCOD":39.3941,"LONCOD":-84.373},{"OBJECTID":69139,"NCESSCH":"390461100810","SURVYEAR":"2024-2025","LEAID":"3904611","ST_LEAID":"OH-046110","LEA_NAME":"Lakota Local","SCH_NAME":"Lakota East High School","LSTREET1":"6840 Lakota Ln","LSTREET2":"","LCITY":"Liberty Township","LSTATE":"OH ","LZIP":"45044","LZIP4":"9578","PHONE":"(513) 755-7211","CHARTER_TEXT":"No","VIRTUAL":"Not Virtual","GSLO":"09","GSHI":"12","SCHOOL_LEVEL":"High","STATUS":"1","SCHOOL_TYPE_TEXT":"Regular School","SY_STATUS_TEXT":"Open","ULOCALE":"21-Suburb: Large","NMCNTY":"Butler County","CNTY":"39017","TOTFRL":670,"FRELCH":632,"REDLCH":38,"DIRECTCERT":-1,"PK":-2,"KG":-2,"G01":-2,"G02":-2,"G03":-2,"G04":-2,"G05":-2,"G06":-2,"G07":-2,"G08":-2,"G09":617,"G10":636,"G11":624,"G12":783,"G13":-2,"UG":-2,"AE":-2,"TOTMENROL":1390,"TOTFENROL":1270,"TOTAL":2660,"MEMBER":2660,"FTE":101.17,"STUTERATIO":26.29,"AMALM":0,"AMALF":0,"AM":0,"ASALM":111,"ASALF":113,"AS":224,"BLALM":164,"BLALF":138,"BL":302,"HPALM":4,"HPALF":7,"HP":11,"HIALM":124,"HIALF":94,"HI":218,"TRALM":75,"TRALF":89,"TR":164,"WHALM":912,"WHALF":829,"WH":1741,"LATCOD":39.3792,"LONCOD":-84.3711},{"OBJECTID":69141,"NCESSCH":"390461102436","SURVYEAR":"2024-2025","LEAID":"3904611","ST_LEAID":"OH-046110","LEA_NAME":"Lakota Local","SCH_NAME":"Hopewell Early Childhood School","LSTREET1":"8300 Cox Rd","LSTREET2":"","LCITY":"West Chester","LSTATE":"OH ","LZIP":"45069","LZIP4":"2702","PHONE":"(513) 777-6128","CHARTER_TEXT":"No","VIRTUAL":"Not Virtual","GSLO":"KG","GSHI":"02","SCHOOL_LEVEL":"Elementary","STATUS":"1","SCHOOL_TYPE_TEXT":"Regular School","SY_STATUS_TEXT":"Open","ULOCALE":"21-Suburb: Large","NMCNTY":"Butler County","CNTY":"39017","TOTFRL":328,"FRELCH":309,"REDLCH":19,"DIRECTCERT":-1,"PK":-2,"KG":220,"G01":241,"G02":266,"G03":-2,"G04":-2,"G05":-2,"G06":-2,"G07":-2,"G08":-2,"G09":-2,"G10":-2,"G11":-2,"G12":-2,"G13":-2,"UG":-2,"AE":-2,"TOTMENROL":358,"TOTFENROL":369,"TOTAL":727,"MEMBER":727,"FT
+### osip cache info
+HTTP 200 CORS=https://pratul48.github.io len=5599
+{"desc":"","sr":{"wkid":102100,"latestWkid":3857,"xyTolerance":0.001,"zTolerance":0.001,"mTolerance":0.001,"falseX":-20037700,"falseY":-30241100,"xyUnits":10000,"falseZ":-100000,"zUnits":10000,"falseM":-100000,"mUnits":10000},"lods":[{"level":20,"resolution":0.14929107082380833,"scale":564.248588},{"level":21,"resolution":0.07464553541190416,"scale":282.124294},{"level":22,"resolution":0.03732276770595208,"scale":141.062147},{"level":23,"resolution":0.01866138385297604,"scale":70.5310735}],"origin":{"x":-20037508.342787,"y":20037508.342787},"rows":256,"fmt":"MIXED","layers":[{"id":0,"name":"osip_most_current","parentLayerId":-1,"defaultVisibility":true,"subLayerIds":[1,2,3],"minScale":0,"maxScale":0,"type":"Mosaic Layer","supportsDynamicLegends":false,"layerId":0,"layerName":"osip_most_current","serviceItemId":"5b79a50c630348fbb89cfc23573e178c"},{"id":1,"name":"Boundary","parentLayerId":0,"defaultVisibility":false,"subLayerIds":null,"minScale":0,"maxScale":0,"type":"Feature Layer","geometryType":"esriGeometryPolygon","supportsDynamicLegends":true,"legend":[{"label":"","imageData":"iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAO0lEQVQ4je3VIQ4AMAxCUZZw/yuzrK4a3HhpKr+oKQUIQXzrzPgEaIJJbNBGP7E16GOgsTT4zQ0VfAMXpesGTbdHvcEAAAAASUVORK5CYII=","contentType":"image/png","groupId":"0","height":20,"width":20}],"layerId":1,"layerName":"Boundary","serviceItemId":"5b79a50c630348fbb89cfc23573e178c"},{"id":2,"name":"Footprint","parentLayerId":0,"defaultVisibility":false,"subLayerIds":null,"minScale":0,"maxScale":0,"type":"Feature Layer","geometryType":"esriGeometryPolygon","supportsDynamicLegends":true,"legend":[{"label":"","imageData":"iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAO0lEQVQ4je3VIQ4AMAxCUZpw/yuzZFPV4MYXlU9gSghCMN47mIgm6IHBWNCOPrEr6MeAsSr4z4bKvYEDou0GTfPqtc0AAAAASUVORK5CYII=","contentType":"image/png","groupId":"0","height":20,"width":20}],"layerId":2,"layerName":"Footprint","serviceItemId":"5b79a50c630348fbb89cfc23573e178c"},{"id":3,"name":"Image","parentLayerId":0,"defaultVisibility":true,"subLayerIds":null,"minScale":0,"maxScale":0,"type":"Raster Layer","supportsDynamicLegends":true,"legend":[{"label":"Red:   Band_1","imageData":"iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAOklEQVQ4jWNhoDJgoZmB/8GIfMAIRrR0IbUAC9VMgoJRAykHLFQwAwWMGkg5YBnBBjJCyzOqGUgtAABgfwJTnasaYgAAAABJRU5ErkJggg==","contentType":"image/png","groupId":"0","height":20,"width":20},{"label":"Green: Band_2
 
-### USGS NAIP info
-HTTP 200 CORS=* len=7184
-{"name":"USGSNAIPImagery","desc":"The USGS NAIP Imagery service from The National Map (TNM) consists of high resolution aerial images that combine the visual attributes of an aerial photograph with the spatial accuracy and reliability of a map. The USGS NAIP Imagery service is a mosaic primarily of 0.6 meter resolution 4-band imager","cell":0.29999999999944177}
+### osip tile z19 Mason (Warren)
+HTTP 200 CORS=https://pratul48.github.io IMAGE image/jpeg 14630 bytes
 
-### USGS NAIP export
-HTTP 200 CORS=* IMAGE image/jpeg 11258 bytes
+### osip tile z20 Mason (Warren)
+HTTP 200 CORS=https://pratul48.github.io IMAGE image/jpeg 10812 bytes
 
-### USGS NAIP catalog near
-HTTP 200 CORS=* len=60392
-[{"OBJECTID":19,"Name":"Ov_i02_L01_R0000002C_C0000000D","MinPS":152.8,"MaxPS":305.6,"Category":2,"CenterX":-9475964.3501,"CenterY":4572986.809500001,"State":null,"Year":null,"raster_name":null,"download_url":null,"acquisition_date":null,"agency":null,"vendor":null,"resolution_value":null,"resolution_units":null,"band_count":null,"sensor_type":null,"projection_name":null,"projection_zone":null,"datum":null},{"OBJECTID":47,"Name":"Ov_i02_L02_R00000016_C00000006","MinPS":305.6,"MaxPS":611.2,"Category":2,"CenterX":-9867132.3501,"CenterY":4964154.809500001,"State":null,"Year":null,"raster_name":null,"download_url":null,"acquisition_date":null,"agency":null,"vendor":null,"resolution_value":null,"resolution_units":null,"band_count":null,"sensor_type":null,"projection_name":null,"projection_zone":null,"datum":null},{"OBJECTID":59,"Name":"Ov_i02_L03_R0000000B_C00000003","MinPS":611.2,"MaxPS":1222.4,"Category":2,"CenterX":-9084796.3501,"CenterY":5266087.609500002,"State":null,"Year":null,"raster_name":null,"download_url":null,"acquisition_date":null,"agency":null,"vendor":null,"resolution_value":null,"resolution_units":null,"band_count":null,"sensor_type":null,"projection_name":null,"projection_zone":null,"datum":null},{"OBJECTID":62,"Name":"Ov_i02_L04_R00000005_C00000001","MinPS":1222.4,"MaxPS":2444.8,"Category":2,"CenterX":-10649468.3501,"CenterY":4582154.809500001,"State":null,"Year":null,"raster_name":null,"download_url":null,"acquisition_date":null,"agency":null,"vendor":null,"res
+### osip tile z21 Mason (Warren)
+HTTP 404 CORS=https://pratul48.github.io len=648
+<html lang="en">
+<head>
+<title>
+Error: Not Found</title>
+<link href="/image/rest/static/main.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<table width="100%" class="userTable">
+<tr>
+<td class="titlecell">ArcGIS REST Framework</td>
+</tr>
+</table>
+<table width="100%" class="navTable">
+<tr valign="top">
+<td class="breadcrumbs">
+<a href="/image/rest/services">Home</a>
+</td>
+</tr>
+</table>
+<div class="cbody">
+<br/>
+<br/>
+<b>Error: </b>Not Found<br/>
+<b>Code: </b>404<br/><br/>
+<script type="text/javascript" src="/image/rest/static/js/rest.js"></script>
+<div style="color:#ff6666"> </div></div>
+</body>
+</html>
 
-### USGS NAIPPlus info
-HTTP 200 CORS=* len=7632
-{"name":"USGSNAIPPlus","fields":"OBJECTID | Shape | Name | MinPS | MaxPS | Category | CenterX | CenterY | State | Year | raster_name | download_url | acquisition_date | agency | vendor | resolution_value | resolution_units | band_count | sensor_type | projection_name | projection_zone | datum"}
 
-### USGS NAIPPlus catalog
-HTTP 200 CORS=* len=60401
-[{"OBJECTID":26,"Name":"Ov_i02_L01_R0000002C_C0000000D","MinPS":152.8,"MaxPS":305.6,"Category":2,"CenterX":-9475967.8862,"CenterY":4573071.393799998,"State":null,"Year":null,"raster_name":null,"download_url":null,"acquisition_date":null,"agency":null,"vendor":null,"resolution_value":null,"resolution_units":null,"band_count":null,"sensor_type":null,"projection_name":null,"projection_zone":null,"datum":null},{"OBJECTID":97,"Name":"Ov_i02_L02_R00000016_C00000006","MinPS":305.6,"MaxPS":611.2,"Category":2,"CenterX":-9867135.8862,"CenterY":4964239.393799998,"State":null,"Year":null,"raster_name":null,"download_url":null,"acquisition_date":null,"agency":null,"vendor":null,"resolution_value":null,"resolution_units":null,"band_count":null,"sensor_type":null,"projection_name":null,"projection_zone":null,"datum":null},{"OBJECTID":127,"Name":"Ov_i02_L03_R0000000B_C00000003","MinPS":611.2,"MaxPS":1222.4,"Category":2,"CenterX":-9084799.8862,"CenterY":5266172.193799999,"State":null,"Year":null,"raster_name":null,"download_url":null,"acquisition_date":null,"agency":null,"vendor":null,"resolution_value":null,"resolution_units":null,"band_count":null,"sensor_type":null,"projection_name":null,"projection_zone":null,"datum":null},{"OBJECTID":136,"Name":"Ov_i02_L04_R00000005_C00000001","MinPS":1222.4,"MaxPS":2444.8,"Category":2,"CenterX":-10649471.8862,"CenterY":4173957.793800001,"State":null,"Year":null,"raster_name":null,"download_url":null,"acquisition_date":null,"agency":null,"vendor":null,"resolution_value":null,"resolution_units":null,"band_count":null,"sensor_type":null,"projection_name":null,"projection_zone":null,"datum":null},{"OBJECTID":141,"Name":"Ov_i02_L05_R00000002_C00000000","MinPS":2444.8,"MaxPS":4889.6,"Category":2,"CenterX":-13734809.4862,"CenterY":2845820.1937999986,"State":null,"Year":null,"raster_name":null,"download_url":null,"acquisition_date":null,"agency":null,"vendor":null,"resolution_value":null,"resolution_units":null,"band_count":null,"sensor_type":null,"pr
+### OSIP_Most_Current_Index Mason (Warren)
+HTTP 200 CORS=https://pratul48.github.io len=1300
+[{"muni":null,"year":2023,"name":"Warren","county":"Warren","SHAPE__Length":451988.64582035574,"resolution":"6 inch","month_flown":3,"objectid":43,"SHAPE__Area":11368432101.243793}]
 
-### search warren imagery
-HTTP 200 CORS=https://pratul48.github.io len=111011
-[["World Imagery","esri","Map Service","https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer","2026-11-19"],["World Imagery (WGS84)","esri","Map Service","https://wi.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/MapServer","2026-11-19"],["World Imagery (for Export)","esri","Map Service","https://tiledbasemaps.arcgis.com/arcgis/rest/services/World_Imagery/MapServer","2026-11-19"],["World Imagery (Wayback 2022-06-08)","esri_imagery","WMTS","https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/44710/{level}/{row}/{col}","2025-10-24"],["World Imagery (Wayback 2025-12-18)","esri_imagery","WMTS","https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/13192/{level}/{row}/{col}","2026-03-26"],["World Imagery (Wayback 2021-01-13)","esri_imagery","WMTS","https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/1049/{level}/{row}/{col}","2025-10-24"],["World Imagery (Wayback 2022-07-21)","esri_imagery","WMTS","https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/13851/{level}/{row}/{col}","2025-10-24"],["Milwaukee County 1995 Aerial Imagery Layer","DataCurator","Image Service","https://lio.milwaukeecountywi.gov/imagery/rest/services/aerial/ortho_1995/ImageServer","2025-02-05"],["World Imagery (Wayback 2023-12-07)","esri_imagery","WMTS","https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/56102/{level}/{row}/{col}","2025-10-24"],["World Imagery (Wayback 2026-05-28)","esri_imagery","WMTS","https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/10842/{level}/{row}/{col}","2026-06-01"],["World Imagery (Wayback 2019-05-15)","esri_imagery","WMTS","https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/9598/{level}/{row}/{col}","2025-10-24"],["衛星画像（World Imagery）","Esri_JP_Content","Map Service","https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer","2024-04-24"],["World Imagery (Wayback 2022-02-24)","esri_imagery","WMTS","https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/10312/{level}/{row}/{col}","2025-10-24"],["World Imagery (Wayback 2023-03-15)","esri_imagery","WMTS","https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/44873/{level}/{row}/{col}","2025-10-24"],["World Imagery (Wayback 2023-05-03)","esri_imagery","WMTS","https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/46399/{level}/{row}/{col}","2025-10-24"],["World Imagery (Wayback 2024-05-09)","esri_imagery","WMTS","https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/52930/{level}/{row}/{col}","2025-10-24"],["World Imagery (Wayback 2025-09-25)","esri_imagery","WMTS","https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/58924/{level}/{row}/{col}","2025-10-24"],["World Imagery (Wayback 2022-05-18)","esri_imagery","WMTS","https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/5314/{level}/{row}/{col}","2025-10-24"],["World Imagery (Wayback 2025-05-29)","esri_imagery","WMTS","https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/25285/{level}/{row}/{col}","2025-10-24"],["World Imagery (Wayback 2025-04-24)","esri_imagery","WMTS","https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/27982/{level}/{row}/{col}","2025-10-24"]]
+### OSIP_4 index Mason (Warren)
+HTTP 200 CORS=https://pratul48.github.io len=3255
+[{"fileextension":"TIF","begdate":null,"year":"2025","zippath":"https://gis1.oit.ohio.gov/ZIPARCHIVES_IV/IMAGERY/0_5INGEOTIFF/WAR/AS14520500.zip","pixelresolution":"0.5","title":"AS14520500.tif","procdate":"20251212, 20251212","primary_capture_date":"2025-03-10","caldate":"20250310","enddate":null,"folder":"WAR","month":"03","fullpath":"S:\\imagery\\2025\\WAR\\IMAGERY\\TIFFS\\AS14520500.tif.xml","name":"AS14520500","tile_name":"AS14520500","sourcetype":"XML","SHAPE__Length":9999.999685000006,"day":"10","objectid":87475,"SHAPE__Area":6249999.606250014,"pubdate":"20251212"}]
 
-### search ohio OSIP
-HTTP 200 CORS=https://pratul48.github.io len=65269
-[["Ohio's Most Current Statewide Aerial Imagery - Optimized Performance (Cached)","ogrip_agol","Map Service","https://maps.ohio.gov/image/rest/services/osip_most_current_cache/MapServer","2026-06-26"],["Pickaway 2013","jgillow@pickaway.org","Map Service","https://tiles.arcgis.com/tiles/FhJ42byMw3LmPYCN/arcgis/rest/services/Pickaway_2013b/MapServer","2025-05-13"],["Ohio's Most Current Statewide Aerial Imagery -  Dynamic Imagery Service","ogrip_agol","Image Service","https://maps.ohio.gov/image/rest/services/osip_most_current/ImageServer","2026-06-17"],["2025 Aerial Imagery","StarkCountyOH","Map Service","https://tiles.arcgis.com/tiles/1JiK2PayqrHvvJhM/arcgis/rest/services/Aerial_2025/MapServer","2026-11-18"],["2017 Aerial Imagery","StarkCountyOH","Map Service","https://tiles.arcgis.com/tiles/1JiK2PayqrHvvJhM/arcgis/rest/services/Aerial_2017/MapServer","2026-11-18"],["2016 Aerial Imagery","StarkCountyOH","Map Service","https://tiles.arcgis.com/tiles/1JiK2PayqrHvvJhM/arcgis/rest/services/Aerial_2016/MapServer","2026-11-18"],["2006 Aerial Imagery","StarkCountyOH","Map Service","https://tiles.arcgis.com/tiles/1JiK2PayqrHvvJhM/arcgis/rest/services/Aerial_2006/MapServer","2026-11-18"],["2011 Aerial Imagery","StarkCountyOH","Map Service","https://tiles.arcgis.com/tiles/1JiK2PayqrHvvJhM/arcgis/rest/services/Aerial_2011/MapServer","2026-11-18"],["2016 Aerial Imagery in NAD 1983 (2011)","StarkCountyOH","Image Service","https://scgisb.starkcountyohio.gov/arcgis/rest/services/StaticCaches/Ortho_2016_NAD832011/ImageServer","2024-08-20"],["2016 CIR Aerial Imagery","StarkCountyOH","Map Service","https://tiles.arcgis.com/tiles/1JiK2PayqrHvvJhM/arcgis/rest/services/Aerial_2016CIR/MapServer","2026-11-18"],["2025 CIR Aerial Imagery","StarkCountyOH","Map Service","https://tiles.arcgis.com/tiles/1JiK2PayqrHvvJhM/arcgis/rest/services/CIR_Aerial_2025/MapServer","2026-11-18"],["Summit County 2006 Ortho","Summit_Admin","Map Service","https://tiles.arcgis.com/tiles/3Ukh5HzAdI6WZ3KP/arcgis/rest/services/Summit_County_2006_Ortho/MapServer","2019-08-16"],["Aerials (Hardin 2013) (OSIP 2011-2014)","boazn8","Image Service","https://geo1.oit.ohio.gov/arcgis/rest/services/OSIP/osip_best_avail_1ft/ImageServer","2021-04-27"],["Ohio Statewide Imagery (OSIP 2 - 2011-2014)","odnr_gis","Image Service","https://geo1.oit.ohio.gov/arcgis/rest/services/OSIP/osip_best_avail_1ft/ImageServer","2019-05-20"],["Pickaway 2008","jgillow@pickaway.org","Map Service","https://tiles.arcgis.com/tiles/FhJ42byMw3LmPYCN/arcgis/rest/services/Pickaway_2008b/MapServer","2025-05-13"],["Summit County 2017 Ortho OSIP","Summit_Admin","Map Service","https://tiles.arcgis.com/tiles/3Ukh5HzAdI6WZ3KP/arcgis/rest/services/Summit_County_2017_Ortho_Test/MapServer","2025-10-31"],["Aerial 2007 OSIP - OHIO","spicergroup","Image Service","http://arcserver.spicergroup.com/arcgis/rest/services/OSIP_2007_OHIO/ImageServer","2016-01-21"],["WashingtonCounty2020","MappedOutGIS","Map Service","https://tiles.arcgis.com/tiles/eyQ0Y65UD5Vd6Aml/arcgis/rest/services/WashingtonCounty2020/MapServer","2022-04-16"],["osip_best_avail_1ft","kmascarella","Image Service","https://geo1.oit.ohio.gov/arcgis/rest/services/OSIP/osip_best_avail_1ft/ImageServer","2022-10-05"],["Ohio OSIP_6in_best_avail","mapboy13","Image Service","https://geo1.oit.ohio.gov/arcgis/rest/services/OSIP/OSIP_6in_best_avail/ImageServer","2021-02-25"]]
+### OSIP_3 index Mason (Warren)
+HTTP 200 CORS=https://pratul48.github.io len=63
+[]
 
-### CAGIS Historic_Aerial
-HTTP 200 CORS=https://pratul48.github.io len=554
-{"currentVersion":10.91,"folders":[],"services":[{"name":"Historic_Aerial/photo1932","type":"MapServer"},{"name":"Historic_Aerial/photo1938","type":"MapServer"},{"name":"Historic_Aerial/photo1950","type":"MapServer"},{"name":"Historic_Aerial/photo1956","type":"MapServer"},{"name":"Historic_Aerial/photo1962","type":"MapServer"},{"name":"Historic_Aerial/photo1968","type":"MapServer"},{"name":"Historic_Aerial/photo1975","type":"MapServer"},{"name":"Historic_Aerial/photo1977","type":"MapServer"},{"name":"Historic_Aerial/photo1990","type":"MapServer"}]}
+### osip tile z19 West Chester (Butler)
+HTTP 200 CORS=https://pratul48.github.io IMAGE image/jpeg 14937 bytes
 
-### CAGIS Basemaps
-HTTP 200 CORS=https://pratul48.github.io len=1959
-{"currentVersion":10.91,"folders":[],"services":[{"name":"Basemaps/Cagis_Aerial_1996","type":"MapServer"},{"name":"Basemaps/Cagis_Aerial_2001","type":"MapServer"},{"name":"Basemaps/Cagis_Aerial_2006","type":"MapServer"},{"name":"Basemaps/Cagis_Aerial_2010","type":"MapServer"},{"name":"Basemaps/Cagis_Aerial_2011","type":"MapServer"},{"name":"Basemaps/Cagis_Aerial_2015","type":"MapServer"},{"name":"Basemaps/Cagis_Aerial_2017","type":"MapServer"},{"name":"Basemaps/Cagis_Aerial_2019","type":"MapServer"},{"name":"Basemaps/Cagis_Aerial_2020","type":"MapServer"},{"name":"Basemaps/Cagis_Aerial_2021","type":"MapServer"},{"name":"Basemaps/Cagis_Aerial_2022","type":"MapServer"},{"name":"Basemaps/Cagis_Aerial_2023","type":"MapServer"},{"name":"Basemaps/Cagis_Aerial_2024","type":"MapServer"},{"name":"Basemaps/Cagis_Aerial_2025","type":"MapServer"},{"name":"Basemaps/Cagis_Aerial_2026_Legacy","type":"MapServer"},{"name":"Basemaps/Cagis_Aerial_2026","type":"MapServer"},{"name":"Basemaps/Cagis_Aerial_Current","type":"MapServer"},{"name":"Basemaps/Cagis_FEMA_Overlay","type":"MapServer"},{"name":"Basemaps/CAGIS_Hillshade_HDR_Cache","type":"MapServer"},{"name":"Basemaps/Cagis_Infrared_2006","type":"MapServer"},{"name":"Basemaps/CAGIS_LiDaR_Hillshade_HDR_Cache","type":"MapServer"},{"name":"Basemaps/Cagis_Overlay_Basemap_New","type":"MapServer"},{"name":"Basemaps/Cagis_Overlay_Basemap_overzoom","type":"MapServer"},{"name":"Basemaps/Cagis_Overlay_Basemap","type":"MapServer"},{"name":"Basemaps/Cagis_Property_Basemap_Cache2","type":"MapServer"},{"name":"Basemaps/Cagis_Property_Basemap","type":"MapServer"},{"name":"Basemaps/Cagis_Property_Overlay","type":"MapServer"},{"name":"Basemaps/Cagis_Street_Basemap","type":"MapServer"},{"name":"Basemaps/Cagis_Topography_Basemap","type":"MapServer"},{"name":"Basemaps/HCE_UAV_Ortho","type":"MapServer"},{"name":"Basemaps/NGA_Aerial_2009","type":"MapServer"},{"name":"Basemaps/OSIP_Aerial_2007","type":"MapServer"}]}
+### osip tile z20 West Chester (Butler)
+HTTP 200 CORS=https://pratul48.github.io IMAGE image/png 133335 bytes
 
-### ACS tracts within 3mi
-HTTP 200 CORS=* len=14851
-{"n":16,"a":[{"GEOID":"39017011125","B23008_002E":206,"B23008_004E":141,"B23008_010E":0,"B23008_013E":7,"B23008_015E":653,"B23008_017E":346,"B23008_023E":62,"B23008_026E":16},{"GEOID":"39165031904","B23008_002E":464,"B23008_004E":298,"B23008_010E":14,"B23008_013E":0,"B23008_015E":952,"B23008_017E":602,"B23008_023E":95,"B23008_026E":49},{"GEOID":"39165032004","B23008_002E":447,"B23008_004E":373,"B23008_010E":0,"B23008_013E":0,"B23008_015E":970,"B23008_017E":731,"B23008_023E":0,"B23008_026E":36}]}
-geometry bytes approx 14851
+### osip tile z21 West Chester (Butler)
+HTTP 404 CORS=https://pratul48.github.io len=648
+<html lang="en">
+<head>
+<title>
+Error: Not Found</title>
+<link href="/image/rest/static/main.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<table width="100%" class="userTable">
+<tr>
+<td class="titlecell">ArcGIS REST Framework</td>
+</tr>
+</table>
+<table width="100%" class="navTable">
+<tr valign="top">
+<td class="breadcrumbs">
+<a href="/image/rest/services">Home</a>
+</td>
+</tr>
+</table>
+<div class="cbody">
+<br/>
+<br/>
+<b>Error: </b>Not Found<br/>
+<b>Code: </b>404<br/><br/>
+<script type="text/javascript" src="/image/rest/static/js/rest.js"></script>
+<div style="color:#ff6666"> </div></div>
+</body>
+</html>
 
-### ACS income tract
-HTTP 200 CORS=* len=2164
-[{"GEOID":"39165031907","B19049_001E":166895,"B19049_003E":152485}]
 
-### ACS child wellbeing tract
-HTTP 200 CORS=* len=3696
-[{"GEOID":"39165031907","B01001_001E":13627,"B01001_003E":390,"B01001_004E":816,"B01001_005E":983,"B01001_027E":296,"B01001_028E":593,"B01001_029E":716}]
+### OSIP_Most_Current_Index West Chester (Butler)
+HTTP 200 CORS=https://pratul48.github.io len=1300
+[{"muni":null,"year":2023,"name":"Butler","county":"Butler","SHAPE__Length":486058.16977073334,"resolution":"3 inch","month_flown":2,"objectid":40,"SHAPE__Area":13110184986.056345}]
 
-### ACS tenure/year built search
-HTTP 200 CORS=https://pratul48.github.io len=113340
-[["ACS Housing Costs (Latest)","https://P3ePLMYs2RVChkJx.svcs.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_Housing_Costs_View_Boundaries/FeatureServer"],["ACS Housing Units by Year Built (Latest)","https://P3ePLMYs2RVChkJx.svcs.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_Housing_Units_by_Year_Built_View_Boundaries/FeatureServer"],["2010-2014 ACS Housing Costs Variables - Boundaries","https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_10_14_Housing_Costs_Boundaries/FeatureServer"],["2010-2014 ACS Housing Costs by Age Variables - Boundaries","https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_10_14_Housing_Costs_by_Age_Boundaries/FeatureServer"],["2010-2014 ACS Housing Units Occupancy Variables - Boundaries","https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_10_14_Housing_Occupancy_and_Tenure_Unit_Value_Boundaries/FeatureServer"],["ACS Housing Units Occupancy (Latest)","https://P3ePLMYs2RVChkJx.svcs.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_Housing_Units_Occupancy_View_Boundaries/FeatureServer"],["ACS Housing Costs by Age (Latest)","https://P3ePLMYs2RVChkJx.svcs.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_Housing_Costs_by_Age_View_Boundaries/FeatureServer"],["ACS Housing Costs Centroids (Latest)","https://P3ePLMYs2RVChkJx.svcs.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_Housing_Costs_View_Centroids/FeatureServer"],["ACS Housing Units in Structure (Latest)","https://P3ePLMYs2RVChkJx.svcs.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_Housing_Units_in_Structure_View_Boundaries/FeatureServer"],["ACS Housing Costs by Age Centroids (Latest)","https://P3ePLMYs2RVChkJx.svcs.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_Housing_Costs_by_Age_View_Centroids/FeatureServer"]]
+### OSIP_4 index West Chester (Butler)
+HTTP 200 CORS=https://pratul48.github.io len=2663
+[]
+
+### OSIP_3 index West Chester (Butler)
+HTTP 200 CORS=https://pratul48.github.io len=63
+[]
+
+### osip tile z19 Montgomery (Hamilton)
+HTTP 200 CORS=https://pratul48.github.io IMAGE image/png 140227 bytes
+
+### osip tile z20 Montgomery (Hamilton)
+HTTP 200 CORS=https://pratul48.github.io IMAGE image/jpeg 12402 bytes
+
+### osip tile z21 Montgomery (Hamilton)
+HTTP 404 CORS=https://pratul48.github.io len=648
+<html lang="en">
+<head>
+<title>
+Error: Not Found</title>
+<link href="/image/rest/static/main.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<table width="100%" class="userTable">
+<tr>
+<td class="titlecell">ArcGIS REST Framework</td>
+</tr>
+</table>
+<table width="100%" class="navTable">
+<tr valign="top">
+<td class="breadcrumbs">
+<a href="/image/rest/services">Home</a>
+</td>
+</tr>
+</table>
+<div class="cbody">
+<br/>
+<br/>
+<b>Error: </b>Not Found<br/>
+<b>Code: </b>404<br/><br/>
+<script type="text/javascript" src="/image/rest/static/js/rest.js"></script>
+<div style="color:#ff6666"> </div></div>
+</body>
+</html>
+
+
+### OSIP_Most_Current_Index Montgomery (Hamilton)
+HTTP 200 CORS=https://pratul48.github.io len=1303
+[{"muni":null,"year":2018,"name":"Hamilton","county":"Hamilton","SHAPE__Length":551334.1986238235,"resolution":"6 inch","month_flown":3,"objectid":47,"SHAPE__Area":11514775489.291945}]
+
+### OSIP_4 index Montgomery (Hamilton)
+HTTP 200 CORS=https://pratul48.github.io len=2663
+[]
+
+### OSIP_3 index Montgomery (Hamilton)
+HTTP 200 CORS=https://pratul48.github.io len=63
+[]
+
+### osip image service
+HTTP 200 CORS=https://pratul48.github.io len=7294
+{"desc":"<font face='Avenir Next W01, Avenir Next W00, Avenir Next, Avenir, Helvetica Neue, sans-serif'><span style='font-size:16px;'>This the not cached  image service for the OSIP Most Current Imagery dataset.   This service has imagery from 2017 - 2024.   The imagery is varying resolutions.  Please note t","px":0.08,"sr":3753,"fields":"OBJECTID,Shape,Name,MinPS,MaxPS,LowPS,HighPS,Category,Tag,GroupName,ProductName,CenterX,CenterY,ZOrder,Shape_Length,Shape_Area"}
+
+### osip image catalog at Mason
+HTTP 200 CORS=https://pratul48.github.io len=1842839
+[{"OBJECTID":16,"Name":"war_2023_6in","MinPS":0,"MaxPS":5,"LowPS":0.5,"HighPS":0.5,"Category":5,"Tag":"Dataset","GroupName":"","ProductName":"","CenterX":1497487.515494151,"CenterY":-82722.72955690496,"ZOrder":20,"Shape_Length":485192.96821906255,"Shape_Area":12018863906.707249},{"OBJECTID":903,"Name":"war_2025","MinPS":0,"MaxPS":150,"LowPS":0.5,"HighPS":50,"Category":1,"Tag":"Dataset","GroupName":"","ProductName":"","CenterX":1497487.5174023483,"CenterY":-82722.72874564062,"ZOrder":10,"Shape_Length":485193.48029881436,"Shape_Area":12018861789.718616},{"OBJECTID":350245,"Name":"Ov_iA1_L01_R00001052_C0000146A.tif","MinPS":5,"MaxPS":13.5,"LowPS":4.5,"HighPS":4.5,"Category":2,"Tag":"Dataset","GroupName":"","ProductName":"","CenterX":1455088.8741389737,"CenterY":-100809.99994123727,"ZOrder":null,"Shape_Length":92160.0000628233,"Shape_Area":530841600.72372437},{"OBJECTID":352209,"Name":"Ov_iA1_L02_R00000570_C000006CE.tif","MinPS":13.5,"MaxPS":40.5,"LowPS":13.5,"HighPS":13.5,"Category":2,"Tag":"Dataset","GroupName":"","ProductName":"","CenterX":1478128.8741546795,"CenterY":-123849.99995694308,"ZOrder":null,"Shape_Length":276480.0001884699,"Shape_Area":4777574406.513519},{"OBJECTID":352459,"Name":"Ov_iA1_L03_R000001D0_C00000244.tif","MinPS":40.5,"MaxPS":121.5,"LowPS":40.5,"HighPS":40.5,"Category":2,"Tag":"Dataset","GroupName":"","ProductName":"","CenterX":1413038.6127798702,"CenterY":-55481.957398993196,"ZOrder":null,"Shape_Length":820607.8933350659,"Shape_Area":41320045053.052216},
+
+### CAGIS 2024 info
+HTTP 200 CORS=https://pratul48.github.io len=4063
+{"sr":{"wkid":102723,"latestWkid":3735,"xyTolerance":0.00328083333333333,"zTolerance":2,"mTolerance":2,"falseX":-119670700,"falseY":-95612900,"xyUnits":37024245.69851244,"falseZ":0,"zUnits":1,"falseM":-100000,"mUnits":10000},"lods":[{"level":9,"resolution":1.0416666666666665,"scale":1200},{"level":10,"resolution":0.5208333333333333,"scale":600},{"level":11,"resolution":0.26041666666666663,"scale":300}],"origin":{"x":-119670700,"y":147665500.00000003},"single":true,"fmt":"MIXED","ext":{"xmin":1250000,"ymin":350000,"xmax":1500000,"ymax":550000,"spatialReference":{"wkid":102723,"latestWkid":3735,"xyTolerance":0.00328083333333333,"zTolerance":2,"mTolerance":2,"falseX":-119670700,"falseY":-95612900,"xyUnits":37024245.69851244,"falseZ":0,"zUnits":1,"falseM":-100000,"mUnits":10000}}}
+
+### CAGIS 2024 export
+HTTP 200 CORS=https://pratul48.github.io IMAGE image/jpeg 2419 bytes
+
+### CAGIS 2010 export
+HTTP 200 CORS=https://pratul48.github.io IMAGE image/jpeg 24883 bytes
+
+### Ohio osip export
+HTTP 500 CORS=https://pratul48.github.io len=668
+<html lang="en">
+<head>
+<title>
+Error: Error exporting map</title>
+<link href="/image/rest/static/main.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<table width="100%" class="userTable">
+<tr>
+<td class="titlecell">ArcGIS REST Framework</td>
+</tr>
+</table>
+<table width="100%" class="navTable">
+<tr valign="top">
+<td class="breadcrumbs">
+<a href="/image/rest/services">Home</a>
+</td>
+</tr>
+</table>
+<div class="cbody">
+<br/>
+<br/>
+<b>Error: </b>Error exporting map<br/>
+<b>Code: </b>500<br/><br/>
+<script type="text/javascript" src="/image/rest/static/js/rest.js"></script>
+<div style="color:#ff6666"> </div></div>
+</body>
+</html>
+
+
+### osip2 1ft
+ERROR fetch failed
