@@ -1,149 +1,56 @@
 
-### wcgis page
-HTTP 200 CORS=null len=5198
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <link rel="icon" type="image/svg+xml" href="./shortcut.ico" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0
-assets: ./shortcut.ico https://js.arcgis.com/calcite-components/3.3.3/calcite.esm.js https://js.arcgis.com/4.33/esri/themes/dark/main.css https://unpkg.com/react@17/umd/react.production.min.js https://unpkg.com/react-dom@17/umd/react-dom.production.min.js https://embedded-explorer.eagleview.com/static/embedded-explorer-widget.js https://js.arcgis.com/4.33/ https://js.arcgis.com/4.33/map-components ./assets/index-CeQp-DGm.js ./assets/index-CzzY9K0E.css https://maps.warrencountyohio.gov/cdn-cgi/content?id=zsJSzQ0Q4V4iBAtLMdZDqv42QL.hbrDrQHrPYFRvm3k-1795743725.3495135-1.2.1.1-BXH.FsXIt.ZqGeEWj2nLM86P2Q53d1HV2X8UhqcsifQyBsXus_QvdOQreztddDdK
+### AuditorsMap folder
+HTTP 200 CORS=https://pratul48.github.io len=159
+{"currentVersion":11.5,"folders":[],"services":[{"name":"AuditorsMap/TaxParcels","type":"FeatureServer"},{"name":"AuditorsMap/TaxParcels","type":"MapServer"}]}
 
-### root https://maps.warrencountyohio.gov/arcgis/rest/services
-HTTP 404 CORS=null len=2669
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
-<title>404 - File or directory not found.</title>
-<style type="text/css">
-<!--
-body{margin:0;font-size:.7em;font-family:Verdana, Arial, Helvetica, sans-serif;background:#EEEEEE;}
-fieldset{padding:0 15px 10px 15px;} 
-h1{font-size:2.4em;margin:0;color:#FFF;}
-h2{font-size:1.7em;margin:0;color:#CC0000;} 
-h3{font-size:1.2em;margin:10px 0 0 0;color:#000000;} 
-#header{width:96%;margin:0 0 0 0;padding:6px 2% 6px 2%;font-family:"trebuchet MS", Verdana, sans-serif;color:#FFF;
-background-color:#555555;}
-#content{margin:0 0 0 2%;position:relative;}
-.content-container{background:#FFF;width:96%;margin-top:8px;padding:10px;position:relative;}
--->
-</style>
-</head>
-<body><a href="https://maps.warrencountyohio.gov/cdn-cgi/content?id=6RtbeM7.MWLeSiuWPwXeWkObPZ0OMsYJnuVrhrSSHRU-1795743725.4518218-1.2.1.1-oreSSfuBaYPBJOTllgHQDZt70brHtLoqc0anRjdsMRWUBxk0gRdv8qbHANbO7DKp" aria-hidden="true" rel="nofollow noopener" style="display: none !important; visibility: hidden !important"></a>
-<div id="header"><h1>Server Error</h1></div>
-<div id="content">
- <div class="content-container"><fieldset>
-  <h2>404 - File or directory not found.</h2>
-  <h3>The resource you are looking for might have been removed, had its name changed, or is temporarily unavailabl
+### svc AuditorsMap/TaxParcels
+HTTP 200 CORS=https://pratul48.github.io len=3656
+["0:Warren Parcels"]
 
-### root https://maps.warrencountyohio.gov/server/rest/services
-HTTP 200 CORS=https://pratul48.github.io len=270
-{"currentVersion":11.5,"folders":["AuditorsMap","Basemap","BOE","Dynamic","Engineer","Hosted","Maproom","PSN","test","Tools","Utilities","WaterSewer"],"services":[{"name":"SWCD_MS4_Inspections","type":"FeatureServer"},{"name":"SWCD_MS4_Inspections","type":"MapServer"}]}
+###   fields AuditorsMap/TaxParcels/0 Warren Parcels
+HTTP 200 CORS=https://pratul48.github.io len=12849
+"OBJECTID:OID | MACCT=Account Number:Integer | SDWLL_NBR=Parcel Number:String | NEIGHBORHOOD_ID=Neighborhood:String | ROUTING_NBR=Tax Routing Number:String | PROP_DSC=Property Description:String | OWNER_NAME=Owner:String | ADDRESS_LINE_1=Address Line  1:String | ADDRESS_LINE_2=Address Line 2:String | CENSUS_TRACT:Double | CLASS_CODE=Class Code:String | USE_CODE_DSC=Use Code Description:String | PROP_CLASS_DSC=Property Class Description:String | SCH_DST_DSC=School District Description:String | LEGAL_DESCRIPTION=Legal Description:String | RANGE=Range:String | TOWN=Town:String | SECTION=Section:String | MILITARY_SURVEY=Military Survey:String | ACREAGE=Acreage:Double | SUBDV=Subdivision:String | LOT_NUMBER=Lot Number:String | REG_LAND_NUMBER=Registered Land Number:String | BOOK=Book:Integer | PAGE=Page:Integer | MAIL_NAME=Mail Name:String | MAIL_ADDRESS_1=Mail Address 1:String | MAIL_ADDRESS_2=Mail Address 2:String | MAIL_ADDRESS_3=Mail Address 3:String | MAIL_ZIP=Mail ZIP:Integer | TOWNSHIP_NAME=Township Name:String | MUNICIPALITY_NAME=Municipality Name:String | GlobalID:GlobalID"
 
-### root https://gis.warrencountyohio.gov/arcgis/rest/services
-ERROR fetch failed
+###   at point AuditorsMap/TaxParcels/0
+HTTP 200 CORS=https://pratul48.github.io len=3904
+[{"OBJECTID":48345,"MACCT":1129342,"SDWLL_NBR":"1636148013","NEIGHBORHOOD_ID":"166001","ROUTING_NBR":"16A-36B-05-01.00","PROP_DSC":"CONCORD CROSSING \"F\" LOT: 170","OWNER_NAME":",LLC; HOFFMASTER PROPERTIES II","ADDRESS_LINE_1":"5517 PATRIOT COURT","ADDRESS_LINE_2":"MASON 45040","CENSUS_TRACT":319.01,"CLASS_CODE":"1","USE_CODE_DSC":"510-SINGLE FAMILY DWG (PLATTED)","PROP_CLASS_DSC":"AG/RES","SCH_DST_DSC":"8307-MASON CSD","LEGAL_DESCRIPTION":"CONCORD CROSSING \"F\" LOT: 170","RANGE":" 2","TOWN":"4","SECTION":"36","MILITARY_SURVEY":"","ACREAGE":0.166,"SUBDV":"CONCORD CROSSING \"F\"","LOT_NUMBER":"170","REG_LAND_NUMBER":"0","BOOK":5063,"PAGE":891,"MAIL_NAME":"HOFFMASTER PROPERTIES II LLC","MAIL_ADDRESS_1":"453 SHEPHERDS WAY","MAIL_ADDRESS_2":"","MAIL_ADDRESS_3":"MORROW OH","MAIL_ZIP":45152,"TOWNSHIP_NAME":"","MUNICIPALITY_NAME":"MASON                         ","GlobalID":"{445A8EA9-2EC2-4ECC-8323-5B78971820B6}"}]
 
-### root https://maps.warrencountyohio.gov/wcgis/rest/services
-HTTP 404 CORS=null len=2669
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
-<title>404 - File or directory not found.</title>
-<style type="text/css">
-<!--
-body{margin:0;font-size:.7em;font-family:Verdana, Arial, Helvetica, sans-serif;background:#EEEEEE;}
-fieldset{padding:0 15px 10px 15px;} 
-h1{font-size:2.4em;margin:0;color:#FFF;}
-h2{font-size:1.7em;margin:0;color:#CC0000;} 
-h3{font-size:1.2em;margin:10px 0 0 0;color:#000000;} 
-#header{width:96%;margin:0 0 0 0;padding:6px 2% 6px 2%;font-family:"trebuchet MS", Verdana, sans-serif;color:#FFF;
-background-color:#555555;}
-#content{margin:0 0 0 2%;position:relative;}
-.content-container{background:#FFF;width:96%;margin-top:8px;padding:10px;position:relative;}
--->
-</style>
-</head>
-<body><a href="https://maps.warrencountyohio.gov/cdn-cgi/content?id=5hh703TMgjmqM59hffnj1ikx7kB1fWO2UPGvJ3goCIU-1795743725.6395464-1.2.1.1-DQz9A1FN4H6IIwHdgXYW0fd1zVzQn08a9S_1Nnble.37wHaoTygvgw9s6oL_.1nb" aria-hidden="true" rel="nofollow noopener" style="display: none !important; visibility: hidden !important"></a>
-<div id="header"><h1>Server Error</h1></div>
-<div id="content">
- <div class="content-container"><fieldset>
-  <h2>404 - File or directory not found.</h2>
-  <h3>The resource you are looking for might have been removed, had its name changed, or is temporarily unavailabl
+### svc AuditorsMap/TaxParcels
+HTTP 200 CORS=https://pratul48.github.io len=2592
+["0:Warren Parcels"]
 
-### PUCO owner Warren
-HTTP 200 CORS=https://pratul48.github.io len=1541
-[{"OBJECTID":1441887,"PIN":"16361480130","COUNTY":"WARREN","STATEWIDE_PIN":"WAR_16361480130","ASSR_ACRES":0.166,"CALC_ACRES":0.16612924505696,"OWNER1":"HOFFMASTER PROPERTIES II*                    ","OWNER2":null,"AUD_LINK":"https://www.wcauditor.org/Property_Search/summary.aspx?account_nbr=1129342","Shape_Length":144.21179051963713,"Shape_Area":1126.4139027091837}]
+###   fields AuditorsMap/TaxParcels/0 Warren Parcels
+HTTP 200 CORS=https://pratul48.github.io len=8124
+"OBJECTID:OID | MACCT=Account Number:Integer | SDWLL_NBR=Parcel Number:String | NEIGHBORHOOD_ID=Neighborhood:String | ROUTING_NBR=Tax Routing Number:String | PROP_DSC=Property Description:String | OWNER_NAME=Owner:String | ADDRESS_LINE_1=Address Line  1:String | ADDRESS_LINE_2=Address Line 2:String | CENSUS_TRACT:Double | CLASS_CODE=Class Code:String | USE_CODE_DSC=Use Code Description:String | PROP_CLASS_DSC=Property Class Description:String | SCH_DST_DSC=School District Description:String | LEGAL_DESCRIPTION=Legal Description:String | RANGE=Range:String | TOWN=Town:String | SECTION=Section:String | MILITARY_SURVEY=Military Survey:String | ACREAGE=Acreage:Double | SUBDV=Subdivision:String | LOT_NUMBER=Lot Number:String | REG_LAND_NUMBER=Registered Land Number:String | BOOK=Book:Integer | PAGE=Page:Integer | MAIL_NAME=Mail Name:String | MAIL_ADDRESS_1=Mail Address 1:String | MAIL_ADDRESS_2=Mail Address 2:String | MAIL_ADDRESS_3=Mail Address 3:String | MAIL_ZIP=Mail ZIP:Integer | TOWNSHIP_NAME=Township Name:String | MUNICIPALITY_NAME=Municipality Name:String | SHAPE=Shape:Geometry"
 
-### Butler search
-HTTP 200 CORS=https://pratul48.github.io len=110275
-[["Regrid USA Nationwide Parcel Boundaries","data_regrid","https://tiles.arcgis.com/tiles/KzeiCaQsMoeCfoCq/arcgis/rest/services/Regrid_Nationwide_Parcel_Boundaries_v1/MapServer"],["Ohio Statewide Parcels Public View","ogrip_agol","https://services2.arcgis.com/MlJ0G8iWUyC7jAmu/arcgis/rest/services/OhioStatewidePacels_full_view/FeatureServer"],["Surface Ownership Parcels, detailed","USFSEnterpriseContent","https://apps.fs.usda.gov/arcx/rest/services/EDW/EDW_SurfaceOwnership_01/MapServer"],["Stark County Parcels","StarkCountyOH","https://scgisa.starkcountyohio.gov/arcgis/rest/services/Auditor/StarkCountyParcels/MapServer"],["Surface Ownership Parcels, detailed (Feature Layer)","USFSEnterpriseContent","https://apps.fs.usda.gov/arcx/rest/services/EDW/EDW_SurfaceOwnership_01/MapServer/0"],["Parcel_Map_Notes_submit","NDGISHub","https://services1.arcgis.com/GOcSXpzwBHyk2nog/arcgis/rest/services/Parcel_Map_Notes_submit/FeatureServer"],["Parcel Extraction - USA","esri_analytics",null],["Land and Water Conservation Fund Parcels","USFSEnterpriseContent","https://apps.fs.usda.gov/arcx/rest/services/EDW/EDW_LandAndWaterConservationFundParcels_01/MapServer"],["Surface Ownership Parcels (Feature Layer)","USFSEnterpriseContent","https://apps.fs.usda.gov/arcx/rest/services/EDW/EDW_BasicOwnership_01/MapServer/0"],["Parcels withdrawn from settlement, sale, mineral location, and/or entry","USFSEnterpriseContent","https://apps.fs.usda.gov/arcx/rest/services/EDW/EDW_Withdrawal_01/MapServer"],["Landstats US and Canada Nationwide Parcel Layer","landrecords",""],["Palm_Beach_County_Parcels_for_Legend","pat10263@esri.com_telecomrc","https://services.arcgis.com/B7X7NCOKKXditlwZ/arcgis/rest/services/Palm_Beach_County_Parcels_for_Legend/FeatureServer"],["Parcel Map Notes_submit","MNordquist_PWA","https://services.arcgis.com/pEosvuftL1Kgj1UF/arcgis/rest/services/Parcel_Map_Notes_submit/FeatureServer"],["Parcels - Legal Description Drafting","TelCyte","https://services8.arcgis.com/bspqcASG7WIqqFvk/arcgis/rest/services/ParcelDrafter_a703ec64633b4977b6331ba60b083cfb/FeatureServer"],["Parcel Drafter","saukagoadmin","https://services.arcgis.com/iwDlR6c2PKIpwnf7/arcgis/rest/services/ParcelDrafterTest/FeatureServer"],["Community Parcels","ArcGISforEM","https://services3.arcgis.com/srAyaQgvZkzUzL4M/arcgis/rest/services/CommunityParcelsService/FeatureServer"],["Parcels withdrawn from settlement, sale, mineral location, and/or entry (Feature Layer)","USFSEnterpriseContent","https://apps.fs.usda.gov/arcx/rest/services/EDW/EDW_Withdrawal_01/MapServer/0"],["Survey parcels described by metes and bounds (Feature Layer)","USFSEnterpriseContent","https://apps.fs.usda.gov/arcx/rest/services/EDW/EDW_Tract_01/MapServer/0"],["Addressing_Energov_WFL1","aallen_PPines","https://services6.arcgis.com/OlJkQnf39yF1a7pM/arcgis/rest/services/Addressing_Energov_WFL1/FeatureServer"],["Primary Parcels - Far North (LINZ)","FNDC_GIS","https://maps.fndc.govt.nz/hosting/rest/services/Hosted/PrimaryParcels_FarNort
+###   at point AuditorsMap/TaxParcels/0
+HTTP 200 CORS=https://pratul48.github.io len=4598
+[{"OBJECTID":48345,"MACCT":1129342,"SDWLL_NBR":"1636148013","NEIGHBORHOOD_ID":"166001","ROUTING_NBR":"16A-36B-05-01.00","PROP_DSC":"CONCORD CROSSING \"F\" LOT: 170","OWNER_NAME":",LLC; HOFFMASTER PROPERTIES II","ADDRESS_LINE_1":"5517 PATRIOT COURT","ADDRESS_LINE_2":"MASON 45040","CENSUS_TRACT":319.01,"CLASS_CODE":"1","USE_CODE_DSC":"510-SINGLE FAMILY DWG (PLATTED)","PROP_CLASS_DSC":"AG/RES","SCH_DST_DSC":"8307-MASON CSD","LEGAL_DESCRIPTION":"CONCORD CROSSING \"F\" LOT: 170","RANGE":" 2","TOWN":"4","SECTION":"36","MILITARY_SURVEY":"","ACREAGE":0.166,"SUBDV":"CONCORD CROSSING \"F\"","LOT_NUMBER":"170","REG_LAND_NUMBER":"0","BOOK":5063,"PAGE":891,"MAIL_NAME":"HOFFMASTER PROPERTIES II LLC","MAIL_ADDRESS_1":"453 SHEPHERDS WAY","MAIL_ADDRESS_2":"","MAIL_ADDRESS_3":"MORROW OH","MAIL_ZIP":45152,"TOWNSHIP_NAME":"","MUNICIPALITY_NAME":"MASON                         "}]
 
-### root https://gis.bcohio.gov/arcgis/rest/services
-ERROR fetch failed
+### folder Dynamic
+HTTP 200 CORS=https://pratul48.github.io len=62
+[]
 
-### root https://bcgis.bcohio.gov/arcgis/rest/services
-ERROR fetch failed
+### folder Hosted
+HTTP 200 CORS=https://pratul48.github.io len=122
+["Hosted/Warren_County_GIS_Day_2026_WFL1:FeatureServer"]
 
-### root https://propertysearch.bcohio.gov/arcgis/rest/services
-HTTP 404 CORS=null len=1726
-<!DOCTYPE html>
+### folder Maproom
+HTTP 200 CORS=https://pratul48.github.io len=62
+[]
 
-<html>
-<head runat="server">
-    <meta http-equiv="X-UA-Compatible" content="IE=9"> 
-    <title>Page Not Found</title>
-    <style>
-        BODY {
-            background-color: #F2F4E9;
-        }
-        .msg-frame {
-            width:480px;
-            height:200px;
-            position:absolute;
-            left:50%;
-            top:50%;
-            margin:-100px 0 0 -240px;
-            background-image:url(../images/frame.png);
-            background-repeat:no-repeat;
-        }
-        .msg-body {
-            width:450px;
-            height:170px;
-            position:relative;
-            left:15px;
-            top:10px;
-        }
-        .msg-body-content {
-            position:relative;
-            top:10px;
-        }
-        .msg-icon {
-            width:440px;
-            height:80px;
-            position:relative;
-            left:5px;
-            background-image:url(../images/pagenotfound.png);
-            background-repeat:no-repeat;
-        }
-        .msg-text {
-            position:relative;
-            top:10px;
-            font-family:Arial; font-size:11pt;
-        }
-    </style>
-</head>
-<body>
-    <div 
+### Hamilton CLASS type
+HTTP 200 CORS=https://pratul48.github.io len=13117
+["CLASS:esriFieldTypeInteger","ADDRNO:esriFieldTypeString","SALDAT:esriFieldTypeDate","SALTYP:esriFieldTypeString","SALAMT:esriFieldTypeDouble","VALID:esriFieldTypeString","MKT_TOTAL_VAL:esriFieldTypeDouble"]
 
-### root https://gis.butlercountyohio.org/arcgis/rest/services
-ERROR fetch failed
+### Hamilton comps
+HTTP 200 CORS=https://pratul48.github.io len=2008
+[{"ADDRNO":"9423","ADDRST":"MONTGOMERY","SALDAT":1140048000000,"SALAMT":166000,"MKT_TOTAL_VAL":189220,"CLASS":447,"ACREDEED":0.088},{"ADDRNO":"9433","ADDRST":"MONTGOMERY","SALDAT":1568160000000,"SALAMT":340000,"MKT_TOTAL_VAL":378830,"CLASS":420,"ACREDEED":0.246},{"ADDRNO":"9393","ADDRST":"SHELLY","SALDAT":1719532800000,"SALAMT":604503,"MKT_TOTAL_VAL":207980,"CLASS":455,"ACREDEED":0.099},{"ADDRNO":"7800","ADDRST":"COOPER","SALDAT":1647475200000,"SALAMT":845000,"MKT_TOTAL_VAL":904670,"CLASS":447,"ACREDEED":0.397},{"ADDRNO":"7786","ADDRST":"COOPER","SALDAT":1680566400000,"SALAMT":350000,"MKT_TOTAL_VAL":208030,"CLASS":510,"ACREDEED":0.242},{"ADDRNO":"7775","ADDRST":"COOPER","SALDAT":1718064000000,"SALAMT":1250000,"MKT_TOTAL_VAL":1048450,"CLASS":447,"ACREDEED":1.243},{"ADDRNO":"7777","ADDRST":"COOPER","SALDAT":1502668800000,"SALAMT":3566330,"MKT_TOTAL_VAL":3524130,"CLASS":412,"ACREDEED":5},{"ADDRNO":"9309","ADDRST":"MONTGOMERY","SALDAT":1642118400000,"SALAMT":990000,"MKT_TOTAL_VAL":1258800,"CLASS":447,"ACREDEED":1.266}]
 
-### Hamilton attrs at point
-HTTP 200 CORS=https://pratul48.github.io len=2761
-[{"PARCELID":"060300040010","OWNNM1":"9468 MONTGOMERY RD LLC","OWNNM2":null,"SALDAT":1669161600000,"SALAMT":650000,"SALTYP":null,"VALID":null,"MKTLND":347840,"MKTIMP":302160,"MKT_TOTAL_VAL":650000,"ANNUAL_TAXES":18515.29,"PREVOWN1":null,"CLASS":444,"ADDRNO":"9468","ADDRST":"MONTGOMERY","ADDRSF":"RD","ACREDEED":0.223,"HMSD_FLAG":"N","FORECL_FLAG":"N","DELQ_TAXES":0,"RENT_REG_FLAG":null}]
+### Hamilton Parcel Attributes layer 2 with sales?
+HTTP 200 CORS=https://pratul48.github.io len=9383
+[]
 
-### Hamilton comps (sales last 2y, 400m)
-HTTP 200 CORS=https://pratul48.github.io len=104
-{"code":400,"extendedCode":-2147220985,"message":"Unable to complete operation.","details":[]}
+### search Butler services
+HTTP 200 CORS=https://pratul48.github.io len=8709
+[["Butler County Auditor GIS Viewer_Cloudpoint","Cloudpoint_161074","Web Map",""],["Monroe Parcels in Butler County","comgisservice","Feature Service","https://services5.arcgis.com/ZpzXpUOckwsAhLFh/arcgis/rest/services/Monroe_Parcels_in_Butler_County/FeatureServer"],["Butler County Auditor GIS Viewer","bcauditor_admin","Web Map",""],["Butler County Auditor GIS Viewer","bcauditor_admin","Web Mapping Application","https://161074.maps.arcgis.com/apps/webappviewer/index.html?id=022c917993fd4ba482f164f8b0b96ba7"],["Address & Property Viewer Map","zmoore@cityofoxford.org","Web Map",""],["Fritz Rd Parcels view layer","jnally","Feature Service","https://services5.arcgis.com/Fq0TUmdRNerGcci4/arcgis/rest/services/Fritz_Rd_Parcels_view_layer/FeatureServer"]]
