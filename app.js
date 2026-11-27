@@ -465,7 +465,7 @@
       grocery: [['supermarket', x => x.type === 'supermarket']], hospital: [['hospital', x => x.type === 'hospital']], urgent: [['urgent care', () => true]],
       pharmacy: [['pharmacy', x => x.type === 'pharmacy' || x.type === 'chemist']], school: [['school', x => x.type === 'school']], park: [['park', x => x.type === 'park' || x.type === 'playground']],
       library: [['library', x => x.type === 'library']], gym: [['fitness centre', () => true]], fuel: [['gas station', x => x.type === 'fuel']], fire: [['fire station', x => x.type === 'fire_station']], police: [['police', x => x.type === 'police']] };
-    const todoFb = failed.filter(k => FALLBACK[k]);
+    const todoFb = [...new Set([...failed.filter(k => FALLBACK[k]), 'indian'])];
     await Promise.all(todoFb.map(async k => {
       const c = CATS.find(x => x.key === k);
       for (const [term, ok] of FALLBACK[k]) {
@@ -474,7 +474,7 @@
           if (list.length) { (results[k] ||= []).push(...list.map(x => ({ name: x.name, lat: x.lat, lon: x.lon, dist: x.dist }))); }
         } catch { }
       }
-      if (results[k] && results[k].length) failed.splice(failed.indexOf(k), 1);
+      if (results[k] && results[k].length && failed.includes(k)) failed.splice(failed.indexOf(k), 1);
     }));
     await customP;
     if (run !== state.runId) return;
