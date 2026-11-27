@@ -1,65 +1,128 @@
 
-### catalog datasets at Mason
-HTTP 200 CORS=https://pratul48.github.io len=1109
-[{"OBJECTID":16,"Name":"war_2023_6in","Category":5,"LowPS":0.5,"ZOrder":20},{"OBJECTID":903,"Name":"war_2025","Category":1,"LowPS":0.5,"ZOrder":10}]
+### osip3 footprint Mason
+HTTP 200 len=4708
+[{"OBJECTID":16,"Name":"war_2023_6in","MinPS":0,"MaxPS":150,"LowPS":0.5,"HighPS":0.5,"Category":1,"Tag":"Dataset","GroupName":"","ProductName":"","CenterX":1497479.0918511197,"CenterY":-82721.54786830553,"ZOrder":null,"TypeID":16,"ItemTS":45715.682275451385,"UriHash":"86A18C961C86ABDDA2FCFB1E96D3D9DF","Shape_Length":485197.6921908338,"Shape_Area":12022303961.733902},{"OBJECTID":137,"Name":"Ov_i5E_L01_R00000497_C000005BD.tif","MinPS":5,"MaxPS":25,"LowPS":16,"HighPS":16,"Category":2,"Tag":"Dataset","GroupName":"","ProductName":"","CenterX":1417981.3440234736,"CenterY":-76491.99985685945,"ZOrder":null,"TypeID":94,"ItemTS":46079.764789560184,"UriHash":"1AEDD35A1914B1DC5417882C857F5092","Shape_Length":327680.00080665946,"Shape_Area":6710886433.0407715},{"OBJECTID":305,"Name":"Ov_i5E_L02_R00000092_C000000B7.tif","MinPS":128,"MaxPS":1024,"LowPS":128,"HighPS":128,"Category":2,"Tag":"Dataset","Gr
 
-### export lock war_2023_6in
-HTTP 200 CORS=https://pratul48.github.io IMAGE image/jpeg 2109 bytes
+### osip3 identify Mason
+HTTP 200 len=4996
+[["Boundary",null],["Footprint","war_2023_6in"],["Footprint","Ov_i5E_L01_R00000497_C000005BD.tif"],["Footprint","Ov_i5E_L02_R00000092_C000000B7.tif"],["Footprint","Ov_i5E_L03_R00000012_C00000016.tif"],["Footprint","Ov_i5E_L04_R00000002_C00000002.tif"],["Footprint","Ov_i5E_L05_R00000000_C00000000.tif"],["Footprint","Ov_i5E_L06_R00000000_C00000000.tif"],["Image","war_2023_6in"]]
 
-### export lock war_2025
-HTTP 200 CORS=https://pratul48.github.io IMAGE image/jpeg 12420 bytes
-
-### osip_3_cache info
-HTTP 200 CORS=https://pratul48.github.io len=5494
-{"desc":"This is a cached aerial image service of Ohio collected between the years of 2017 through 2024. This third statewide collection of Ohio Statewide Imagery Program is known as OSIP III. This imagery is provided by the Ohio Department of Administrative Services (DAS), Office of Information Technology (","sr":102100,"lods":[21,22,23],"layers":["osip_3_cache","Boundary","Footprint","Image"]}
-
-### osip_3_cache tile z20
-HTTP 200 CORS=https://pratul48.github.io IMAGE image/jpeg 10226 bytes
-
-### osip_3_cache tile z19
-HTTP 200 CORS=https://pratul48.github.io IMAGE image/jpeg 16089 bytes
-
-### Imagery folder
-HTTP 200 CORS=https://pratul48.github.io len=62
-{"error":{"code":499,"message":"Token Required","details":[]}}
-
-### OSIP3 index sample anywhere
-HTTP 200 CORS=https://pratul48.github.io len=63
+### osipcur footprint Mason
+HTTP 200 len=80
 []
 
-### OSIP3 index Warren
-HTTP 200 CORS=https://pratul48.github.io len=63
-{"code":404,"message":"Layer not found","details":[]}
+### osipcur catalog Mason
+HTTP 200 len=1009
+[{"OBJECTID":16,"Name":"war_2023_6in","Category":5,"ZOrder":20},{"OBJECTID":903,"Name":"war_2025","Category":1,"ZOrder":10}]
 
-### OSIP3 layer fields
-HTTP 200 CORS=https://pratul48.github.io len=63
-""
+### index Mason
+HTTP 200 len=657
+[{"year":2025,"county":"Warren","month_flown":3,"resolution":"6 inch"}]
 
-### OSIP index June 2026 fields+Mason
-HTTP 200 CORS=https://pratul48.github.io len=1323
-[{"muni":null,"year":2025,"name":"Warren","county":"Warren","SHAPE__Length":451988.64582035574,"resolution":"6 inch","month_flown":3,"objectid":43,"SHAPE__Area":11368432101.243793}]
+### parcel Mason
+HTTP 200 len=1392
+[{"County":"Warren","LocalParcelID":"16361010020","SitusAddressAll":null,"CAMADataSite":"https://auditor.warrencountyohio.gov/PropertySearch/Summary/Index?account_nbr=","StateLUC":null},{"County":"Warren","LocalParcelID":"16361440010","SitusAddressAll":null,"CAMADataSite":"https://auditor.warrencountyohio.gov/PropertySearch/Summary/Index?account_nbr=","StateLUC":null}]
 
-### CAGIS 2010
-HTTP 200 CORS=https://pratul48.github.io IMAGE image/jpeg 24151 bytes
+### structures Mason
+HTTP 200 len=12
+{"count":13}
 
-### CAGIS 2017
-HTTP 200 CORS=https://pratul48.github.io IMAGE image/jpeg 26268 bytes
+### osip3 footprint West Chester
+HTTP 200 len=4709
+[{"OBJECTID":30,"Name":"but_2023_6in","MinPS":0,"MaxPS":150,"LowPS":0.5,"HighPS":0.5,"Category":1,"Tag":"Dataset","GroupName":"","ProductName":"","CenterX":1382303.8777114567,"CenterY":-76052.65031861616,"ZOrder":null,"TypeID":30,"ItemTS":45715.682275706014,"UriHash":"C08A8C3CF8EF206C3594A8558F696325","Shape_Length":515207.06020685274,"Shape_Area":13873653299.794079},{"OBJECTID":137,"Name":"Ov_i5E_L01_R00000497_C000005BD.tif","MinPS":5,"MaxPS":25,"LowPS":16,"HighPS":16,"Category":2,"Tag":"Dataset","GroupName":"","ProductName":"","CenterX":1417981.3440234736,"CenterY":-76491.99985685945,"ZOrder":null,"TypeID":94,"ItemTS":46079.764789560184,"UriHash":"1AEDD35A1914B1DC5417882C857F5092","Shape_Length":327680.00080665946,"Shape_Area":6710886433.0407715},{"OBJECTID":305,"Name":"Ov_i5E_L02_R00000092_C000000B7.tif","MinPS":128,"MaxPS":1024,"LowPS":128,"HighPS":128,"Category":2,"Tag":"Dataset","G
 
-### CAGIS 2022
-HTTP 200 CORS=https://pratul48.github.io IMAGE image/jpeg 28113 bytes
+### osip3 identify West Chester
+HTTP 200 len=4996
+[["Boundary",null],["Footprint","but_2023_6in"],["Footprint","Ov_i5E_L01_R00000497_C000005BD.tif"],["Footprint","Ov_i5E_L02_R00000092_C000000B7.tif"],["Footprint","Ov_i5E_L03_R00000012_C00000016.tif"],["Footprint","Ov_i5E_L04_R00000002_C00000002.tif"],["Footprint","Ov_i5E_L05_R00000000_C00000000.tif"],["Footprint","Ov_i5E_L06_R00000000_C00000000.tif"],["Image","but_2023_6in"]]
 
-### CAGIS 2024
-HTTP 200 CORS=https://pratul48.github.io IMAGE image/jpeg 2555 bytes
+### osipcur footprint West Chester
+HTTP 200 len=80
+[]
 
-### CAGIS 2025
-HTTP 200 CORS=https://pratul48.github.io IMAGE image/jpeg 22830 bytes
+### osipcur catalog West Chester
+HTTP 200 len=934
+[{"OBJECTID":30,"Name":"but_2023_6in","Category":1,"ZOrder":11}]
 
-### CAGIS 2026
-HTTP 200 CORS=https://pratul48.github.io IMAGE image/jpeg 2555 bytes
+### index West Chester
+HTTP 200 len=657
+[{"year":2023,"county":"Butler","month_flown":2,"resolution":"3 inch"}]
 
-### CAGIS Current
-HTTP 200 CORS=https://pratul48.github.io IMAGE image/jpeg 2555 bytes
+### parcel West Chester
+HTTP 200 len=1508
+[{"County":"Butler","LocalParcelID":"M5620169000042","SitusAddressAll":"8015  CASTLE ROCK LN  WEST CHESTER 45069","CAMADataSite":"https://propertysearch.bcohio.gov/maps/map.aspx?UseSearch=no&pin=M5620169000042","StateLUC":"510: Res-Single Family"},{"County":"Butler","LocalParcelID":"M5610014000030","SitusAddressAll":"8015  TYLERSVILLE RD  WEST CHESTER 45069","CAMADataSite":"https://propertysearch.bcohio.gov/maps/map.aspx?UseSearch=no&pin=M5610014000030","StateLUC":"419: Com-Other"}]
 
-### CAGIS 2025 layers
-HTTP 200 CORS=https://pratul48.github.io len=3839
-{"layers":[[0,"2025 Hamilton County Color Ortho",0,0]],"desc":"CAGIS Nearmap Aerial Imagery 2021","cr":"CAGIS"}
+### structures West Chester
+HTTP 200 len=11
+{"count":9}
+
+### osip3 footprint Montgomery
+HTTP 200 len=4708
+[{"OBJECTID":81,"Name":"ham_2018_6in","MinPS":0,"MaxPS":150,"LowPS":0.5,"HighPS":0.5,"Category":1,"Tag":"Dataset","GroupName":"","ProductName":"","CenterX":1389592.8438034977,"CenterY":-167075.85439628878,"ZOrder":null,"TypeID":81,"ItemTS":45715.682276631946,"UriHash":"066899E40484A4ABF2DCAE5005CAF35C","Shape_Length":640342.2201489286,"Shape_Area":13589336188.184172},{"OBJECTID":124,"Name":"Ov_i5E_L01_R00000496_C000005BD.tif","MinPS":5,"MaxPS":25,"LowPS":16,"HighPS":16,"Category":2,"Tag":"Dataset","GroupName":"","ProductName":"","CenterX":1417992.0369635068,"CenterY":-158338.70936852426,"ZOrder":null,"TypeID":94,"ItemTS":46079.764788113425,"UriHash":"B43E0C6B8C77EC8BD6E84580D87B1F6C","Shape_Length":332620.5552028278,"Shape_Area":6698527931.697834},{"OBJECTID":305,"Name":"Ov_i5E_L02_R00000092_C000000B7.tif","MinPS":128,"MaxPS":1024,"LowPS":128,"HighPS":128,"Category":2,"Tag":"Dataset","Gr
+
+### osip3 identify Montgomery
+HTTP 200 len=5000
+[["Boundary",null],["Footprint","ham_2018_6in"],["Footprint","Ov_i5E_L01_R00000496_C000005BD.tif"],["Footprint","Ov_i5E_L02_R00000092_C000000B7.tif"],["Footprint","Ov_i5E_L03_R00000012_C00000016.tif"],["Footprint","Ov_i5E_L04_R00000002_C00000002.tif"],["Footprint","Ov_i5E_L05_R00000000_C00000000.tif"],["Footprint","Ov_i5E_L06_R00000000_C00000000.tif"],["Image","ham_2018_6in"]]
+
+### osipcur footprint Montgomery
+HTTP 200 len=80
+[]
+
+### osipcur catalog Montgomery
+HTTP 200 len=934
+[{"OBJECTID":81,"Name":"ham_2018_6in","Category":1,"ZOrder":10}]
+
+### index Montgomery
+HTTP 200 len=659
+[{"year":2018,"county":"Hamilton","month_flown":3,"resolution":"6 inch"}]
+
+### parcel Montgomery
+HTTP 200 len=1334
+[{"County":"Hamilton","LocalParcelID":"6030003013600","SitusAddressAll":null,"CAMADataSite":null,"StateLUC":null},{"County":"Hamilton","LocalParcelID":"6030001002100","SitusAddressAll":"7836  REMINGTON RD   ","CAMADataSite":"http://wedge1.hcauditor.org/view/re/6030001002100","StateLUC":"510: Res-Single Family"}]
+
+### structures Montgomery
+HTTP 200 len=12
+{"count":10}
+
+### osip3 footprint Lebanon
+HTTP 200 len=4708
+[{"OBJECTID":16,"Name":"war_2023_6in","MinPS":0,"MaxPS":150,"LowPS":0.5,"HighPS":0.5,"Category":1,"Tag":"Dataset","GroupName":"","ProductName":"","CenterX":1497479.0918511197,"CenterY":-82721.54786830553,"ZOrder":null,"TypeID":16,"ItemTS":45715.682275451385,"UriHash":"86A18C961C86ABDDA2FCFB1E96D3D9DF","Shape_Length":485197.6921908338,"Shape_Area":12022303961.733902},{"OBJECTID":138,"Name":"Ov_i5E_L01_R00000497_C000005BE.tif","MinPS":5,"MaxPS":25,"LowPS":16,"HighPS":16,"Category":2,"Tag":"Dataset","GroupName":"","ProductName":"","CenterX":1499901.3440610915,"CenterY":-76491.99985685945,"ZOrder":null,"TypeID":94,"ItemTS":46079.76478967592,"UriHash":"E890C9BC284B3AA827681B26DC6B1AD9","Shape_Length":327680.0001505017,"Shape_Area":6710886406.164551},{"OBJECTID":305,"Name":"Ov_i5E_L02_R00000092_C000000B7.tif","MinPS":128,"MaxPS":1024,"LowPS":128,"HighPS":128,"Category":2,"Tag":"Dataset","Group
+
+### osip3 identify Lebanon
+HTTP 200 len=4996
+[["Boundary",null],["Footprint","war_2023_6in"],["Footprint","Ov_i5E_L01_R00000497_C000005BE.tif"],["Footprint","Ov_i5E_L02_R00000092_C000000B7.tif"],["Footprint","Ov_i5E_L03_R00000012_C00000016.tif"],["Footprint","Ov_i5E_L04_R00000002_C00000002.tif"],["Footprint","Ov_i5E_L05_R00000000_C00000000.tif"],["Footprint","Ov_i5E_L06_R00000000_C00000000.tif"],["Image","war_2023_6in"]]
+
+### osipcur footprint Lebanon
+HTTP 200 len=80
+[]
+
+### osipcur catalog Lebanon
+HTTP 200 len=1009
+[{"OBJECTID":16,"Name":"war_2023_6in","Category":5,"ZOrder":20},{"OBJECTID":903,"Name":"war_2025","Category":1,"ZOrder":10}]
+
+### index Lebanon
+HTTP 200 len=657
+[{"year":2025,"county":"Warren","month_flown":3,"resolution":"6 inch"}]
+
+### parcel Lebanon
+HTTP 200 len=1392
+[{"County":"Warren","LocalParcelID":"13363610150","SitusAddressAll":null,"CAMADataSite":"https://auditor.warrencountyohio.gov/PropertySearch/Summary/Index?account_nbr=","StateLUC":null},{"County":"Warren","LocalParcelID":"13363610040","SitusAddressAll":null,"CAMADataSite":"https://auditor.warrencountyohio.gov/PropertySearch/Summary/Index?account_nbr=","StateLUC":null}]
+
+### structures Lebanon
+HTTP 200 len=12
+{"count":14}
+
+### osip3 layer 2 info
+HTTP 200 len=6828
+{"fields":"OBJECTID,Shape,Raster,Name,MinPS,MaxPS,LowPS,HighPS,Category,Tag,GroupName,ProductName,CenterX,CenterY,ZOrder,TypeID,ItemTS,UriHash,Uri,Shape_Length,Shape_Area","caps":"Map,Query,Data"}
+
+### LBRS geocode West Chester
+HTTP 200 len=366
+[["7951 TYLERSVILLE RD, WEST CHESTER, OH, 45069",100,"PointAddress",{"x":-84.3599385,"y":39.351294}]]
+
+### LBRS geocode loose
+HTTP 200 len=341
+[["5517 PATRIOT CT, MASON, OH, 45040",100,"PointAddress",{"x":-84.318219,"y":39.364956}]]
+
+### LBRS suggest
+HTTP 200 len=355
+{"suggestions":[{"text":"5517 PATRIOT AVE, ORIENT, OH, 43146","magicKey":"dHA9MCN0dj1mZWM1MjFkNiNsb2M9MTU1ODU2I2xuZz0wI2ZhPTUyNDI4OCNobj01NTE3I2xicz0xMDk6MTAyMDM5","isCollection":false},{"text":"5517 PATRIOT CT, MASON, OH, 45040","magicKey":"dHA9MCN0dj1mZWM1MjFkNiNsb2M9MTk2MDY0I2xuZz0wI2ZhPTI2MjE0NCNobj01NTE3I2xicz0xMDk6MTAyMDQy","isCollection":false}]}
