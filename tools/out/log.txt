@@ -1,26 +1,328 @@
 
-=== https://auditor.warrencountyohio.gov/PropertySearch/PublicDataExport/Index
-TITLE: Just a moment...
-auditor.warrencountyohio.gov
-Performing security verification
+==================== 1. 7836 Remington Rd, Montgomery, OH  (4s)
+--- title
+7836 Remington Road, Montgomery, Ohio, 45242
+--- value
+Asking price
 
-This website uses a security service to protect against malicious bots. This page is displayed while the website verifies you are not a bot.
+Estimated value: $389,985 – $476,648
+Enter the asking price to see if it's priced right.
 
-Ray ID: a60d75609f504a7e
-Performance and Security by Cloudflare
-Privacy
-LINKS:
+• The county values it at $298,340. Homes nearby sold for 1.45× their county value over the last 2 years, which gives about $433k.
 
+Typical single-family home in 45242 (Montgomery): $568,000, 3% over the past year. Source: Zillow Home Value Index.
 
-=== https://auditor.warrencountyohio.gov/PropertySearch/Summary/Index?account_nbr=1129342
-TITLE: Just a moment...
-auditor.warrencountyohio.gov
-Performing security verification
+Owner (public record)
+Owner
+Ck Executive Rentals 4 LLC
+Tax bills sent to
+9501 Montgomery Rd, Cincinnati OH 45242
 
-This website uses a security service to protect against malicious bots. This page is displayed while the website verifies you are not a bot.
+Owned by a company (often an investor or landlord, so the home may be a rental).
 
-Ray ID: a60d761d5b834a7e
-Performance and Security by Cloudflare
-Privacy
-LINKS:
+County value
+$298,340
+land $124,300 + building $174,040
+Property taxes
+$5,595 / year
 
+Full county auditor record →
+
+Recent sales nearby (73)
+
+Estimates are a guide, not an appraisal. They don't know about remodels, condition or finished basements. Your agent's comparable sales and the lender's appraisal are the final word.
+--- verdict
+✖ South-West facing – avoid
+
+🚪 Walking out the front door, you face South-West.
+
+⚠️ Map confidence is medium. Confirm with the compass or Street View.
+--- facing
+Direction you face stepping out the front door
+SW 204°
+Estimated from the map · confidence: medium
+Stepping out the back door you face North-East
+Front street: Remington Rd (69 ft from house center)
+
+Corner lot: West St also runs along this lot (on the East side). The front door could face either street. Check Street View.
+
+How this was worked out
+--- property
+County
+Hamilton County
+Parcel ID
+6030001002100
+Land use
+Res-Single Family
+Lot size
+0.24 acres (10,507 sq ft)
+Year built, sales, taxes
+County auditor record →
+House footprint
+1,188 sq ft on the ground (not living area)
+School district
+Sycamore Community City School District
+Ohio report card →
+Elevation
+807 ft above sea level
+Flood zone
+X – not high-risk
+area of minimal flood hazard
+--- roof
+Why there's no permit date: In Mason, Warren County and most of Ohio, replacing shingles doesn't need a building permit, so no public record of roof dates exists. The app reads the roof's history from dated aerial photos instead.
+
+Finding dated aerial photos…
+--- daycare
+Checking families, daycares and schools nearby…
+--- nuis
+Loading…
+--- nearby
+Loading…
+--- errors
+[http 502] https://overpass-api.de/api/interpreter
+[error] Failed to load resource: the server responded with a status of 502 ()
+--- value after typing
+Asking price
+A little high: 11% above the estimate
+Estimated value $389,985 – $476,648
+
+• The county values it at $298,340. Homes nearby sold for 1.45× their county value over the last 2 years, which gives about $433k.
+
+Typical single-family home in 45242 (Montgomery): $568,000, 3% over the past year. Source: Zillow Home Value Index.
+
+Owner (public record)
+Owner
+Ck Executive Rentals 4 LLC
+Tax bills sent to
+9501 Montgomery Rd, Cincinnati OH 45242
+
+Owned by a company (often an investor or landlord, so the home may be a rental).
+
+County value
+$298,340
+land $124,300 + building $174,040
+Property taxes
+$5,595 / year
+
+Full county auditor record →
+
+Recent sales nearby (73)
+
+Estimates are a guide, not an appraisal. They don't know about remodels, condition or finished basements. Your agent's comparable sales and the lender's appraisal are the final word.
+
+==================== 2. 5517 Patriot Ct, Mason, OH 45040  (3s)
+--- title
+5517 Patriot Ct, Mason, OH 45040
+--- value
+Asking price
+
+Typical single-family home in 45040 (Mason): $554,100, 1% over the past year. Source: Zillow Home Value Index.
+
+Owner (public record)
+Owner
+Hoffmaster Properties II LLC
+Tax bills sent to
+453 Shepherds Way, Morrow OH, 45152
+
+Owned by a company (often an investor or landlord, so the home may be a rental).
+
+Deed
+Book 5063, page 891
+Subdivision / lot
+Concord Crossing "F", lot 170
+Add the sale price and county value
+
+Warren County's auditor website blocks other apps, so the app can't read these two numbers itself. Open the page, then type them here:
+
+🏛️ Open the county auditor page
+Last sale price
+Sale date
+County appraised value (“Total”)
+
+On the Warren auditor page: “Sales” tab for the price and date, “Values” for the appraised total.
+
+Estimates are a guide, not an appraisal. They don't know about remodels, condition or finished basements. Your agent's comparable sales and the lender's appraisal are the final word.
+--- verdict
+✔ North facing – OK
+
+🚪 Walking out the front door, you face North.
+--- facing
+Direction you face stepping out the front door
+N 3°
+Estimated from the map · confidence: high
+Stepping out the back door you face South
+Front street: Patriot Ct (94 ft from house center)
+How this was worked out
+--- property
+County
+Warren County
+Parcel ID
+16361480130
+Land use
+Res-Single Family
+Lot size
+0.17 acres (7,196 sq ft)
+Year built, sales, taxes
+County auditor record →
+House footprint
+2,228 sq ft on the ground (not living area)
+Subdivision
+Concord Crossing
+Likely has an HOA. Ask for the covenants.
+School district
+Mason City School District
+Ohio report card →
+Elevation
+830 ft above sea level
+Flood zone
+X – not high-risk
+area of minimal flood hazard
+--- roof
+Why there's no permit date: In Mason, Warren County and most of Ohio, replacing shingles doesn't need a building permit, so no public record of roof dates exists. The app reads the roof's history from dated aerial photos instead.
+
+Finding dated aerial photos…
+--- daycare
+Checking families, daycares and schools nearby…
+--- nuis
+Loading…
+--- nearby
+Loading…
+--- errors
+
+--- value after typing
+Asking price
+
+Typical single-family home in 45040 (Mason): $554,100, 1% over the past year. Source: Zillow Home Value Index.
+
+Owner (public record)
+Owner
+Hoffmaster Properties II LLC
+Tax bills sent to
+453 Shepherds Way, Morrow OH, 45152
+
+Owned by a company (often an investor or landlord, so the home may be a rental).
+
+County value
+$402,000 (you entered)
+Deed
+Book 5063, page 891
+Subdivision / lot
+Concord Crossing "F", lot 170
+Add the sale price and county value
+
+Warren County's auditor website blocks other apps, so the app can't read these two numbers itself. Open the page, then type them here:
+
+🏛️ Open the county auditor page
+Last sale price
+Sale date
+County appraised value (“Total”)
+
+On the Warren auditor page: “Sales” tab for the price and date, “Values” for the appraised total.
+
+Estimates are a guide, not an appraisal. They don't know about remodels, condition or finished basements. Your agent's comparable sales and the lender's appraisal are the final word.
+
+==== DB AFTER RELOAD
+🗂️ All houses (2)
+
+Every house you search is saved here automatically, on this phone only.
+
+All
+⭐ Starred
+📍 Visited
+✔ OK direction
+Sort 
+Most recent
+Best daycare score
+Closest Costco
+✔ N
+5517 Patriot Ct, Mason, OH 45040
+⭐
+Last looked Nov 27 · searched 1× · visited 1×
+💲$512,000
+🏚️ no change since 2012
+📐 0.17 ac
+
+Nice cul-de-sac
+
+Open
+★ Unstar
+Delete
+✖ SW
+7836 Remington Road, Montgomery, Ohio, 45242
+Last looked Nov 27 · searched 1×
+💲$480,000
+📐 0.24 ac
+Open
+☆ Star
+Delete
+Backup
+
+The browser can erase website data, for example if you clear Safari history. Export a backup now and then.
+
+⬇️ Backup file
+📊 Spreadsheet (CSV)
+⬆️ Restore from backup
+My important places
+
+Add work, family, etc. Drive time from each house will show under “Nearby”.
+
++ Add place
+==== DB RECORDS
+[
+ {
+  "label": "5517 Patriot Ct, Mason, OH 45040",
+  "times": 1,
+  "visits": 1,
+  "starred": true,
+  "facing": "N",
+  "roof": "no change since 2012",
+  "notes": {
+   "price": "$512,000",
+   "roof": "",
+   "hoa": "",
+   "built": "",
+   "hvac": "",
+   "wh": "",
+   "notes": "Nice cul-de-sac"
+  },
+  "prop": {
+   "parcelId": "16361480130",
+   "lotAcres": 0.17,
+   "footprintSqft": 2228,
+   "district": "Mason City School District",
+   "flood": "X",
+   "subdivision": "Concord Crossing",
+   "auditorUrl": "https://auditor.warrencountyohio.gov/PropertySearch/Summary/Index?account_nbr=1129342"
+  }
+ },
+ {
+  "label": "7836 Remington Road, Montgomery, Ohio, 45242",
+  "times": 1,
+  "visits": 0,
+  "starred": false,
+  "facing": "SW",
+  "notes": {
+   "price": "$480,000",
+   "roof": "",
+   "hoa": "",
+   "built": "",
+   "hvac": "",
+   "wh": "",
+   "notes": ""
+  },
+  "prop": {
+   "parcelId": "6030001002100",
+   "lotAcres": 0.24,
+   "footprintSqft": 1188,
+   "district": "Sycamore Community City School District",
+   "flood": "X",
+   "subdivision": null,
+   "auditorUrl": null
+  }
+ }
+]
+==== STARRED FILTER: 1 cards
+==== CSV
+label,direction,degrees,avoid,direction_source,roof,daycare_score,costco,indian_store,lot_acres,school_district,flood_zone,owner,bought_for,bought_on,county_value,estimated_value,price_check,price,hoa,notes,times_searched,visits,last_seen,starred
+"5517 Patriot Ct, Mason, OH 45040","N","3","no","map","No roof replacement seen from Feb 2012 to Mar 2025","","","","0.17","Mason City School District","X","Hoffmaster Properties II LLC","","","","","","$512,000","","Nice cul-de-sac","1","1","2026-11-27","yes"
+"7836 Remington Road, Montgomery, Ohio, 45242","SW","204","yes","map","","","","","0.24","Sycamore Community City School District","X","Ck Executive Rentals 4 LLC","","","298340","390k–477k","A little high: 11% above the estimate","$480,000","","","1","0","2026-11-27",""
