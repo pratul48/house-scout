@@ -4,27 +4,28 @@ async function get(label, url, opts = {}) {
     const t = await r.text(); let j = null; try { j = JSON.parse(t); } catch {}
     let show = t; try { if (opts.pick && j) show = JSON.stringify(opts.pick(j)); } catch (e) { show = 'pick err ' + e.message; }
     console.log(`\n### ${label}\nHTTP ${r.status} CORS=${r.headers.get('access-control-allow-origin')} len=${t.length}\n${show.slice(0, opts.max || 1500)}`);
-    return j;
+    return j ?? t;
   } catch (e) { console.log(`\n### ${label}\nERROR ${e.message}`); return null; }
 }
-const fieldsOf = j => (j.fields || []).map(f => f.name + (f.alias && f.alias !== f.name ? '=' + f.alias : '') + ':' + (f.type || '').replace('esriFieldType', '')).join(' | ');
+const fieldsOf = j => (j.fields || []).map(f => f.name + (f.alias && f.alias !== f.name ? '=' + f.alias : '')).join(' | ');
 const attrs = j => (j.features || []).map(f => f.attributes);
-const R = 'https://maps.warrencountyohio.gov/server/rest/services';
-const W = [-84.31821, 39.36491], H = [-84.3540, 39.2280];
+const B = [-84.3570, 39.3480];
 const pt = ([x, y], d) => `geometry=${x},${y}&geometryType=esriGeometryPoint&inSR=4326&spatialRel=esriSpatialRelIntersects${d ? `&distance=${d}&units=esriSRUnit_Meter` : ''}&returnGeometry=false&f=json`;
 (async () => {
-  const f = await get('AuditorsMap folder', `${R}/AuditorsMap?f=json`, { max: 2000 });
-  for (const s of (f && f.services) || []) {
-    const svc = await get('svc ' + s.name, `${R}/${s.name}/${s.type}?f=json`, { pick: j => [...(j.layers || []), ...(j.tables || [])].map(l => l.id + ':' + l.name), max: 1500 });
-    for (const l of [...((svc && svc.layers) || []), ...((svc && svc.tables) || [])].filter(l => /parcel|sale|owner|cama|value|apprais|tax|dwell|build|res/i.test(l.name)).slice(0, 8)) {
-      const base = `${R}/${s.name}/${s.type}/${l.id}`;
-      await get(`  fields ${s.name}/${l.id} ${l.name}`, base + '?f=json', { pick: fieldsOf, max: 3500 });
-      await get(`  at point ${s.name}/${l.id}`, `${base}/query?${pt(W)}&outFields=*`, { pick: attrs, max: 2500 });
-    }
+  const s = await get('search butler maps', 'https://www.arcgis.com/sharing/rest/search?f=json&num=10&q=' + encodeURIComponent('"Butler County Auditor GIS Viewer" owner:bcauditor_admin'), { pick: j => (j.results || []).map(r => [r.id, r.title, r.type]), max: 800 });
+  const ids = ((s && s.results) || []).filter(r => r.type === 'Web Map').map(r => r.id);
+  const urls = new Set();
+  for (const id of ids) {
+    const d = await get('webmap ' + id, `https://www.arcgis.com/sharing/rest/content/items/${id}/data?f=json`, { max: 100 });
+    (JSON.stringify(d || '').match(/https?:\/\/[^"]+?(MapServer|FeatureServer)(\/\d+)?/g) || []).forEach(u => urls.add(u));
   }
-  for (const fo of ['Dynamic', 'Hosted', 'Maproom']) await get('folder ' + fo, `${R}/${fo}?f=json`, { pick: j => (j.services || []).map(s => s.name + ':' + s.type), max: 1500 });
-  await get('Hamilton CLASS type', 'https://cagisonline.hamilton-co.org/arcgis/rest/services/COUNTYWIDE/Cadastral/MapServer/0?f=json', { pick: j => (j.fields || []).filter(x => /CLASS|SALDAT|SALAMT|MKT_TOTAL|ADDRNO|VALID|SALTYP/.test(x.name)).map(x => x.name + ':' + x.type), max: 600 });
-  await get('Hamilton comps', `https://cagisonline.hamilton-co.org/arcgis/rest/services/COUNTYWIDE/Cadastral/MapServer/0/query?${pt(H, 800)}&where=${encodeURIComponent('SALAMT > 50000')}&outFields=ADDRNO,ADDRST,SALDAT,SALAMT,MKT_TOTAL_VAL,CLASS,ACREDEED&resultRecordCount=8`, { pick: j => j.error || attrs(j), max: 1500 });
-  await get('Hamilton Parcel Attributes layer 2 with sales?', `https://cagisonline.hamilton-co.org/arcgis/rest/services/COUNTYWIDE/Cadastral/MapServer/2/query?where=${encodeURIComponent("PARCELID='6030001002100'")}&outFields=*&f=json`, { pick: j => j.error || attrs(j), max: 1500 });
-  await get('search Butler services', 'https://www.arcgis.com/sharing/rest/search?f=json&num=20&q=' + encodeURIComponent('Butler County Ohio Auditor (owner:BCAuditor OR "Butler County Auditor") '), { pick: j => (j.results || []).map(r => [r.title, r.owner, r.type, r.url]), max: 3000 });
+  console.log('\n### butler service urls\n' + [...urls].join('\n'));
+  for (const u of [...urls].filter(u => /parcel|cama|auditor|tax/i.test(u)).slice(0, 6)) {
+    const layer = /\/\d+$/.test(u) ? u : u + '/0';
+    await get('fields ' + layer, layer + '?f=json', { pick: fieldsOf, max: 3000 });
+    await get('at point ' + layer, `${layer}/query?${pt(B)}&outFields=*`, { pick: attrs, max: 2500 });
+  }
+  await get('Warren auditor sales page', 'https://auditor.warrencountyohio.gov/RealEstate/Sales/Index', { max: 400 });
+  await get('Warren TaxParcels query maxRecord/capabilities', 'https://maps.warrencountyohio.gov/server/rest/services/AuditorsMap/TaxParcels/FeatureServer/0?f=json', { pick: j => ({ max: j.maxRecordCount, caps: j.capabilities, rel: j.relationships }), max: 800 });
+  await get('Warren TaxParcels feature service root', 'https://maps.warrencountyohio.gov/server/rest/services/AuditorsMap/TaxParcels/FeatureServer?f=json', { pick: j => ({ layers: j.layers, tables: j.tables }), max: 800 });
 })();
