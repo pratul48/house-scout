@@ -1,0 +1,329 @@
+
+==================== 1. 5517 Patriot Ct, Mason, OH 45040  (151s)
+--- title
+5517 Patriot Ct, Mason, OH 45040
+--- verdict
+✔ North facing – OK
+
+🚪 Walking out the front door, you face North.
+--- facing
+Direction you face stepping out the front door
+N 4°
+Estimated from the map · confidence: high
+Stepping out the back door you face South
+Front street: Patriot Ct (67 ft from house center)
+How this was worked out
+--- property
+County
+Warren County
+House footprint
+1,496 sq ft on the ground (not living area)
+Subdivision
+Concord Crossing
+Likely has an HOA. Ask for the covenants.
+School district
+Mason City School District
+Ohio report card →
+Elevation
+830 ft above sea level
+Flood zone
+X – not high-risk
+area of minimal flood hazard
+--- roof
+Why there's no permit date: In Mason, Warren County and most of Ohio, replacing shingles doesn't need a building permit, so no public record of roof dates exists. The app reads the roof's history from dated aerial photos instead.
+
+No roof replacement seen from Feb 2012 to Mar 2025
+
+The roof looks the same in every clear photo in that period. A roof replaced after Mar 2025 would not show up yet.
+
+8 dated photos of this roof (yellow outline; red = where the change was seen). Tap one to enlarge.
+
+Feb 2012
+US-OH-Cincinnati-W (0.3 m)
+Jun 2016
+Vivid - USA (0.5 m)
+Aug 2018
+Vivid (0.5 m)
+Oct 2019
+Metro (0.5 m)
+Nov 2020
+Metro (0.5 m)
+Dec 2021
+Vivid Advanced (0.5 m)
+Mar 2023
+Ohio aerial 2023 (6 inch)
+Mar 2025
+Ohio aerial 2025 (6 inch)
+Confirm the exact year
+Ask the listing agent for the roofer's invoice or shingle warranty. Warranties are registered with the shingle maker and show the install date.
+Search the listing text for “roof”, or open Zillow / Redfin. Listings often say “new roof 2021”. (These sites block other apps from reading them.)
+Street View: in the Google Maps app tap the photo date to step back through older years and look at the shingles.
+Your home inspector will estimate remaining roof life.
+--- daycare
+Checking families, daycares and schools nearby…
+--- nuis
+Loading…
+--- nearby
+Loading…
+--- errors
+[http 502] https://overpass-api.de/api/interpreter
+[error] Failed to load resource: the server responded with a status of 502 ()
+[reqfail] https://overpass-api.de/api/interpreter net::ERR_ABORTED
+[reqfail] https://overpass.private.coffee/api/interpreter net::ERR_ABORTED
+[http 504] https://maps.mail.ru/osm/tools/overpass/api/interpreter
+[error] Failed to load resource: the server responded with a status of 504 (Gateway Timeout)
+
+==================== 2. 8015 Castle Rock Ln, West Chester, OH 45069  (150s)
+--- title
+8015 Castle Rock Ln, West Chester, OH 45069
+--- verdict
+✔ North facing – OK
+
+🚪 Walking out the front door, you face North.
+--- facing
+Direction you face stepping out the front door
+N 353°
+Estimated from the map · confidence: high
+Stepping out the back door you face South
+Front street: Castle Rock Ln (81 ft from house center)
+How this was worked out
+--- property
+County
+Butler County
+Parcel ID
+M5620169000042
+Land use
+Res-Single Family
+Lot size
+0.34 acres (14,683 sq ft)
+Year built, sales, taxes
+County auditor record →
+House footprint
+1,680 sq ft on the ground (not living area)
+School district
+Lakota Local School District
+Ohio report card →
+Elevation
+896 ft above sea level
+Flood zone
+X – not high-risk
+area of minimal flood hazard
+--- roof
+Why there's no permit date: In Mason, Warren County and most of Ohio, replacing shingles doesn't need a building permit, so no public record of roof dates exists. The app reads the roof's history from dated aerial photos instead.
+
+No roof replacement seen from Feb 2012 to Feb 2023
+
+The roof looks the same in every clear photo in that period. A roof replaced after Feb 2023 would not show up yet.
+
+7 dated photos of this roof (yellow outline; red = where the change was seen). Tap one to enlarge.
+
+Feb 2012
+US-OH-Cincinnati-W (0.3 m)
+Jun 2016
+Vivid - USA (0.5 m)
+Aug 2018
+Vivid (0.5 m)
+Oct 2019
+Metro (0.5 m)
+Nov 2020
+Metro (0.5 m)
+Dec 2021
+Vivid Advanced (0.5 m)
+roof hidden
+Feb 2023
+Ohio aerial 2023 (3 inch)
+Confirm the exact year
+Ask the listing agent for the roofer's invoice or shingle warranty. Warranties are registered with the shingle maker and show the install date.
+Search the listing text for “roof”, or open Zillow / Redfin. Listings often say “new roof 2021”. (These sites block other apps from reading them.)
+Street View: in the Google Maps app tap the photo date to step back through older years and look at the shingles.
+County auditor record: year built. If no change shows in the photos, the roof may date from then.
+Your home inspector will estimate remaining roof life.
+--- daycare
+Checking families, daycares and schools nearby…
+--- nuis
+Loading…
+--- nearby
+Loading…
+--- errors
+[reqfail] https://overpass-api.de/api/interpreter net::ERR_ABORTED
+[reqfail] https://overpass.private.coffee/api/interpreter net::ERR_ABORTED
+
+==================== 3. 7836 Remington Rd, Montgomery, OH  (150s)
+--- title
+7836 Remington Road, Montgomery, Ohio, 45242
+--- verdict
+✖ South-West facing – avoid
+
+🚪 Walking out the front door, you face South-West.
+
+⚠️ Map confidence is medium. Confirm with the compass or Street View.
+--- facing
+Direction you face stepping out the front door
+SW 204°
+Estimated from the map · confidence: medium
+Stepping out the back door you face North-East
+Front street: Remington Rd (69 ft from house center)
+
+Corner lot: West St also runs along this lot (on the East side). The front door could face either street. Check Street View.
+
+How this was worked out
+--- property
+County
+Hamilton County
+Parcel ID
+6030001002100
+Land use
+Res-Single Family
+Lot size
+0.24 acres (10,507 sq ft)
+Year built, sales, taxes
+County auditor record →
+House footprint
+1,188 sq ft on the ground (not living area)
+School district
+Sycamore Community City School District
+Ohio report card →
+Elevation
+807 ft above sea level
+Flood zone
+X – not high-risk
+area of minimal flood hazard
+--- roof
+Why there's no permit date: In Mason, Warren County and most of Ohio, replacing shingles doesn't need a building permit, so no public record of roof dates exists. The app reads the roof's history from dated aerial photos instead.
+
+Roof most likely replaced between Nov 2020 and Apr 2021
+
+The roof changed colour much more than the neighbours' roofs between those two photos. That makes the roof about 5–7 years old.
+
+18 dated photos of this roof (yellow outline; red = where the change was seen). Tap one to enlarge.
+
+Apr 1996
+Hamilton County aerial 1996
+Apr 2001
+Hamilton County aerial 2001
+Apr 2006
+Hamilton County aerial 2006
+Apr 2010
+Hamilton County aerial 2010
+Feb 2012
+US-OH-Cincinnati-W (0.3 m)
+Apr 2015
+Hamilton County aerial 2015
+Apr 2017
+Hamilton County aerial 2017
+Mar 2018
+Ohio aerial 2018 (6 inch)
+Aug 2018
+Vivid (0.5 m)
+Apr 2019
+Hamilton County aerial 2019
+Oct 2019
+Metro (0.5 m)
+Apr 2020
+Hamilton County aerial 2020
+Nov 2020
+Metro (0.5 m)
+Apr 2021
+Hamilton County aerial 2021
+Dec 2021
+Vivid Advanced (0.5 m)
+Apr 2022
+Hamilton County aerial 2022
+Apr 2023
+Hamilton County aerial 2023
+Apr 2025
+Hamilton County aerial 2025
+Confirm the exact year
+Ask the listing agent for the roofer's invoice or shingle warranty. Warranties are registered with the shingle maker and show the install date.
+Search the listing text for “roof”, or open Zillow / Redfin. Listings often say “new roof 2021”. (These sites block other apps from reading them.)
+Street View: in the Google Maps app tap the photo date to step back through older years and look at the shingles.
+County auditor record: year built. If no change shows in the photos, the roof may date from then.
+Your home inspector will estimate remaining roof life.
+--- daycare
+Checking families, daycares and schools nearby…
+--- nuis
+Loading…
+--- nearby
+Loading…
+--- errors
+[reqfail] https://overpass-api.de/api/interpreter net::ERR_ABORTED
+[reqfail] https://metadata.maptiles.arcgis.com/arcgis/rest/services/World_Imagery_Metadata_2017_r21/MapServer/identify?geometry=-84.3549695240558,39.2 net::ERR_ABORTED
+[reqfail] https://cagisonline.hamilton-co.org/arcgis/rest/services/Basemaps/Cagis_Aerial_2011/MapServer/export?bbox=-9390417.04297433,4754424.81684567 net::ERR_ABORTED
+[reqfail] https://overpass.private.coffee/api/interpreter net::ERR_ABORTED
+[http 504] https://maps.mail.ru/osm/tools/overpass/api/interpreter
+[error] Failed to load resource: the server responded with a status of 504 (Gateway Time-out)
+[http 502] https://overpass-api.de/api/interpreter
+[error] Failed to load resource: the server responded with a status of 502 ()
+[error] Failed to load resource: the server responded with a status of 504 (Gateway Timeout)
+
+==================== 4. 4931 Sarah Dr, Mason, OH  (150s)
+--- title
+4931 Sarah Dr, Mason, OH 45040
+--- verdict
+✖ South-East facing – avoid
+
+🚪 Walking out the front door, you face South-East.
+
+⚠️ This is within 9° of the OK zone. Double-check with the compass at the front door.
+--- facing
+Direction you face stepping out the front door
+SE 121°
+Estimated from the map · confidence: high
+Stepping out the back door you face North-West
+Front street: Sarah Dr (86 ft from house center)
+How this was worked out
+--- property
+County
+Warren County
+House footprint
+2,567 sq ft on the ground (not living area)
+Subdivision
+Coddington Reserve
+Likely has an HOA. Ask for the covenants.
+School district
+Mason City School District
+Ohio report card →
+Flood zone
+X – not high-risk
+area of minimal flood hazard
+Elevation
+827 ft above sea level
+--- roof
+Why there's no permit date: In Mason, Warren County and most of Ohio, replacing shingles doesn't need a building permit, so no public record of roof dates exists. The app reads the roof's history from dated aerial photos instead.
+
+Roof most likely replaced between Dec 2021 and Mar 2023
+
+The roof changed colour much more than the neighbours' roofs between those two photos and got darker, which is typical of new shingles. That makes the roof about 3–5 years old.
+
+8 dated photos of this roof (yellow outline; red = where the change was seen). Tap one to enlarge.
+
+Feb 2012
+US-OH-Cincinnati-W (0.3 m)
+Jun 2016
+Vivid - USA (0.5 m)
+Aug 2018
+Vivid (0.5 m)
+Oct 2019
+Metro (0.5 m)
+Nov 2020
+Metro (0.5 m)
+Dec 2021
+Vivid Advanced (0.5 m)
+Mar 2023
+Ohio aerial 2023 (6 inch)
+Mar 2025
+Ohio aerial 2025 (6 inch)
+Confirm the exact year
+Ask the listing agent for the roofer's invoice or shingle warranty. Warranties are registered with the shingle maker and show the install date.
+Search the listing text for “roof”, or open Zillow / Redfin. Listings often say “new roof 2021”. (These sites block other apps from reading them.)
+Street View: in the Google Maps app tap the photo date to step back through older years and look at the shingles.
+Your home inspector will estimate remaining roof life.
+--- daycare
+Checking families, daycares and schools nearby…
+--- nuis
+Loading…
+--- nearby
+Loading…
+--- errors
+[reqfail] https://overpass.private.coffee/api/interpreter net::ERR_ABORTED
+[reqfail] https://overpass-api.de/api/interpreter net::ERR_ABORTED
