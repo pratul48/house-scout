@@ -1,56 +1,65 @@
 
-### AuditorsMap folder
-HTTP 200 CORS=https://pratul48.github.io len=159
-{"currentVersion":11.5,"folders":[],"services":[{"name":"AuditorsMap/TaxParcels","type":"FeatureServer"},{"name":"AuditorsMap/TaxParcels","type":"MapServer"}]}
+### search butler maps
+HTTP 200 CORS=https://pratul48.github.io len=3451
+[["6cab8380332948a4a22de12ff3b823f0","Butler County Auditor GIS Viewer","Web Map"],["022c917993fd4ba482f164f8b0b96ba7","Butler County Auditor GIS Viewer","Web Mapping Application"],["543a095386c144a68e640be0ec70aac4","Butler County Auditor GIS Viewer","Code Attachment"]]
 
-### svc AuditorsMap/TaxParcels
-HTTP 200 CORS=https://pratul48.github.io len=3656
-["0:Warren Parcels"]
+### webmap 6cab8380332948a4a22de12ff3b823f0
+HTTP 200 CORS=https://pratul48.github.io len=46350
+{"operationalLayers":[{"id":"2018_Ortho_9466","opacity":1,"title":"2018_Ortho","url":"https://maps.b
 
-###   fields AuditorsMap/TaxParcels/0 Warren Parcels
+### butler service urls
+https://maps.butlercountyauditor.org/arcgis/rest/services/2022_Ortho/MapServer
+https://maps.butlercountyauditor.org/arcgis/rest/services/2023_Ortho/MapServer
+https://gismaps.bceo.org/server/rest/services/Public/Roads/MapServer/0
+https://maps.butlercountyauditor.org/arcgis/rest/services/FloodData/MapServer
+https://maps.butlercountyauditor.org/arcgis/rest/services/TopographyData_no_cache/MapServer
+https://maps.butlercountyauditor.org/arcgis/rest/services/basemap/MapServer
+https://maps.butlercountyauditor.org/arcgis/rest/services/Boundaries/MapServer
+
+### fields https://maps.butlercountyauditor.org/arcgis/rest/services/2022_Ortho/MapServer/0
+ERROR fetch failed
+
+### at point https://maps.butlercountyauditor.org/arcgis/rest/services/2022_Ortho/MapServer/0
+ERROR fetch failed
+
+### fields https://maps.butlercountyauditor.org/arcgis/rest/services/2023_Ortho/MapServer/0
+ERROR fetch failed
+
+### at point https://maps.butlercountyauditor.org/arcgis/rest/services/2023_Ortho/MapServer/0
+ERROR fetch failed
+
+### fields https://maps.butlercountyauditor.org/arcgis/rest/services/FloodData/MapServer/0
+ERROR fetch failed
+
+### at point https://maps.butlercountyauditor.org/arcgis/rest/services/FloodData/MapServer/0
+ERROR fetch failed
+
+### fields https://maps.butlercountyauditor.org/arcgis/rest/services/TopographyData_no_cache/MapServer/0
+ERROR fetch failed
+
+### at point https://maps.butlercountyauditor.org/arcgis/rest/services/TopographyData_no_cache/MapServer/0
+ERROR fetch failed
+
+### fields https://maps.butlercountyauditor.org/arcgis/rest/services/basemap/MapServer/0
+ERROR fetch failed
+
+### at point https://maps.butlercountyauditor.org/arcgis/rest/services/basemap/MapServer/0
+ERROR fetch failed
+
+### fields https://maps.butlercountyauditor.org/arcgis/rest/services/Boundaries/MapServer/0
+ERROR fetch failed
+
+### at point https://maps.butlercountyauditor.org/arcgis/rest/services/Boundaries/MapServer/0
+ERROR fetch failed
+
+### Warren auditor sales page
+HTTP 404 CORS=null len=0
+
+
+### Warren TaxParcels query maxRecord/capabilities
 HTTP 200 CORS=https://pratul48.github.io len=12849
-"OBJECTID:OID | MACCT=Account Number:Integer | SDWLL_NBR=Parcel Number:String | NEIGHBORHOOD_ID=Neighborhood:String | ROUTING_NBR=Tax Routing Number:String | PROP_DSC=Property Description:String | OWNER_NAME=Owner:String | ADDRESS_LINE_1=Address Line  1:String | ADDRESS_LINE_2=Address Line 2:String | CENSUS_TRACT:Double | CLASS_CODE=Class Code:String | USE_CODE_DSC=Use Code Description:String | PROP_CLASS_DSC=Property Class Description:String | SCH_DST_DSC=School District Description:String | LEGAL_DESCRIPTION=Legal Description:String | RANGE=Range:String | TOWN=Town:String | SECTION=Section:String | MILITARY_SURVEY=Military Survey:String | ACREAGE=Acreage:Double | SUBDV=Subdivision:String | LOT_NUMBER=Lot Number:String | REG_LAND_NUMBER=Registered Land Number:String | BOOK=Book:Integer | PAGE=Page:Integer | MAIL_NAME=Mail Name:String | MAIL_ADDRESS_1=Mail Address 1:String | MAIL_ADDRESS_2=Mail Address 2:String | MAIL_ADDRESS_3=Mail Address 3:String | MAIL_ZIP=Mail ZIP:Integer | TOWNSHIP_NAME=Township Name:String | MUNICIPALITY_NAME=Municipality Name:String | GlobalID:GlobalID"
+{"max":2000,"caps":"Query,Uploads","rel":[]}
 
-###   at point AuditorsMap/TaxParcels/0
-HTTP 200 CORS=https://pratul48.github.io len=3904
-[{"OBJECTID":48345,"MACCT":1129342,"SDWLL_NBR":"1636148013","NEIGHBORHOOD_ID":"166001","ROUTING_NBR":"16A-36B-05-01.00","PROP_DSC":"CONCORD CROSSING \"F\" LOT: 170","OWNER_NAME":",LLC; HOFFMASTER PROPERTIES II","ADDRESS_LINE_1":"5517 PATRIOT COURT","ADDRESS_LINE_2":"MASON 45040","CENSUS_TRACT":319.01,"CLASS_CODE":"1","USE_CODE_DSC":"510-SINGLE FAMILY DWG (PLATTED)","PROP_CLASS_DSC":"AG/RES","SCH_DST_DSC":"8307-MASON CSD","LEGAL_DESCRIPTION":"CONCORD CROSSING \"F\" LOT: 170","RANGE":" 2","TOWN":"4","SECTION":"36","MILITARY_SURVEY":"","ACREAGE":0.166,"SUBDV":"CONCORD CROSSING \"F\"","LOT_NUMBER":"170","REG_LAND_NUMBER":"0","BOOK":5063,"PAGE":891,"MAIL_NAME":"HOFFMASTER PROPERTIES II LLC","MAIL_ADDRESS_1":"453 SHEPHERDS WAY","MAIL_ADDRESS_2":"","MAIL_ADDRESS_3":"MORROW OH","MAIL_ZIP":45152,"TOWNSHIP_NAME":"","MUNICIPALITY_NAME":"MASON                         ","GlobalID":"{445A8EA9-2EC2-4ECC-8323-5B78971820B6}"}]
-
-### svc AuditorsMap/TaxParcels
-HTTP 200 CORS=https://pratul48.github.io len=2592
-["0:Warren Parcels"]
-
-###   fields AuditorsMap/TaxParcels/0 Warren Parcels
-HTTP 200 CORS=https://pratul48.github.io len=8124
-"OBJECTID:OID | MACCT=Account Number:Integer | SDWLL_NBR=Parcel Number:String | NEIGHBORHOOD_ID=Neighborhood:String | ROUTING_NBR=Tax Routing Number:String | PROP_DSC=Property Description:String | OWNER_NAME=Owner:String | ADDRESS_LINE_1=Address Line  1:String | ADDRESS_LINE_2=Address Line 2:String | CENSUS_TRACT:Double | CLASS_CODE=Class Code:String | USE_CODE_DSC=Use Code Description:String | PROP_CLASS_DSC=Property Class Description:String | SCH_DST_DSC=School District Description:String | LEGAL_DESCRIPTION=Legal Description:String | RANGE=Range:String | TOWN=Town:String | SECTION=Section:String | MILITARY_SURVEY=Military Survey:String | ACREAGE=Acreage:Double | SUBDV=Subdivision:String | LOT_NUMBER=Lot Number:String | REG_LAND_NUMBER=Registered Land Number:String | BOOK=Book:Integer | PAGE=Page:Integer | MAIL_NAME=Mail Name:String | MAIL_ADDRESS_1=Mail Address 1:String | MAIL_ADDRESS_2=Mail Address 2:String | MAIL_ADDRESS_3=Mail Address 3:String | MAIL_ZIP=Mail ZIP:Integer | TOWNSHIP_NAME=Township Name:String | MUNICIPALITY_NAME=Municipality Name:String | SHAPE=Shape:Geometry"
-
-###   at point AuditorsMap/TaxParcels/0
-HTTP 200 CORS=https://pratul48.github.io len=4598
-[{"OBJECTID":48345,"MACCT":1129342,"SDWLL_NBR":"1636148013","NEIGHBORHOOD_ID":"166001","ROUTING_NBR":"16A-36B-05-01.00","PROP_DSC":"CONCORD CROSSING \"F\" LOT: 170","OWNER_NAME":",LLC; HOFFMASTER PROPERTIES II","ADDRESS_LINE_1":"5517 PATRIOT COURT","ADDRESS_LINE_2":"MASON 45040","CENSUS_TRACT":319.01,"CLASS_CODE":"1","USE_CODE_DSC":"510-SINGLE FAMILY DWG (PLATTED)","PROP_CLASS_DSC":"AG/RES","SCH_DST_DSC":"8307-MASON CSD","LEGAL_DESCRIPTION":"CONCORD CROSSING \"F\" LOT: 170","RANGE":" 2","TOWN":"4","SECTION":"36","MILITARY_SURVEY":"","ACREAGE":0.166,"SUBDV":"CONCORD CROSSING \"F\"","LOT_NUMBER":"170","REG_LAND_NUMBER":"0","BOOK":5063,"PAGE":891,"MAIL_NAME":"HOFFMASTER PROPERTIES II LLC","MAIL_ADDRESS_1":"453 SHEPHERDS WAY","MAIL_ADDRESS_2":"","MAIL_ADDRESS_3":"MORROW OH","MAIL_ZIP":45152,"TOWNSHIP_NAME":"","MUNICIPALITY_NAME":"MASON                         "}]
-
-### folder Dynamic
-HTTP 200 CORS=https://pratul48.github.io len=62
-[]
-
-### folder Hosted
-HTTP 200 CORS=https://pratul48.github.io len=122
-["Hosted/Warren_County_GIS_Day_2026_WFL1:FeatureServer"]
-
-### folder Maproom
-HTTP 200 CORS=https://pratul48.github.io len=62
-[]
-
-### Hamilton CLASS type
-HTTP 200 CORS=https://pratul48.github.io len=13117
-["CLASS:esriFieldTypeInteger","ADDRNO:esriFieldTypeString","SALDAT:esriFieldTypeDate","SALTYP:esriFieldTypeString","SALAMT:esriFieldTypeDouble","VALID:esriFieldTypeString","MKT_TOTAL_VAL:esriFieldTypeDouble"]
-
-### Hamilton comps
-HTTP 200 CORS=https://pratul48.github.io len=2008
-[{"ADDRNO":"9423","ADDRST":"MONTGOMERY","SALDAT":1140048000000,"SALAMT":166000,"MKT_TOTAL_VAL":189220,"CLASS":447,"ACREDEED":0.088},{"ADDRNO":"9433","ADDRST":"MONTGOMERY","SALDAT":1568160000000,"SALAMT":340000,"MKT_TOTAL_VAL":378830,"CLASS":420,"ACREDEED":0.246},{"ADDRNO":"9393","ADDRST":"SHELLY","SALDAT":1719532800000,"SALAMT":604503,"MKT_TOTAL_VAL":207980,"CLASS":455,"ACREDEED":0.099},{"ADDRNO":"7800","ADDRST":"COOPER","SALDAT":1647475200000,"SALAMT":845000,"MKT_TOTAL_VAL":904670,"CLASS":447,"ACREDEED":0.397},{"ADDRNO":"7786","ADDRST":"COOPER","SALDAT":1680566400000,"SALAMT":350000,"MKT_TOTAL_VAL":208030,"CLASS":510,"ACREDEED":0.242},{"ADDRNO":"7775","ADDRST":"COOPER","SALDAT":1718064000000,"SALAMT":1250000,"MKT_TOTAL_VAL":1048450,"CLASS":447,"ACREDEED":1.243},{"ADDRNO":"7777","ADDRST":"COOPER","SALDAT":1502668800000,"SALAMT":3566330,"MKT_TOTAL_VAL":3524130,"CLASS":412,"ACREDEED":5},{"ADDRNO":"9309","ADDRST":"MONTGOMERY","SALDAT":1642118400000,"SALAMT":990000,"MKT_TOTAL_VAL":1258800,"CLASS":447,"ACREDEED":1.266}]
-
-### Hamilton Parcel Attributes layer 2 with sales?
-HTTP 200 CORS=https://pratul48.github.io len=9383
-[]
-
-### search Butler services
-HTTP 200 CORS=https://pratul48.github.io len=8709
-[["Butler County Auditor GIS Viewer_Cloudpoint","Cloudpoint_161074","Web Map",""],["Monroe Parcels in Butler County","comgisservice","Feature Service","https://services5.arcgis.com/ZpzXpUOckwsAhLFh/arcgis/rest/services/Monroe_Parcels_in_Butler_County/FeatureServer"],["Butler County Auditor GIS Viewer","bcauditor_admin","Web Map",""],["Butler County Auditor GIS Viewer","bcauditor_admin","Web Mapping Application","https://161074.maps.arcgis.com/apps/webappviewer/index.html?id=022c917993fd4ba482f164f8b0b96ba7"],["Address & Property Viewer Map","zmoore@cityofoxford.org","Web Map",""],["Fritz Rd Parcels view layer","jnally","Feature Service","https://services5.arcgis.com/Fq0TUmdRNerGcci4/arcgis/rest/services/Fritz_Rd_Parcels_view_layer/FeatureServer"]]
+### Warren TaxParcels feature service root
+HTTP 200 CORS=https://pratul48.github.io len=3656
+{"layers":[{"id":0,"name":"Warren Parcels","parentLayerId":-1,"defaultVisibility":true,"subLayerIds":null,"minScale":500000,"maxScale":0,"type":"Feature Layer","geometryType":"esriGeometryPolygon"}],"tables":[]}
